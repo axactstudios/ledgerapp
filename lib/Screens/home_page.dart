@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ledgerapp/Screens/dealerlogin.dart';
 
 import '../Classes/Constants.dart';
 import '../Classes/Constants.dart';
@@ -76,16 +77,20 @@ class HomePage extends StatelessWidget {
                 child: Card(
           color: Colors.white,
                 elevation:7,
-                child:Column(
-                  children: <Widget>[
-                    Image.asset('assets/images/admin.png',scale:3),
-                    InkWell(child: Text('Admin',style:TextStyle(color:Colors.lightBlue,
-                        fontSize: 0.03*pHeight, fontFamily: 'Jost')),
-                      onTap: (){
-                        Navigator.of(context).pushNamed(LoginPage.tag);
-                      },),
-                  ],
+                child:Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset('images/admin.png',scale:1),
+                      SizedBox(height:8),
+                      InkWell(child: Text('Admin',style:TextStyle(color:Colors.lightBlue,
+                          fontSize: 0.03*pHeight, fontFamily: 'Jost')),
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
+                        },),
+                    ],
 
+                  ),
                 )
 
               ),
@@ -96,15 +101,19 @@ class HomePage extends StatelessWidget {
               child: Card(
                 color: Colors.white,
                 elevation:7,
-                child:Column(
-                  children: <Widget>[
-                    Image.asset('assets/images/divhead.png', scale:3),
-                    InkWell(child: Text('DivisionHead',style:TextStyle(color:Colors.lightBlue,
-                        fontSize: 0.03*pHeight, fontFamily: 'Jost')),
-                      onTap: (){
-                        Navigator.of(context).pushNamed(LoginPage.tag);
-                      },),
-                  ],
+                child:Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset('images/divhead.png', scale:2),
+                      SizedBox(height:8),
+                      InkWell(child: Text('DivisionHead',style:TextStyle(color:Colors.lightBlue,
+                          fontSize: 0.03*pHeight, fontFamily: 'Jost')),
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('divisionHead')));
+                        },),
+                    ],
+                  ),
                 )
 
 
@@ -116,15 +125,19 @@ class HomePage extends StatelessWidget {
               child: Card(
                 color:Colors.white,
                 elevation:7,
-                child:Column(
-                  children: <Widget>[
-                    Image.asset('assets/images/dealer.png',scale:3),
-                    InkWell(child: Text('Dealer',style:TextStyle(color:Colors.lightBlue,
-                        fontSize: 0.03*pHeight,fontFamily: 'Jost')),
-                      onTap: (){
-                        Navigator.of(context).pushNamed(LoginPage.tag);
-                      },),
-                  ],
+                child:Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Image.asset('images/dealer.png',scale:1),
+                      SizedBox(height:12),
+                      InkWell(child: Text('Dealer',style:TextStyle(color:Colors.lightBlue,
+                          fontSize: 0.03*pHeight,fontFamily: 'Jost')),
+                        onTap: (){
+                          Navigator.of(context).pushNamed(DealerLogin.tag);
+                        },),
+                    ],
+                  ),
                 )
 
               ),

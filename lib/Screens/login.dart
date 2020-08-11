@@ -1,11 +1,15 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:ledgerapp/Screens/dealerlogin.dart';
 import 'DealerScreen.dart';
 import 'Distributor.dart';
 import 'DivisionHeadScreen.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
+  String type;
+  LoginPage(this.type);
+
   @override
   _LoginPageState createState() => new _LoginPageState();
 }
@@ -54,34 +58,38 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(12),
         ),
         onPressed: () {
-          final db = FirebaseDatabase.instance.reference().child("Users");
-          db.once().then((DataSnapshot snapshot) {
-            snapshot.value.forEach((key, values) {
-              print(values['email']);
-              print(email.toString());
-              if (values["email"] == emailC.text &&
-                  values["password"] == pw.text) {
-                print(values['password']);
-                if (values["type"] == "admin") {
-                  print('Admin found');
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => distributorScreen(),
-                    ),
-                  );
+          if (widget.type == 'admin' || widget.type == 'divisionHead') {
+            final db = FirebaseDatabase.instance.reference().child("Admin");
+            db.once().then((DataSnapshot snapshot) {
+              snapshot.value.forEach((key, values) {
+                print(values["Email"]);
+                print(email.toString());
+                if (values["Email"] == emailC.text &&
+                    values["Password"] == pw.text) {
+                  if(widget.type=='admin') {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => distributorScreen(),
+                      ),
+                    );
+                  }
+                  else{
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => divisionheadScreen(),),);}
                 }
-                if (values["type"] == "dealer") {
-                  print('Dealer found');
-                  Navigator.of(context).pushNamed(dealerScreen.tag);
-                }
-                if (values["type"] == "divisionHead") {
-                  print('Division head found');
-                  Navigator.of(context).pushNamed(divisionheadScreen.tag);
-                }
-              }
+
+              });
             });
-          });
+          }else{
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DealerLogin(),),);
+          }
+
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
