@@ -4,6 +4,7 @@ import 'Screens/DealerScreen.dart';
 import 'Screens/Distributor.dart';
 import 'Screens/DivisionHeadScreen.dart';
 import 'Screens/home_page.dart';
+import 'Screens/home_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
         fontFamily: 'Nunito',
       ),
-      home: LoginPage(),
+      home: HomePage(),
       routes: routes,
     );
   }
