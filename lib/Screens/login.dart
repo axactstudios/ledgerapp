@@ -58,38 +58,53 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(12),
         ),
         onPressed: () {
-          if (widget.type == 'admin' || widget.type == 'divisionHead') {
+          if (widget.type == 'admin') {
             final db = FirebaseDatabase.instance.reference().child("Admin");
-            db.once().then((DataSnapshot snapshot) {
-              snapshot.value.forEach((key, values) {
-                print(values["Email"]);
-                print(email.toString());
-                if (values["Email"] == emailC.text &&
-                    values["Password"] == pw.text) {
-                  if(widget.type=='admin') {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => distributorScreen(),
-                      ),
-                    );
-                  }
-                  else{
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => divisionheadScreen(),),);}
+            db.once().then((DataSnapshot snapshot) async {
+              String email = await snapshot.value['Email'];
+              String password = await snapshot.value['Password'];
+              if (email == emailC.text && password == pw.text) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => distributorScreen(),
+                  ),
+                );
+              }
+            });
+          } else if (widget.type == 'divisionHead') {
+            final db = FirebaseDatabase.instance
+                .reference()
+                .child('Admin')
+                .child('Division Heads');
+            db.once().then((DataSnapshot snap) {
+              Map<dynamic, dynamic> values = snap.value;
+              values.forEach((key, value) async {
+                String email = value['Email'];
+                print(email);
+                print(emailC.text);
+                String password = value['Password'].toString();
+                print(password);
+                print(pw.text);
+                if (email == emailC.text && password == pw.text) {
+                  print('Match Found');
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => divisionheadScreen(),
+                    ),
+                  );
                 }
-
               });
             });
-          }else{
+          } else {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => DealerLogin(),),);
+                builder: (context) => DealerLogin(),
+              ),
+            );
           }
-
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
