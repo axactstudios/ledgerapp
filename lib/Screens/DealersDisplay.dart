@@ -6,16 +6,16 @@ import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:random_string/random_string.dart';
 
-class dealerScreen extends StatefulWidget {
+class dealerdisplayScreen extends StatefulWidget {
   static String tag = 'dealer-page';
   String divKey, dealerKey;
 
-  dealerScreen({this.dealerKey, this.divKey});
+  dealerdisplayScreen({this.dealerKey, this.divKey});
   @override
-  _dealerState createState() => _dealerState();
+  _dealerdisplayState createState() => _dealerdisplayState();
 }
 
-class _dealerState extends State<dealerScreen> {
+class _dealerdisplayState extends State<dealerdisplayScreen> {
   bool validated = true;
   String errtext = "";
   String entryedited = "";
