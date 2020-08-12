@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
+import 'package:ledgerapp/Screens/DealersDisplay.dart';
+import 'package:ledgerapp/Screens/DealersList.dart';
 
 class DealerCard extends StatefulWidget {
   final String divKey;
@@ -40,7 +42,7 @@ class _DealerCardState extends State<DealerCard> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => dealerScreen(
+                    builder: (context) => dealerdisplayScreen(
                       divKey: widget.divKey,
                       dealerKey: widget.item.name,
                     ),
