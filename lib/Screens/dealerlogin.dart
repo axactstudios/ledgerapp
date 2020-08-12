@@ -1,13 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
-class ListItem{
-  int value;
-  String name;
-  ListItem(this.value,this.name);
-}
+
+
 class DealerLogin extends StatefulWidget {
   static String tag = 'dealerlogin-page';
+
   @override
   _DealerLoginState createState() => _DealerLoginState();
 }
@@ -15,28 +13,21 @@ class DealerLogin extends StatefulWidget {
 class _DealerLoginState extends State<DealerLogin> {
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
-  List<ListItem>_dropdownItems=[
-    ListItem(1,"Division Head 1"),
-    ListItem(2,"Division Head 2"),
-    ListItem(3,"Division Head 3"),
-  ];
-  List<DropdownMenuItem<ListItem>>_dropdownMenuItems;
-  ListItem _selectedItem;
-  void initState(){
-    super.initState();
-    _dropdownMenuItems=buildDropDownMenuItems(_dropdownItems);
-
-  }
-  List<DropdownMenuItem<ListItem>>buildDropDownMenuItems(List listItems){
-    List<DropdownMenuItem<ListItem>>items=List();
-    for(ListItem listItem in listItems){
-      items.add(DropdownMenuItem(child:Text(listItem.name),
-      value:listItem,));
-    }
-    return items;
-  }
+  String holder='';
+  String dropdownvalue='Division Head 1';
+   List<String> users=[
+     'Division Head 1',
+     'Division Head 2',
+     'Division Head 3'
+   ];
+   void getDropDownItem(){
+     setState(() {
+       holder=dropdownvalue;
+     });
+   }
   @override
   Widget build(BuildContext context) {
+
     final email = TextFormField(
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
@@ -64,54 +55,71 @@ class _DealerLoginState extends State<DealerLogin> {
           borderRadius: BorderRadius.circular(12),
         ),
         onPressed: () {
-       if(_selectedItem=='Division Head 1'){
-         final db = FirebaseDatabase.instance.reference().child("Division Head 1").child("Dealers");
-         db.once().then((DataSnapshot snapshot){
-           snapshot.value.foreach((key,values)
-           {
-             print(values['Email']);
-             print(email.toString());
-             if(values["Email"] == emailC.text &&
-                 values["Password"] == pw.text){
-               Navigator.of(context).pushNamed(dealerScreen.tag);
-             }
+          print(emailC.text);
+          getDropDownItem();
+          print('$holder');
 
-           });
-         }
-         );
-       }
-       if(_selectedItem=='Division Head 2'){
-         final db = FirebaseDatabase.instance.reference().child("Division Head 2").child("Dealers");
-         db.once().then((DataSnapshot snapshot){
-           snapshot.value.foreach((key,values)
-           {
-             print(values['Email']);
-             print(email.toString());
-             if(values["Email"] == emailC.text &&
-                 values["Password"] == pw.text){
-               Navigator.of(context).pushNamed(dealerScreen.tag);
-             }
+          if ('$holder' == 'Division Head 1') {
+            final db = FirebaseDatabase.instance.reference().child("Admin").child("Division Heads").child(
+                "Division Head 1").child("Dealers");
+            db.once().then((DataSnapshot snap) {
+              Map<dynamic, dynamic> values = snap.value;
+              values.forEach((key, value) async {
+                String email = value['Email'];
+                print(email);
+                print(emailC.text);
+                String password = value['Password'].toString();
+                print(password);
+                print(pw.text);
+                if (email == emailC.text &&
+                    password == pw.text) {
+                  Navigator.of(context).pushNamed(dealerScreen.tag);
+                }
+              });
+            }
+            );
+          }
+          if ('$holder' == 'Division Head 2') {
+            final db = FirebaseDatabase.instance.reference().child("Admin").child("Division Heads").child(
+                "Division Head 2").child("Dealers");
+            db.once().then((DataSnapshot snap) {
+              Map<dynamic, dynamic> values = snap.value;
+              values.forEach((key, value) async {
+                String email = value['Email'];
+                print(email);
+                print(emailC.text);
+                String password = value['Password'].toString();
+                print(password);
+                print(pw.text);
+                if (email == emailC.text &&
+                    password == pw.text) {
+                  Navigator.of(context).pushNamed(dealerScreen.tag);
+                }
+              });
+            }
+            );
+          }
+          if ('$holder' == 'Division Head 3') {
+            final db = FirebaseDatabase.instance.reference().child("Admin").child("Division Heads").child(
+                "Division Head 3").child("Dealers");
+            db.once().then((DataSnapshot snap) {
+              Map<dynamic, dynamic> values = snap.value;
+              values.forEach((key, value) async {
+                String email = value['Email'];
+                print(email);
+                print(emailC.text);
+                String password = value['Password'].toString();
+                print(password);
+                print(pw.text);
+                if (email == emailC.text &&
+                    password == pw.text) {
+                  Navigator.of(context).pushNamed(dealerScreen.tag);
+                }
+              });
+            }
+            );
+          }
 
-           });
-         }
-         );
-       }
-       if(_selectedItem=='Division Head 3'){
-         final db = FirebaseDatabase.instance.reference().child("Division Head 3").child("Dealers");
-         db.once().then((DataSnapshot snapshot){
-           snapshot.value.foreach((key,values)
-           {
-             print(values['Email']);
-             print(email.toString());
-             if(values["Email"] == emailC.text &&
-                 values["Password"] == pw.text){
-               Navigator.of(context).pushNamed(dealerScreen.tag);
-             }
-
-           });
-         }
-         );
-       }
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
@@ -136,16 +144,27 @@ class _DealerLoginState extends State<DealerLogin> {
           children: <Widget>[
            Container(padding:EdgeInsets.all(12.0),
            child:DropdownButtonHideUnderline(
-             child: DropdownButton<ListItem>(
-               value:_selectedItem,
-               items:_dropdownMenuItems,
-               onChanged: (value){
+             child: DropdownButton<String>(
+               value:dropdownvalue,
+                 isExpanded: true,
+                 hint:Text('Choose your division head'),
+               onChanged: ( String value){
                  setState(() {
-                   _selectedItem=value;
+                   dropdownvalue=value;
+                   print(value);
                  });
                  },
-               isExpanded: true,
-               hint:Text('Choose your division head')
+                 items:users.map<DropdownMenuItem<String>>((String value){
+
+                     return DropdownMenuItem<String>(
+                         value:value,
+                         child:Text(value)
+                     );
+                   }).toList(),
+
+
+
+
              ),
            )),
             email,
