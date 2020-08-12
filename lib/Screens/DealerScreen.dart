@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../Classes/Constants.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class dealerScreen extends StatefulWidget {
   static String tag = 'dealer-page';
@@ -9,7 +10,10 @@ class dealerScreen extends StatefulWidget {
 }
 
 class _dealerState extends State<dealerScreen> {
-  final texteditingcontroller = TextEditingController();
+  final texteditingcontroller1 = TextEditingController();
+  final texteditingcontroller2 = TextEditingController();
+  final texteditingcontroller3 = TextEditingController();
+  final texteditingcontroller4 = TextEditingController();
   bool validated = true;
   String errtext = "";
   String entryedited = "";
@@ -19,7 +23,11 @@ class _dealerState extends State<dealerScreen> {
   }
 
   void showalertdialog() {
-    texteditingcontroller.text = "";
+    texteditingcontroller1.text = "";
+    texteditingcontroller2.text = "";
+    texteditingcontroller3.text = "";
+    texteditingcontroller4.text = "";
+
     showDialog(
         context: context,
         builder: (context) {
@@ -29,13 +37,55 @@ class _dealerState extends State<dealerScreen> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               title: Text(
-                "Add Entry",
+                "Add Entry Details",
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
-                    controller: texteditingcontroller,
+                    controller: texteditingcontroller1,
+                    autofocus: true,
+                    onChanged: (_val) {
+                      entryedited = _val;
+                    },
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontFamily: "Raleway",
+                    ),
+                    decoration: InputDecoration(
+                      errorText: validated ? null : errtext,
+                    ),
+                  ),
+                  TextField(
+                    controller: texteditingcontroller2,
+                    autofocus: true,
+                    onChanged: (_val) {
+                      entryedited = _val;
+                    },
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontFamily: "Raleway",
+                    ),
+                    decoration: InputDecoration(
+                      errorText: validated ? null : errtext,
+                    ),
+                  ),
+                  TextField(
+                    controller: texteditingcontroller3,
+                    autofocus: true,
+                    onChanged: (_val) {
+                      entryedited = _val;
+                    },
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontFamily: "Raleway",
+                    ),
+                    decoration: InputDecoration(
+                      errorText: validated ? null : errtext,
+                    ),
+                  ),
+                  TextField(
+                    controller: texteditingcontroller4,
                     autofocus: true,
                     onChanged: (_val) {
                       entryedited = _val;
@@ -57,18 +107,21 @@ class _dealerState extends State<dealerScreen> {
                       children: <Widget>[
                         RaisedButton(
                           onPressed: () {
-                            if (texteditingcontroller.text.isEmpty) {
+                            if (texteditingcontroller1.text.isEmpty) {
                               setState(() {
                                 errtext = "Can't Be Empty";
                                 validated = false;
                               });
-                            } else if (texteditingcontroller.text.length >
-                                512) {
-                              setState(() {
-                                errtext = "Too may Chanracters";
-                                validated = false;
-                              });
-                            } else {
+                            }
+                             else {
+                              FirebaseDatabase.instance.reference()
+                                  .child("Admin")
+                                  .child("Division Head")
+                                  .child("Dealers")
+                                  .child("'${texteditingcontroller1.text}'")
+                                  .child('${texteditingcontroller2.text}')
+                                  .set({'Record Field 1': texteditingcontroller3.text, 'Record Field 2': texteditingcontroller4.text});
+
                               addentry();
                             }
                           },
