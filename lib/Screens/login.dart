@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Screens/dealerlogin.dart';
 import 'DealerScreen.dart';
+import 'DealersList.dart';
 import 'Distributor.dart';
 import 'DivisionHeadScreen.dart';
 
@@ -17,7 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
-
+  String divKey = '';
   @override
   Widget build(BuildContext context) {
     /*final logo = Hero(
@@ -88,10 +89,13 @@ class _LoginPageState extends State<LoginPage> {
                 print(pw.text);
                 if (email == emailC.text && password == pw.text) {
                   print('Match Found');
+                  setState(() {
+                    divKey=key;
+                  });
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => divisionheadScreen(),
+                      builder: (context) => dealerlistScreen(divKey),
                     ),
                   );
                 }

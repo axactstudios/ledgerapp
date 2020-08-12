@@ -59,11 +59,11 @@ class HomePage extends StatelessWidget {
 //    );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kPrimaryColor,
       appBar: AppBar(
         title:Text('Welcome',style:
         TextStyle(color:Colors.white),textAlign: TextAlign.center,),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: kPrimaryColor,
       ),
       body:Align(
         alignment: Alignment.center,
@@ -81,10 +81,10 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     children: <Widget>[
-                      Image.asset('images/admin.png',scale:1),
+                      Image(image:AssetImage('images/admin.png'),height:0.14*pHeight),
                       SizedBox(height:8),
-                      InkWell(child: Text('Admin',style:TextStyle(color:Colors.lightBlue,
-                          fontSize: 0.03*pHeight, fontFamily: 'Jost')),
+                      InkWell(child: Text('Admin',style:TextStyle(color:kPrimaryColor,
+                          fontSize: 0.03*pHeight, fontFamily: 'Nunito')),
                         onTap: (){
                           Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
                         },),
@@ -105,10 +105,10 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: <Widget>[
-                      Image.asset('images/divhead.png', scale:2),
+                     Image(image:AssetImage('images/divhead.png'),height:0.14*pHeight),
                       SizedBox(height:8),
-                      InkWell(child: Text('DivisionHead',style:TextStyle(color:Colors.lightBlue,
-                          fontSize: 0.03*pHeight, fontFamily: 'Jost')),
+                      InkWell(child: Text('DivisionHead',style:TextStyle(color:kPrimaryColor,
+                          fontSize: 0.03*pHeight, fontFamily: 'Nunito')),
                         onTap: (){
                           Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('divisionHead')));
                         },),
@@ -129,10 +129,10 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: <Widget>[
-                      Image.asset('images/dealer.png',scale:1),
-                      SizedBox(height:12),
-                      InkWell(child: Text('Dealer',style:TextStyle(color:Colors.lightBlue,
-                          fontSize: 0.03*pHeight,fontFamily: 'Jost')),
+                      Image(image:AssetImage('images/dealer.png'),height:0.14*pHeight),
+                      SizedBox(height:8),
+                      InkWell(child: Text('Dealer',style:TextStyle(color:kPrimaryColor,
+                          fontSize: 0.03*pHeight,fontFamily: 'Nunito')),
                         onTap: (){
                           Navigator.of(context).pushNamed(DealerLogin.tag);
                         },),

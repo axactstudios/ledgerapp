@@ -7,9 +7,9 @@ import 'package:firebase_database/firebase_database.dart';
 
 class dealerlistScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
-  String divKey, dealerKey;
-
-  dealerlistScreen({this.dealerKey, this.divKey});
+  String divKey;
+String dealerKey;
+  dealerlistScreen( this.divKey);
   @override
   _dealerlistState createState() => _dealerlistState();
 }
@@ -24,20 +24,20 @@ class _dealerlistState extends State<dealerlistScreen> {
         .child('Admin')
         .child('Division Heads')
         .child(widget.divKey)
-        .child('Dealers')
-        .child(widget.dealerKey)
-        .child('Records');
+        .child('Dealers');
+
     db.once().then((DataSnapshot snap) async {
       Map<dynamic, dynamic> values = await snap.value;
       values.forEach((key, value) async {
         Dealer newDealer = Dealer();
-        newDealer.name = await value['Name'];
+        newDealer.name = await key;
         print(newDealer.name);
 
         dealers.add(newDealer);
       });
       setState(() {
         print(dealers.length);
+
       });
     });
   }
@@ -47,7 +47,7 @@ class _dealerlistState extends State<dealerlistScreen> {
   void initState() {
     getData();
     print(widget.divKey);
-    print(widget.dealerKey);
+
   }
 
   @override
@@ -77,7 +77,9 @@ class _dealerlistState extends State<dealerlistScreen> {
             itemCount: dealers.length,
             itemBuilder: (context, index) {
               var item = dealers[index];
-              return DealerCard(item: item);
+              return DealerCard(item: item,
+              divKey: widget.divKey,
+              );
             }),
         );
   }
