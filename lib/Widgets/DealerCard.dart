@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
+import 'package:ledgerapp/Screens/DealerScreen.dart';
 
 class DealerCard extends StatefulWidget {
+  final String divKey;
   const DealerCard({
     Key key,
-    @required this.item,
+    @required this.item,this.divKey
   }) : super(key: key);
 
   final Dealer item;
@@ -29,10 +31,24 @@ class _DealerCardState extends State<DealerCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                widget.item.name,
-                style: TextStyle(fontSize: pHeight * 0.03),
-              ),
+              InkWell(
+                child: Text(
+                  widget.item.name,
+                  style: TextStyle(fontSize: pHeight * 0.03),
+                ),
+              onTap: (){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => dealerScreen(
+                      divKey: widget.divKey,
+                      dealerKey: widget.item.name,
+                    ),
+                  ),
+                );
+
+
+              },),
               SizedBox(
                 height: pHeight * 0.02,
               ),
@@ -41,7 +57,7 @@ class _DealerCardState extends State<DealerCard> {
             ],
           ),
         ),
-      ),
+       ),
     );
   }
 }

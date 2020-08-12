@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
 
     HomePage.tag: (context) => HomePage(),
-    divisionheadScreen.tag: (context) => divisionheadScreen(),
+
     distributorScreen.tag: (context) => distributorScreen(),
     dealerScreen.tag: (context) => dealerScreen(),
     DealerLogin.tag:(context)=>DealerLogin()

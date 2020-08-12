@@ -89,7 +89,8 @@ class _dealerState extends State<dealerScreen> {
             itemCount: records.length,
             itemBuilder: (context, index) {
               var item = records[index];
-              return RecordCard(item: item);
+              return RecordCard(item: item,
+              );
             }),
         );
   }
