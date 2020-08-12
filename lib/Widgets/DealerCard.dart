@@ -39,7 +39,7 @@ class _DealerCardState extends State<DealerCard> {
                   style: TextStyle(fontSize: pHeight * 0.03),
                 ),
               onTap: (){
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => dealerdisplayScreen(
