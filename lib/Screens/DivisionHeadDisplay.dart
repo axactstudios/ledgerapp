@@ -9,7 +9,7 @@ class divisionheadlistScreen extends StatefulWidget {
   static String tag = 'divisionheadlist-page';
   String divKey;
   String dealerKey;
-  divisionheadlistScreen( this.divKey);
+
   @override
   _divisionheadlistState createState() => _divisionheadlistState();
 }

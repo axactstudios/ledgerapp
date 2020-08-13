@@ -4,6 +4,7 @@ import 'package:ledgerapp/Screens/dealerlogin.dart';
 import 'DealerScreen.dart';
 import 'DealersList.dart';
 import 'Distributor.dart';
+import 'DivisionHeadDisplay.dart';
 import 'DivisionHeadScreen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => distributorScreen(),
+                    builder: (context) => divisionheadlistScreen(),
                   ),
                 );
               }
