@@ -33,10 +33,23 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                widget.item.name,
-                style: TextStyle(fontSize: pHeight * 0.03),
-              ),
+              InkWell(
+                child: Text(
+                  widget.item.name,
+                  style: TextStyle(fontSize: pHeight * 0.03),
+                ),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => dealerlistScreen(
+                         widget.item.name
+                      ),
+                    ),
+                  );
+
+
+                }, ),
               SizedBox(
                 height: pHeight * 0.02,
               ),
