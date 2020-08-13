@@ -71,75 +71,83 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
           children: <Widget>[
-            Container(
-             height:0.25*pHeight,
+            InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
+              },
+              child: Container(
+               height:0.25*pHeight,
+                  width:0.85*pWidth ,
+                  child: Card(
+          color: Colors.white,
+                  elevation:7,
+                  child:Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: <Widget>[
+                        Image(image:AssetImage('images/admin.png'),height:0.14*pHeight),
+                        SizedBox(height:8),
+                        Text('Admin',style:TextStyle(color:kPrimaryColor,
+                            fontSize: 0.03*pHeight, fontFamily: 'Nunito')),
+
+                      ],
+
+                    ),
+                  )
+
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
+              },
+              child: Container(
+                height:0.25*pHeight,
                 width:0.85*pWidth ,
                 child: Card(
-          color: Colors.white,
-                elevation:7,
-                child:Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: <Widget>[
-                      Image(image:AssetImage('images/admin.png'),height:0.14*pHeight),
-                      SizedBox(height:8),
-                      InkWell(child: Text('Admin',style:TextStyle(color:kPrimaryColor,
-                          fontSize: 0.03*pHeight, fontFamily: 'Nunito')),
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
-                        },),
-                    ],
+                  color: Colors.white,
+                  elevation:7,
+                  child:Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: <Widget>[
+                       Image(image:AssetImage('images/divhead.png'),height:0.14*pHeight),
+                        SizedBox(height:8),
+                        Text('DivisionHead',style:TextStyle(color:kPrimaryColor,
+                            fontSize: 0.03*pHeight, fontFamily: 'Nunito')),
+                      ],
+                    ),
+                  )
 
-                  ),
-                )
 
+                ),
               ),
             ),
-            Container(
-              height:0.25*pHeight,
-              width:0.85*pWidth ,
-              child: Card(
-                color: Colors.white,
-                elevation:7,
-                child:Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: <Widget>[
-                     Image(image:AssetImage('images/divhead.png'),height:0.14*pHeight),
-                      SizedBox(height:8),
-                      InkWell(child: Text('DivisionHead',style:TextStyle(color:kPrimaryColor,
-                          fontSize: 0.03*pHeight, fontFamily: 'Nunito')),
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('divisionHead')));
-                        },),
-                    ],
-                  ),
-                )
+            InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
+              },
+              child: Container(
+                height:0.25*pHeight,
+                width:0.85*pWidth ,
+                child: Card(
+                  color:Colors.white,
+                  elevation:7,
+                  child:Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: <Widget>[
+                        Image(image:AssetImage('images/dealer.png'),height:0.14*pHeight),
+                        SizedBox(height:8),
+                        Text('Dealer',style:TextStyle(color:kPrimaryColor,
+                            fontSize: 0.03*pHeight,fontFamily: 'Nunito')),
 
+                      ],
+                    ),
+                  )
 
-              ),
-            ),
-            Container(
-              height:0.25*pHeight,
-              width:0.85*pWidth ,
-              child: Card(
-                color:Colors.white,
-                elevation:7,
-                child:Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: <Widget>[
-                      Image(image:AssetImage('images/dealer.png'),height:0.14*pHeight),
-                      SizedBox(height:8),
-                      InkWell(child: Text('Dealer',style:TextStyle(color:kPrimaryColor,
-                          fontSize: 0.03*pHeight,fontFamily: 'Nunito')),
-                        onTap: (){
-                          Navigator.of(context).pushNamed(DealerLogin.tag);
-                        },),
-                    ],
-                  ),
-                )
-
+                ),
               ),
             ),
 
