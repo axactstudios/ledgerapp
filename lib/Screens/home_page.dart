@@ -100,7 +100,7 @@ class HomePage extends StatelessWidget {
             ),
             InkWell(
               onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('divisionHead')));
               },
               child: Container(
                 height:0.25*pHeight,
@@ -126,7 +126,7 @@ class HomePage extends StatelessWidget {
             ),
             InkWell(
               onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('admin')));
+                Navigator.of(context).pushNamed(DealerLogin.tag);
               },
               child: Container(
                 height:0.25*pHeight,
