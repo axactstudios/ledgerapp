@@ -30,6 +30,9 @@ class _DealerLoginState extends State<DealerLogin> {
 
   @override
   Widget build(BuildContext context) {
+
+    double pHeight=MediaQuery.of(context).size.height;
+    double pWidth=MediaQuery.of(context).size.width;
     final email = TextFormField(
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
@@ -182,6 +185,7 @@ class _DealerLoginState extends State<DealerLogin> {
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
+            Image(image:AssetImage('images/dealer.png'),height:0.20*pHeight),
             Container(
                 padding: EdgeInsets.all(12.0),
                 child: DropdownButtonHideUnderline(
@@ -201,6 +205,7 @@ class _DealerLoginState extends State<DealerLogin> {
                     }).toList(),
                   ),
                 )),
+
             email,
             SizedBox(height: 8.0),
             password,
