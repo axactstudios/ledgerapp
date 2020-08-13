@@ -21,15 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   String divKey = '';
   @override
   Widget build(BuildContext context) {
-    /*final logo = Hero(
-      tag: 'hero',
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 48.0,
-        child: Image.asset('assets/logo.png'),
-      ),
-    );*/
 
+
+    double pHeight=MediaQuery.of(context).size.height;
+    double pWidth=MediaQuery.of(context).size.width;
     final email = TextFormField(
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
@@ -126,22 +121,26 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            //logo,
-            //SizedBox(height: 48.0),
-            email,
-            SizedBox(height: 8.0),
-            password,
-            SizedBox(height: 24.0),
-            loginButton,
-            forgotLabel
-          ],
-        ),
-      ),
+      body:
+          Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 24.0, right: 24.0),
+              children: <Widget>[
+                (widget.type=='admin')?Image(image:AssetImage('images/admin.png'),height:pHeight*0.20):Image(image:AssetImage('images/divhead.png'),height:pHeight*0.20),
+                //SizedBox(height: 48.0),
+SizedBox(height:20),
+                email,
+                SizedBox(height: 8.0),
+                password,
+                SizedBox(height: 24.0),
+                loginButton,
+                forgotLabel
+              ],
+            ),
+          ),
+
+
     );
   }
 }
