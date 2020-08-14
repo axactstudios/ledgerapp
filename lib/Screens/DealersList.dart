@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Widgets/DealerCard.dart';
+import 'divheadlogin.dart';
 
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class dealerlistScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
-  String divKey;
-String dealerKey;
-  dealerlistScreen( this.divKey);
+  String CompanyKey;
+  List companies;
+  String dealerKey;
+  dealerlistScreen( this.CompanyKey, this.companies);
   @override
   _dealerlistState createState() => _dealerlistState();
 }
@@ -22,8 +24,8 @@ class _dealerlistState extends State<dealerlistScreen> {
     final db = FirebaseDatabase.instance
         .reference()
         .child('Admin')
-        .child('Division Heads')
-        .child(widget.divKey)
+        .child('Companies')
+        .child(widget.CompanyKey)
         .child('Dealers');
 
     db.once().then((DataSnapshot snap) async {
@@ -46,7 +48,7 @@ class _dealerlistState extends State<dealerlistScreen> {
   @override
   void initState() {
     getData();
-    print(widget.divKey);
+    print(widget.CompanyKey);
 
   }
 
@@ -73,15 +75,21 @@ class _dealerlistState extends State<dealerlistScreen> {
             style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
           ),
         )
-            : ListView.builder(
-            itemCount: dealers.length,
-            itemBuilder: (context, index) {
-              var item = dealers[index];
-              return DealerCard(item: item,
-              divKey: widget.divKey,
-              );
-            }),
-        );
+            : {for(int i = 0 ; i < widget.companies.length ; i++){
+          Text(
+            widget.companies[i],
+            style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+          ),
+          ListView.builder(
+              itemCount: dealers.length,
+              itemBuilder: (context, index) {
+                var item = dealers[index];
+                return DealerCard(item: item,
+                  divKey: widget.CompanyKey,
+                );
+              }),
+        }}
+    );
   }
 }
 
