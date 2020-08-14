@@ -29,7 +29,7 @@ class _dealerdisplayState extends State<dealerdisplayScreen> {
     final db = FirebaseDatabase.instance
         .reference()
         .child('Admin')
-        .child('Division Heads')
+        .child('Companies')
         .child(widget.divKey)
         .child('Dealers')
         .child(widget.dealerKey)

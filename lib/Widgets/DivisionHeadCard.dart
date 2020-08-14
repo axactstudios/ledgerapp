@@ -40,14 +40,7 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
                   style: TextStyle(fontSize: pHeight * 0.03),
                 ),
                 onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => dealerlistScreen(
-                         widget.item.name,
-                      ),
-                    ),
-                  );
+
 
 
                 }, ),
