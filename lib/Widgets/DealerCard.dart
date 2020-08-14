@@ -42,9 +42,9 @@ class _DealerCardState extends State<DealerCard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => dealerdisplayScreen(
-                      divKey: widget.divKey,
-                      dealerKey: widget.item.name,
+                    builder: (context) => dealerScreen(
+                       widget.divKey,
+                       widget.item.name,
                     ),
                   ),
                 );
