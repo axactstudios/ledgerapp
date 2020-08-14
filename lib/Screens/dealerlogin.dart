@@ -10,20 +10,20 @@ class DealerLogin extends StatefulWidget {
 }
 
 class _DealerLoginState extends State<DealerLogin> {
-  String divKey = '', dealerKey = '';
+  String CompanyKey = '', dealerKey = '';
 
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
   String holder = '';
-  String dropdownvalue = 'Division Head 1';
+  String dropdownvalue = 'Amazon';
   List<String> users = [
-    'Division Head 1',
-    'Division Head 2',
-    'Division Head 3'
+    'Amazon',
+    'TVS',
+    'Dell'
   ];
   void getDropDownItem() {
     setState(() {
-      divKey = dropdownvalue;
+      CompanyKey = dropdownvalue;
       holder = dropdownvalue;
     });
   }
@@ -64,12 +64,12 @@ class _DealerLoginState extends State<DealerLogin> {
           getDropDownItem();
           print('$holder');
 
-          if ('$holder' == 'Division Head 1') {
+          if ('$holder' == 'Amazon') {
             final db = FirebaseDatabase.instance
                 .reference()
                 .child("Admin")
-                .child("Division Heads")
-                .child("Division Head 1")
+                .child("Companies")
+                .child("Amazon")
                 .child("Dealers");
             db.once().then((DataSnapshot snap) {
               Map<dynamic, dynamic> values = snap.value;
@@ -88,8 +88,7 @@ class _DealerLoginState extends State<DealerLogin> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => dealerScreen(
-                        divKey: divKey,
-                        dealerKey: dealerKey,
+                      CompanyKey,dealerKey
                       ),
                     ),
                   );
@@ -97,12 +96,12 @@ class _DealerLoginState extends State<DealerLogin> {
               });
             });
           }
-          if ('$holder' == 'Division Head 2') {
+          if ('$holder' == 'TVS') {
             final db = FirebaseDatabase.instance
                 .reference()
                 .child("Admin")
-                .child("Division Heads")
-                .child("Division Head 2")
+                .child("Companies")
+                .child("TVS")
                 .child("Dealers");
             db.once().then((DataSnapshot snap) {
               Map<dynamic, dynamic> values = snap.value;
@@ -121,8 +120,7 @@ class _DealerLoginState extends State<DealerLogin> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => dealerScreen(
-                        divKey: divKey,
-                        dealerKey: dealerKey,
+                        CompanyKey,dealerKey
                       ),
                     ),
                   );
@@ -130,12 +128,12 @@ class _DealerLoginState extends State<DealerLogin> {
               });
             });
           }
-          if ('$holder' == 'Division Head 3') {
+          if ('$holder' == 'Dell') {
             final db = FirebaseDatabase.instance
                 .reference()
                 .child("Admin")
-                .child("Division Heads")
-                .child("Division Head 3")
+                .child("Companies")
+                .child("Dell")
                 .child("Dealers");
             db.once().then((DataSnapshot snap) {
               Map<dynamic, dynamic> values = snap.value;
@@ -154,8 +152,7 @@ class _DealerLoginState extends State<DealerLogin> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => dealerScreen(
-                        divKey: divKey,
-                        dealerKey: dealerKey,
+                        CompanyKey,dealerKey
                       ),
                     ),
                   );

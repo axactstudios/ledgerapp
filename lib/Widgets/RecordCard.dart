@@ -69,10 +69,7 @@ class _RecordCardState extends State<RecordCard> {
                     'Debit: ',
                     style: TextStyle(fontSize: pHeight * 0.025),
                   ),
-                  Text(
-                    widget.item.debit,
-                    style: TextStyle(fontSize: pHeight * 0.025),
-                  ),
+
                 ],
               ),
               Row(
@@ -82,10 +79,7 @@ class _RecordCardState extends State<RecordCard> {
                     'Credit: ',
                     style: TextStyle(fontSize: pHeight * 0.025),
                   ),
-                  Text(
-                    widget.item.credit,
-                    style: TextStyle(fontSize: pHeight * 0.025),
-                  ),
+
                 ],
               ),
             ],
