@@ -39,6 +39,7 @@ class _DealerCardState extends State<DealerCard> {
                   style: TextStyle(fontSize: pHeight * 0.03),
                 ),
               onTap: (){
+                  print(widget.divKey);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
