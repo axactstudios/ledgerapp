@@ -9,7 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 class dealerlistScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
   String CompanyKey;
-  List companies;
+  List<String> companies=[];
   String dealerKey;
   dealerlistScreen( this.CompanyKey, this.companies);
   @override
@@ -19,37 +19,42 @@ class _dealerlistState extends State<dealerlistScreen> {
 
 
   List<Dealer> dealers = [];
-  void getData() {
-    dealers.clear();
-    final db = FirebaseDatabase.instance
-        .reference()
-        .child('Admin')
-        .child('Companies')
-        .child(widget.CompanyKey)
-        .child('Dealers');
 
-    db.once().then((DataSnapshot snap) async {
-      Map<dynamic, dynamic> values = await snap.value;
-      values.forEach((key, value) async {
-        Dealer newDealer = Dealer();
-        newDealer.name = await key;
-        print(newDealer.name);
+  void getData(key) {
+    print(key);
+  dealers.clear();
+  final db = FirebaseDatabase.instance
+      .reference()
+      .child('Admin')
+      .child('Companies')
+      .child(key)
+      .child('Dealers');
 
-        dealers.add(newDealer);
-      });
-      setState(() {
-        print(dealers.length);
+  db.once().then((DataSnapshot snap) async {
+  Map<dynamic, dynamic> values = await snap.value;
+  values.forEach((key, value) async {
+  Dealer newDealer = Dealer();
+  newDealer.name = await key;
+  print(newDealer.name);
 
-      });
-    });
+  dealers.add(newDealer);
+  });
+  setState(() {
+  print(dealers.length);
+
+  });
+  });
   }
 
-
+String key='';
   @override
   void initState() {
-    getData();
-    print(widget.CompanyKey);
-
+    for(int i=0;i<widget.companies.length;i++) {
+      key=widget.companies[i];
+      getData(key);
+      print(widget.CompanyKey);
+      print(key);
+    }
   }
 
   @override
@@ -85,7 +90,7 @@ class _dealerlistState extends State<dealerlistScreen> {
               itemBuilder: (context, index) {
                 var item = dealers[index];
                 return DealerCard(item: item,
-                  divKey: widget.CompanyKey,
+                  divKey: widget.companies[i],
                 );
               }),
         }}

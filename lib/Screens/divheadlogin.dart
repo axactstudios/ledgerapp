@@ -61,6 +61,7 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
               ),
             ),
           );
+          print(companies);
           },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Screens/dealerlogin.dart';
+import 'package:ledgerapp/Screens/divheadlogin.dart';
 
 import '../Classes/Constants.dart';
 import '../Classes/Constants.dart';
@@ -100,7 +101,7 @@ class HomePage extends StatelessWidget {
             ),
             InkWell(
               onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage('divisionHead')));
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>DivHeadLogin()));
               },
               child: Container(
                 height:0.25*pHeight,
