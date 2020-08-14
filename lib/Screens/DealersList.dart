@@ -22,31 +22,31 @@ class _dealerlistState extends State<dealerlistScreen> {
 
   void getData(key) {
     print(key);
-  dealers.clear();
-  final db = FirebaseDatabase.instance
-      .reference()
-      .child('Admin')
-      .child('Companies')
-      .child(key)
-      .child('Dealers');
+    dealers.clear();
+    final db = FirebaseDatabase.instance
+        .reference()
+        .child('Admin')
+        .child('Companies')
+        .child(key)
+        .child('Dealers');
 
-  db.once().then((DataSnapshot snap) async {
-  Map<dynamic, dynamic> values = await snap.value;
-  values.forEach((key, value) async {
-  Dealer newDealer = Dealer();
-  newDealer.name = await key;
-  print(newDealer.name);
+    db.once().then((DataSnapshot snap) async {
+      Map<dynamic, dynamic> values = await snap.value;
+      values.forEach((key, value) async {
+        Dealer newDealer = Dealer();
+        newDealer.name = await key;
+        print(newDealer.name);
 
-  dealers.add(newDealer);
-  });
-  setState(() {
-  print(dealers.length);
+        dealers.add(newDealer);
+      });
+      setState(() {
+        print(dealers.length);
 
-  });
-  });
+      });
+    });
   }
 
-String key='';
+  String key='';
   @override
   void initState() {
     for(int i=0;i<widget.companies.length;i++) {
@@ -80,20 +80,29 @@ String key='';
             style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
           ),
         )
-            : {for(int i = 0 ; i < widget.companies.length ; i++){
-          Text(
-            widget.companies[i],
-            style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-          ),
-          ListView.builder(
-              itemCount: dealers.length,
-              itemBuilder: (context, index) {
-                var item = dealers[index];
-                return DealerCard(item: item,
-                  divKey: widget.companies[i],
-                );
-              }),
-        }}
+            :
+        ListView.builder(
+            itemCount: widget.companies.length,
+            itemBuilder: (context, index) {
+              return Column(
+                  children: <Widget>[
+                    Text(
+                      widget.companies[index],
+                      style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+                    ),
+                    ListView.builder(
+                        itemCount: dealers.length,
+                        itemBuilder: (context, index) {
+                          var item = dealers[index];
+                          return DealerCard(item: item,
+                            divKey: widget.companies[index],
+                          );
+                        }),
+                  ]
+              );
+            }
+
+        )
     );
   }
 }
