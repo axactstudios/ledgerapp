@@ -5,10 +5,11 @@ import 'package:ledgerapp/Screens/DivisionHeadDisplay.dart';
 import 'package:ledgerapp/Screens/DealersList.dart';
 
 class DivisionHeadCard extends StatefulWidget {
-  final String divKey;
+  final String CompanyKey;
+  //final List companies;
   const DivisionHeadCard({
     Key key,
-    @required this.item,this.divKey
+    @required this.item,this.CompanyKey
   }) : super(key: key);
 
   final DivisionHead item;
@@ -43,7 +44,7 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => dealerlistScreen(
-                         widget.item.name
+                         widget.item.name,
                       ),
                     ),
                   );

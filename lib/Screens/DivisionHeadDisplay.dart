@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 class divisionheadlistScreen extends StatefulWidget {
   static String tag = 'divisionheadlist-page';
-  String divKey;
+  String CompanyKey;
   String dealerKey;
 
   @override
@@ -45,7 +45,7 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
   @override
   void initState() {
     getData();
-    print(widget.divKey);
+    print(widget.CompanyKey);
 
   }
 
@@ -77,7 +77,7 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
           itemBuilder: (context, index) {
             var item = divisionhead[index];
             return DivisionHeadCard(item: item,
-              divKey: widget.divKey,
+              CompanyKey: widget.CompanyKey,
             );
           }),
     );

@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerlistScreen(divKey),
+                     // builder: (context) => dealerlistScreen(divKey),
                     ),
                   );
                 }
