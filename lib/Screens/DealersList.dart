@@ -9,15 +9,14 @@ import 'package:firebase_database/firebase_database.dart';
 class dealerlistScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
   String CompanyKey;
-  List<String> companies=[];
+  List<String> companies = [];
   String dealerKey;
-  dealerlistScreen( this.CompanyKey, this.companies);
+  dealerlistScreen(this.CompanyKey, this.companies);
   @override
   _dealerlistState createState() => _dealerlistState();
 }
+
 class _dealerlistState extends State<dealerlistScreen> {
-
-
   List<Dealer> dealers = [];
 
   void getData(key) {
@@ -41,17 +40,17 @@ class _dealerlistState extends State<dealerlistScreen> {
       });
       setState(() {
         print(dealers.length);
-
       });
     });
   }
 
-  String key='';
+  String key = '';
   @override
   void initState() {
-    for(int i=0;i<widget.companies.length;i++) {
-      key=widget.companies[i];
+    for (int i = 0; i < widget.companies.length; i++) {
+      key = widget.companies[i];
       getData(key);
+      dealers.clear();
       print(widget.CompanyKey);
       print(key);
     }
@@ -75,38 +74,30 @@ class _dealerlistState extends State<dealerlistScreen> {
         backgroundColor: Colors.white,
         body: dealers.length == 0
             ? Center(
-          child: Text(
-            "No dealers to show",
-            style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-          ),
-        )
-            :
-        ListView.builder(
-            itemCount: widget.companies.length,
-            itemBuilder: (context, index) {
-              return Column(
-                  children: <Widget>[
+                child: Text(
+                  "No dealers to show",
+                  style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+                ),
+              )
+            : ListView.builder(
+                itemCount: dealers.length,
+                itemBuilder: (context, index) {
+                  return Column(children: <Widget>[
                     Text(
                       widget.companies[index],
                       style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                     ),
                     ListView.builder(
+                        shrinkWrap: true,
                         itemCount: dealers.length,
                         itemBuilder: (context, index) {
                           var item = dealers[index];
-                          return DealerCard(item: item,
+                          return DealerCard(
+                            item: item,
                             divKey: widget.companies[index],
                           );
                         }),
-                  ]
-              );
-            }
-
-        )
-    );
+                  ]);
+                }));
   }
 }
-
-
-
-

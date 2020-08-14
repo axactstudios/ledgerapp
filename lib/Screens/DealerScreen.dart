@@ -25,12 +25,12 @@ class _dealerState extends State<dealerScreen> {
   final texteditingcontroller3 = TextEditingController();
   final texteditingcontroller4 = TextEditingController();
   final texteditingcontroller5 = TextEditingController();
-
+double width;
   bool validated = true;
   String errtext = "";
   String entryedited = "";
-  Widget bodyData()=>DataTable(
-    columnSpacing: 45,
+  Widget bodyData(width)=>DataTable(
+    columnSpacing:width/10,
     columns:<DataColumn>[DataColumn(
       label:Text('Date'),
       numeric:false,
@@ -314,7 +314,7 @@ class _dealerState extends State<dealerScreen> {
                   style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                 ),
               )
-            : bodyData());
+            :bodyData(pWidth));
 //        floatingActionButton: new FloatingActionButton(
 //          onPressed: showalertdialog,
 //          elevation: 0.0,
