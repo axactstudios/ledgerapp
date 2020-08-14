@@ -40,6 +40,7 @@ class _dealerlistState extends State<dealerlistScreen> {
       });
       setState(() {
         print(dealers.length);
+        dealers.clear();
       });
     });
   }
@@ -47,11 +48,11 @@ class _dealerlistState extends State<dealerlistScreen> {
   String key = '';
   @override
   void initState() {
+    print(widget.companies);
     for (int i = 0; i < widget.companies.length; i++) {
       key = widget.companies[i];
       getData(key);
-      dealers.clear();
-      print(widget.CompanyKey);
+
       print(key);
     }
   }
@@ -79,8 +80,8 @@ class _dealerlistState extends State<dealerlistScreen> {
                   style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                 ),
               )
-            : ListView.builder(
-                itemCount: dealers.length,
+            :  ListView.builder(
+                itemCount: widget.companies.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
                     Text(
@@ -92,9 +93,11 @@ class _dealerlistState extends State<dealerlistScreen> {
                         itemCount: dealers.length,
                         itemBuilder: (context, index) {
                           var item = dealers[index];
+
                           return DealerCard(
                             item: item,
                             divKey: widget.companies[index],
+
                           );
                         }),
                   ]);

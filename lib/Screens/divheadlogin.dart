@@ -85,11 +85,17 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
             Image(image:AssetImage('images/divhead.png'),height:0.20*pHeight),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            SizedBox(height:12),
+            email,
+            SizedBox(height: 8.0),
+            password,
+            SizedBox(height:8),
+            Text('Choose your Company here:',style:TextStyle(color:Colors.grey,fontSize:0.02*pHeight)),
+            SizedBox(height:8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text("AMAZON"),
+
                 Checkbox(
                   value: amazonVal,
                   onChanged: (bool value) {
@@ -99,13 +105,8 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
                     });
                   },
                 ),
-              ],
-            ),
+                Text("AMAZON"),
 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("DELL"),
                 Checkbox(
                   value: dellVal,
                   onChanged: (bool value) {
@@ -115,13 +116,8 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
                     });
                   },
                 ),
-              ],
-            ),
+                Text("DELL"),
 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("TVS"),
                 Checkbox(
                   value: tvsVal,
                   onChanged: (bool value) {
@@ -131,13 +127,13 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
                     });
                   },
                 ),
+                Text("TVS"),
               ],
             ),
 
-            email,
+
+
             SizedBox(height: 8.0),
-            password,
-            SizedBox(height: 24.0),
             loginButton,
             forgotLabel
           ],
