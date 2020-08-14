@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     HomePage.tag: (context) => HomePage(),
 
     distributorScreen.tag: (context) => distributorScreen(),
-    dealerScreen.tag: (context) => dealerScreen(),
+
     DealerLogin.tag:(context)=>DealerLogin()
   };
 
