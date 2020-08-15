@@ -60,10 +60,10 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Welcome',
-            style: GoogleFonts.lato(textStyle:TextStyle(color: Colors.white)),
+            style: GoogleFonts.lato(textStyle:TextStyle(color: kPrimaryColor)),
             textAlign: TextAlign.center,
           ),
-          backgroundColor: kPrimaryColor,
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
           centerTitle: true,
         ),
         body: Align(
@@ -82,8 +82,11 @@ class HomePage extends StatelessWidget {
                     height: 0.25 * pHeight,
                     width: 0.85 * pWidth,
                     child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         color: Colors.white,
-                        elevation: 7,
+                        elevation: 10,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
@@ -113,8 +116,11 @@ class HomePage extends StatelessWidget {
                     height: 0.25 * pHeight,
                     width: 0.85 * pWidth,
                     child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         color: Colors.white,
-                        elevation: 7,
+                        elevation: 10,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -141,8 +147,11 @@ class HomePage extends StatelessWidget {
                     height: 0.25 * pHeight,
                     width: 0.85 * pWidth,
                     child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         color: Colors.white,
-                        elevation: 7,
+                        elevation: 10,
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Column(

@@ -20,38 +20,39 @@ class _DealerCardState extends State<DealerCard> {
     final pHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 6,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                child: Text(
+      child: InkWell(
+        onTap: () {
+          print(widget.divKey);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => dealerScreen(
+                widget.divKey,
+                widget.item.name,
+              ),
+            ),
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 15,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 10,),
+                Text(
                   widget.item.name,
-                  style:GoogleFonts.lato(textStyle:TextStyle(fontSize: pHeight * 0.03),
+                  style:GoogleFonts.lato(textStyle:TextStyle(fontSize: pHeight * 0.025)
                   ),),
-                onTap: () {
-                  print(widget.divKey);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => dealerScreen(
-                        widget.divKey,
-                        widget.item.name,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: pHeight * 0.02,
-              ),
-            ],
+                SizedBox(
+                  height: pHeight * 0.02,
+                ),
+              ],
+            ),
           ),
         ),
       ),

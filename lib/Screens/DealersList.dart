@@ -85,9 +85,10 @@ class _dealerlistState extends State<dealerlistScreen> {
                 itemCount: widget.companies.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
+                    SizedBox(height: 20,),
                     Text(
                       widget.companies[index],
-                      style: GoogleFonts.lato(textStyle:TextStyle( fontSize: 24),
+                      style: GoogleFonts.raleway(textStyle:TextStyle( fontSize: 24), color: kPrimaryColor,
                       ),),
                     ListView.builder(
                         shrinkWrap: true,
