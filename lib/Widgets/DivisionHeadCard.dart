@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Division.dart';
+import 'package:ledgerapp/Screens/DealersList.dart';
 
 class DivisionHeadCard extends StatefulWidget {
   // ignore: non_constant_identifier_names
@@ -13,15 +14,24 @@ class DivisionHeadCard extends StatefulWidget {
       this.CompanyKey})
       : super(key: key);
 
-  final DivisionHead item;
+  final Company item;
 
   @override
   _DivisionHeadCardState createState() => _DivisionHeadCardState();
 }
 
 class _DivisionHeadCardState extends State<DivisionHeadCard> {
+
+  List<String> companies=[];
+  @override
+  void initState() {
+    companies.clear();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+
+
     final pHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -40,7 +50,21 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
                   widget.item.name,
                   style: TextStyle(fontSize: pHeight * 0.03),
                 ),
-                onTap: () {},
+                onTap: () {
+                  companies.clear();
+                  companies.add(widget.item.name);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          dealerlistScreen(
+
+                              companies
+                          ),
+                    ),
+                  );
+
+                }
               ),
               SizedBox(
                 height: pHeight * 0.02,

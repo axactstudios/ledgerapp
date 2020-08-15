@@ -18,25 +18,25 @@ class divisionheadlistScreen extends StatefulWidget {
 
 // ignore: camel_case_types
 class _divisionheadlistState extends State<divisionheadlistScreen> {
-  List<DivisionHead> divisionhead = [];
+  List<Company> companies= [];
   void getData() {
-    divisionhead.clear();
+    companies.clear();
     final db = FirebaseDatabase.instance
         .reference()
         .child('Admin')
-        .child('Division Heads');
+        .child('Companies');
 
     db.once().then((DataSnapshot snap) async {
       Map<dynamic, dynamic> values = await snap.value;
       values.forEach((key, value) async {
-        DivisionHead newDivisionHead = DivisionHead();
-        newDivisionHead.name = await key;
-        print(newDivisionHead.name);
+        Company newCompany = Company();
+        newCompany.name = await key;
+        print(newCompany.name);
 
-        divisionhead.add(newDivisionHead);
+        companies.add(newCompany);
       });
       setState(() {
-        print(divisionhead.length);
+        print(companies.length);
       });
     });
   }
@@ -64,7 +64,7 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
         ),
       ),
       backgroundColor: Colors.white,
-      body: divisionhead.length == 0
+      body: companies.length == 0
           ? Center(
               child: Text(
                 "No division heads to show",
@@ -72,9 +72,9 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
               ),
             )
           : ListView.builder(
-              itemCount: divisionhead.length,
+              itemCount: companies.length,
               itemBuilder: (context, index) {
-                var item = divisionhead[index];
+                var item = companies[index];
                 return DivisionHeadCard(
                   item: item,
                   CompanyKey: widget.CompanyKey,

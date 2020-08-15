@@ -1,5 +1,5 @@
-class DivisionHead {
+class Company{
   String name;
 
-  DivisionHead({this.name});
+  Company({this.name});
 }

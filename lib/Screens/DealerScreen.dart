@@ -27,7 +27,7 @@ class _dealerState extends State<dealerScreen> {
   String errtext = "";
   String entryedited = "";
   Widget bodyData(width) => DataTable(
-      columnSpacing: width /9,
+columnSpacing: width/8,
 
       columns: <DataColumn>[
         DataColumn(
@@ -282,28 +282,33 @@ class _dealerState extends State<dealerScreen> {
   @override
   Widget build(BuildContext context) {
     double pWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: kPrimaryColor),
-          backgroundColor: Colors.white,
-          title: Text(
-            'DEALER',
-            style: TextStyle(
-                fontFamily: 'Jost',
-                color: kPrimaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 24),
+    double pHeight = MediaQuery.of(context).size.height;
+    return Container(
+      width:pWidth,
+      height:pHeight,
+      child: Scaffold(
+          appBar: AppBar(
+            iconTheme: IconThemeData(color: kPrimaryColor),
+            backgroundColor: Colors.white,
+            title: Text(
+              'DEALER',
+              style: TextStyle(
+                  fontFamily: 'Jost',
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
+            ),
           ),
-        ),
-        backgroundColor: Colors.white,
-        body: records.length == 0
-            ? Center(
-                child: Text(
-                  "No records to show",
-                  style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-                ),
-              )
-            : bodyData(pWidth));
+          backgroundColor: Colors.white,
+          body: records.length == 0
+              ? Center(
+                  child: Text(
+                    "No records to show",
+                    style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+                  ),
+                )
+              : Container(height:pHeight,width:pWidth,child: bodyData(pWidth))),
+    );
 //        floatingActionButton: new FloatingActionButton(
 //          onPressed: showalertdialog,
 //          elevation: 0.0,
