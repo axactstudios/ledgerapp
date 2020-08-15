@@ -10,7 +10,7 @@ class dealerlistScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
   // ignore: non_constant_identifier_names
   List<String> companies = [];
-  dealerlistScreen({this.companies});
+  dealerlistScreen( this.companies);
   @override
   _dealerlistState createState() => _dealerlistState();
 }

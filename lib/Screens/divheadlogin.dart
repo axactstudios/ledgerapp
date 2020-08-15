@@ -102,7 +102,7 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerlistScreen(companies: companies),
+                      builder: (context) => dealerlistScreen( companies),
                     ),
                   );
                 }
