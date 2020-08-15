@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
 
 class DealerLogin extends StatefulWidget {
@@ -151,7 +152,7 @@ class _DealerLoginState extends State<DealerLogin> {
           }
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
+        color: kPrimaryColor,
         child: Text('Log In', style: TextStyle(color: Colors.white)),
       ),
     );
@@ -173,13 +174,16 @@ class _DealerLoginState extends State<DealerLogin> {
           children: <Widget>[
             Image(
                 image: AssetImage('images/dealer.png'), height: 0.20 * pHeight),
+            SizedBox(height:10),
+            Text('Choose your company here:',style:TextStyle(color:Colors.grey)),
+            SizedBox(height:10),
             Container(
                 padding: EdgeInsets.all(12.0),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: dropdownvalue,
                     isExpanded: true,
-                    hint: Text('Choose your division head'),
+                    hint: Text('Choose your Company here'),
                     onChanged: (String value) {
                       setState(() {
                         dropdownvalue = value;

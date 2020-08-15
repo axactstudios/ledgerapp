@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ledgerapp/Classes/Constants.dart';
 import 'DealersList.dart';
 
 class DivHeadLogin extends StatefulWidget {
@@ -71,16 +73,16 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
           );
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
-      ),
+        color: kPrimaryColor,
+        child: Text('Log In', style: GoogleFonts.lato(textStyle:TextStyle(color: Colors.white)),
+        ),)
     );
 
     final forgotLabel = FlatButton(
       child: Text(
         'Forgot password?',
-        style: TextStyle(color: Colors.black54),
-      ),
+        style:GoogleFonts.lato(textStyle:TextStyle(color: Colors.black54),
+        ),) ,
       onPressed: () {},
     );
 

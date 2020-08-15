@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
 
@@ -32,8 +33,8 @@ class _DealerCardState extends State<DealerCard> {
               InkWell(
                 child: Text(
                   widget.item.name,
-                  style: TextStyle(fontSize: pHeight * 0.03),
-                ),
+                  style:GoogleFonts.lato(textStyle:TextStyle(fontSize: pHeight * 0.03),
+                  ),),
                 onTap: () {
                   print(widget.divKey);
                   Navigator.push(

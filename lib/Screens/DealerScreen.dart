@@ -27,7 +27,8 @@ class _dealerState extends State<dealerScreen> {
   String errtext = "";
   String entryedited = "";
   Widget bodyData(width) => DataTable(
-      columnSpacing: width / 10,
+      columnSpacing: width /9,
+
       columns: <DataColumn>[
         DataColumn(
           label: Text('Date'),
