@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Widgets/DealerCard.dart';
 import '../Classes/Constants.dart';
@@ -65,12 +66,12 @@ class _dealerlistState extends State<dealerlistScreen> {
           backgroundColor: Colors.white,
           title: Text(
             'DIVISION HEAD',
-            style: TextStyle(
-                fontFamily: 'Jost',
+            style: GoogleFonts.lato(textStyle:TextStyle(
+
                 color: kPrimaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 24),
-          ),
+            ),)
         ),
         backgroundColor: Colors.white,
         body: dealers.length == 0
@@ -86,8 +87,8 @@ class _dealerlistState extends State<dealerlistScreen> {
                   return Column(children: <Widget>[
                     Text(
                       widget.companies[index],
-                      style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-                    ),
+                      style: GoogleFonts.lato(textStyle:TextStyle( fontSize: 24),
+                      ),),
                     ListView.builder(
                         shrinkWrap: true,
                         itemCount: dealers.length,

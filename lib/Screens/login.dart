@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Screens/dealerlogin.dart';
 import 'DivisionHeadDisplay.dart';
 
@@ -101,16 +103,16 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
+        color: kPrimaryColor,
+        child: Text('Log In', style: GoogleFonts.lato(textStyle:TextStyle(color: Colors.white)),)
       ),
     );
 
     final forgotLabel = FlatButton(
       child: Text(
         'Forgot password?',
-        style: TextStyle(color: Colors.black54),
-      ),
+        style:GoogleFonts.lato(textStyle:TextStyle(color: Colors.black54),
+        ),),
       onPressed: () {},
     );
 
