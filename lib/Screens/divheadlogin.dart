@@ -1,4 +1,3 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'DealersList.dart';
 
@@ -10,7 +9,7 @@ class DivHeadLogin extends StatefulWidget {
 }
 
 class _DivHeadLoginState extends State<DivHeadLogin> {
-
+  // ignore: non_constant_identifier_names
   String CompanyKey = '', dealerKey = '';
   bool amazonVal = false;
   bool dellVal = false;
@@ -22,9 +21,7 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
 
   @override
   Widget build(BuildContext context) {
-
-    double pHeight=MediaQuery.of(context).size.height;
-    double pWidth=MediaQuery.of(context).size.width;
+    double pHeight = MediaQuery.of(context).size.height;
     final email = TextFormField(
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
@@ -53,16 +50,26 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
         ),
         onPressed: () {
           print(emailC.text);
+          if (amazonVal) {
+            companies.add('Amazon');
+          }
+          if (dellVal) {
+            companies.add('Dell');
+          }
+          if (tvsVal) {
+            companies.add('TVS');
+          }
+
+          print(companies);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => dealerlistScreen(
-                CompanyKey, companies,
+                companies: companies,
               ),
             ),
           );
-          print(companies);
-          },
+        },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
         child: Text('Log In', style: TextStyle(color: Colors.white)),
@@ -84,55 +91,49 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
-            Image(image:AssetImage('images/divhead.png'),height:0.20*pHeight),
-            SizedBox(height:12),
+            Image(
+                image: AssetImage('images/divhead.png'),
+                height: 0.20 * pHeight),
+            SizedBox(height: 12),
             email,
             SizedBox(height: 8.0),
             password,
-            SizedBox(height:8),
-            Text('Choose your Company here:',style:TextStyle(color:Colors.grey,fontSize:0.02*pHeight)),
-            SizedBox(height:8),
+            SizedBox(height: 8),
+            Text('Choose your Company here:',
+                style: TextStyle(color: Colors.grey, fontSize: 0.02 * pHeight)),
+            SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-
                 Checkbox(
                   value: amazonVal,
                   onChanged: (bool value) {
                     setState(() {
                       amazonVal = value;
-                      companies.add("Amazon");
                     });
                   },
                 ),
                 Text("AMAZON"),
-
                 Checkbox(
                   value: dellVal,
                   onChanged: (bool value) {
                     setState(() {
                       dellVal = value;
-                      companies.add("Dell");
                     });
                   },
                 ),
                 Text("DELL"),
-
                 Checkbox(
                   value: tvsVal,
                   onChanged: (bool value) {
                     setState(() {
                       tvsVal = value;
-                      companies.add("TVS");
                     });
                   },
                 ),
                 Text("TVS"),
               ],
             ),
-
-
-
             SizedBox(height: 8.0),
             loginButton,
             forgotLabel
@@ -142,6 +143,3 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
     );
   }
 }
-
-
-

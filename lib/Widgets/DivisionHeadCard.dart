@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Division.dart';
-import 'package:ledgerapp/Screens/DealerScreen.dart';
-import 'package:ledgerapp/Screens/DivisionHeadDisplay.dart';
-import 'package:ledgerapp/Screens/DealersList.dart';
 
 class DivisionHeadCard extends StatefulWidget {
+  // ignore: non_constant_identifier_names
   final String CompanyKey;
   //final List companies;
-  const DivisionHeadCard({
-    Key key,
-    @required this.item,this.CompanyKey
-  }) : super(key: key);
+  const DivisionHeadCard(
+      {Key key,
+      // ignore: non_constant_identifier_names
+      @required this.item,
+      // ignore: non_constant_identifier_names
+      this.CompanyKey})
+      : super(key: key);
 
   final DivisionHead item;
 
@@ -39,16 +40,11 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
                   widget.item.name,
                   style: TextStyle(fontSize: pHeight * 0.03),
                 ),
-                onTap: (){
-
-
-
-                }, ),
+                onTap: () {},
+              ),
               SizedBox(
                 height: pHeight * 0.02,
               ),
-
-
             ],
           ),
         ),

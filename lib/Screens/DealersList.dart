@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Widgets/DealerCard.dart';
-import 'divheadlogin.dart';
-
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+// ignore: must_be_immutable, camel_case_types
 class dealerlistScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
-  String CompanyKey;
+  // ignore: non_constant_identifier_names
   List<String> companies = [];
-  String dealerKey;
-  dealerlistScreen(this.CompanyKey, this.companies);
+  dealerlistScreen({this.companies});
   @override
   _dealerlistState createState() => _dealerlistState();
 }
 
+// ignore: camel_case_types
 class _dealerlistState extends State<dealerlistScreen> {
   List<Dealer> dealers = [];
 
@@ -47,6 +46,7 @@ class _dealerlistState extends State<dealerlistScreen> {
 
   String key = '';
   @override
+  // ignore: must_call_super
   void initState() {
     print(widget.companies);
     for (int i = 0; i < widget.companies.length; i++) {
@@ -80,7 +80,7 @@ class _dealerlistState extends State<dealerlistScreen> {
                   style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                 ),
               )
-            :  ListView.builder(
+            : ListView.builder(
                 itemCount: widget.companies.length,
                 itemBuilder: (context, index) {
                   return Column(children: <Widget>[
@@ -91,13 +91,12 @@ class _dealerlistState extends State<dealerlistScreen> {
                     ListView.builder(
                         shrinkWrap: true,
                         itemCount: dealers.length,
-                        itemBuilder: (context, index) {
-                          var item = dealers[index];
+                        itemBuilder: (context, index2) {
+                          var item = dealers[index2];
 
                           return DealerCard(
                             item: item,
                             divKey: widget.companies[index],
-
                           );
                         }),
                   ]);

@@ -1,71 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Record.dart';
-import 'package:ledgerapp/Classes/Record.dart';
-
-import 'package:ledgerapp/Widgets/RecordCard.dart';
-
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:random_string/random_string.dart';
 
+// ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
   static String tag = 'dealer-page';
-  String CompanyKey;String dealerkey;
+  // ignore: non_constant_identifier_names
+  String CompanyKey;
+  String dealerkey;
 
-
-
-  dealerScreen(this.CompanyKey,this.dealerkey);
+  dealerScreen(this.CompanyKey, this.dealerkey);
   @override
   _dealerState createState() => _dealerState();
 }
 
+// ignore: camel_case_types
 class _dealerState extends State<dealerScreen> {
   final texteditingcontroller1 = TextEditingController();
   final texteditingcontroller2 = TextEditingController();
   final texteditingcontroller3 = TextEditingController();
   final texteditingcontroller4 = TextEditingController();
   final texteditingcontroller5 = TextEditingController();
-double width;
+  double width;
   bool validated = true;
   String errtext = "";
   String entryedited = "";
-  Widget bodyData(width)=>DataTable(
-    columnSpacing:width/10,
-    columns:<DataColumn>[DataColumn(
-      label:Text('Date'),
-      numeric:false,
-      onSort:(i,b){},
-      tooltip:'Date when record added',
-  ),
-
-
-      DataColumn(
-        label:Text('Particular'),
-        numeric:false,
-        onSort:(i,b){},
-        tooltip:'Add any text',
-      ),
-      DataColumn(
-        label:Text('Debit'),
-        numeric:false,
-        onSort:(i,b){},
-        tooltip:'Debitted amount',
-      ),
-      DataColumn(
-        label:Text('Credit'),
-        numeric:false,
-        onSort:(i,b){},
-        tooltip:'Amount creditted',
-      ), ],
-      rows: _rowList
-  );
+  Widget bodyData(width) => DataTable(
+      columnSpacing: width / 10,
+      columns: <DataColumn>[
+        DataColumn(
+          label: Text('Date'),
+          numeric: false,
+          onSort: (i, b) {},
+          tooltip: 'Date when record added',
+        ),
+        DataColumn(
+          label: Text('Particular'),
+          numeric: false,
+          onSort: (i, b) {},
+          tooltip: 'Add any text',
+        ),
+        DataColumn(
+          label: Text('Debit'),
+          numeric: false,
+          onSort: (i, b) {},
+          tooltip: 'Debitted amount',
+        ),
+        DataColumn(
+          label: Text('Credit'),
+          numeric: false,
+          onSort: (i, b) {},
+          tooltip: 'Amount creditted',
+        ),
+      ],
+      rows: _rowList);
 
 //  void addentry() async {}
 
   List<Record> records = [];
- List<DataRow>_rowList=[];
+  List<DataRow> _rowList = [];
 
-  void getData( ) {
+  void getData() {
     records.clear();
     final db = FirebaseDatabase.instance
         .reference()
@@ -88,30 +84,23 @@ double width;
         print(newRecord.credit);
         records.add(newRecord);
 
-
-
         setState(() {
           print(records.length);
-          _rowList.add( DataRow(
-              cells: <DataCell>[
-                DataCell(Text(newRecord.date)),
-
-                DataCell(Text(newRecord.particular)),
-                DataCell(Text(newRecord.debit)),
-                DataCell(Text( newRecord.credit))
-
-              ]
-          ));
-
+          _rowList.add(DataRow(cells: <DataCell>[
+            DataCell(Text(newRecord.date)),
+            DataCell(Text(newRecord.particular)),
+            DataCell(Text(newRecord.debit)),
+            DataCell(Text(newRecord.credit))
+          ]));
         });
-
       });
     });
-        }
+  }
 
   @override
+  // ignore: must_call_super
   void initState() {
-   getData( );
+    getData();
     print(widget.CompanyKey);
     print(widget.dealerkey);
   }
@@ -291,8 +280,7 @@ double width;
 
   @override
   Widget build(BuildContext context) {
-    double pHeight=MediaQuery.of(context).size.height;
-    double pWidth=MediaQuery.of(context).size.width;
+    double pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: kPrimaryColor),
@@ -314,7 +302,7 @@ double width;
                   style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                 ),
               )
-            :bodyData(pWidth));
+            : bodyData(pWidth));
 //        floatingActionButton: new FloatingActionButton(
 //          onPressed: showalertdialog,
 //          elevation: 0.0,
