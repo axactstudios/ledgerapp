@@ -29,7 +29,7 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        elevation: 6,
+        elevation: 15,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

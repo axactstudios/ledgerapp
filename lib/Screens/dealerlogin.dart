@@ -174,7 +174,7 @@ class _DealerLoginState extends State<DealerLogin> {
           children: <Widget>[
             Image(
                 image: AssetImage('images/dealer.png'), height: 0.20 * pHeight),
-            SizedBox(height:10),
+            SizedBox(height:30),
             Text('Choose your company here:',style:TextStyle(color:Colors.grey)),
             SizedBox(height:10),
             Container(
