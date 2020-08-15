@@ -13,7 +13,7 @@ class DealerLogin extends StatefulWidget {
 class _DealerLoginState extends State<DealerLogin> {
   // ignore: non_constant_identifier_names
   String CompanyKey = '', dealerKey = '';
-
+  bool _passwordObscured;
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
   String holder = '';
@@ -25,7 +25,11 @@ class _DealerLoginState extends State<DealerLogin> {
       holder = dropdownvalue;
     });
   }
-
+@override
+  void initState() {
+    _passwordObscured=true;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double pHeight = MediaQuery.of(context).size.height;
@@ -33,7 +37,9 @@ class _DealerLoginState extends State<DealerLogin> {
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
+
       decoration: InputDecoration(
+        prefixIcon:Icon( Icons.email),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -42,9 +48,21 @@ class _DealerLoginState extends State<DealerLogin> {
     final password = TextFormField(
       controller: pw,
       autofocus: false,
-      obscureText: true,
+      obscureText: _passwordObscured,
       decoration: InputDecoration(
+        prefixIcon: Icon(Icons.lock),
         hintText: 'Password',
+        suffixIcon:IconButton(
+      icon:Icon(
+      _passwordObscured?Icons.visibility_off:Icons.visibility,
+          color:Colors.grey
+      ),
+        onPressed:(){
+          setState(() {
+            _passwordObscured=!_passwordObscured;
+          });
+        }
+    ) ,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
       ),

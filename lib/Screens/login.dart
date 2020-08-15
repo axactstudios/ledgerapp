@@ -9,6 +9,7 @@ import 'DivisionHeadDisplay.dart';
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
   String type;
+
   LoginPage(this.type);
 
   @override
@@ -19,6 +20,12 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
   String divKey = '';
+  bool _passwordObscured;
+  @override
+  void initState() {
+    _passwordObscured=true;
+
+  }
   @override
   Widget build(BuildContext context) {
     double pHeight = MediaQuery.of(context).size.height;
@@ -27,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
+        prefixIcon: Icon(Icons.email),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -36,9 +44,21 @@ class _LoginPageState extends State<LoginPage> {
     final password = TextFormField(
       controller: pw,
       autofocus: false,
-      obscureText: true,
+      obscureText: _passwordObscured,
       decoration: InputDecoration(
         hintText: 'Password',
+        prefixIcon:Icon(Icons.lock),
+        suffixIcon:IconButton(
+            icon:Icon(
+                _passwordObscured?Icons.visibility_off:Icons.visibility,
+                color:Colors.grey
+            ),
+            onPressed:(){
+              setState(() {
+                _passwordObscured=!_passwordObscured;
+              });
+            }
+        ) ,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
       ),

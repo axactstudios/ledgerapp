@@ -18,9 +18,13 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
   bool tvsVal = false;
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
-
+  bool _passwordObscured;
   List<String> companies = [];
-
+@override
+  void initState() {
+    _passwordObscured=true;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     double pHeight = MediaQuery.of(context).size.height;
@@ -29,6 +33,7 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
+        prefixIcon:Icon(Icons.email),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -37,8 +42,20 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
     final password = TextFormField(
       controller: pw,
       autofocus: false,
-      obscureText: true,
+      obscureText: _passwordObscured,
       decoration: InputDecoration(
+        prefixIcon:Icon(Icons.lock),
+        suffixIcon:IconButton(
+            icon:Icon(
+                _passwordObscured?Icons.visibility_off:Icons.visibility,
+                color:Colors.grey
+            ),
+            onPressed:(){
+              setState(() {
+                _passwordObscured=!_passwordObscured;
+              });
+            }
+        ) ,
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
