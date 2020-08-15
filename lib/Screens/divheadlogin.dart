@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'DealersList.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class DivHeadLogin extends StatefulWidget {
   static String tag = 'divheadlogin-page';
@@ -20,7 +21,7 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
   TextEditingController pw = new TextEditingController(text: '');
   bool _passwordObscured;
   List<String> companies = [];
-@override
+  @override
   void initState() {
     _passwordObscured=true;
     super.initState();
@@ -62,37 +63,58 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
       ),
     );
     final loginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        onPressed: () {
-          print(emailC.text);
-          if (amazonVal) {
-            companies.add('Amazon');
-          }
-          if (dellVal) {
-            companies.add('Dell');
-          }
-          if (tvsVal) {
-            companies.add('TVS');
-          }
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          onPressed: () {
+            print(emailC.text);
+            if (amazonVal) {
+              companies.add('Amazon');
+            }
+            if (dellVal) {
+              companies.add('Dell');
+            }
+            if (tvsVal) {
+              companies.add('TVS');
+            }
 
-          print(companies);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => dealerlistScreen(
-                companies: companies,
-              ),
-            ),
-          );
-        },
-        padding: EdgeInsets.all(12),
-        color: kPrimaryColor,
-        child: Text('Log In', style: GoogleFonts.lato(textStyle:TextStyle(color: Colors.white)),
-        ),)
+            print(companies);
+
+            final db = FirebaseDatabase.instance
+                .reference()
+                .child("Admin")
+                .child("Division Heads");
+            db.once().then((DataSnapshot snap) {
+              Map<dynamic, dynamic> values = snap.value;
+              values.forEach((key, value) async {
+                String email = value['Email'];
+                print(email);
+                print(emailC.text);
+                String password = value['Password'].toString();
+                print(password);
+                print(pw.text);
+                if (email == emailC.text && password == pw.text) {
+                  setState(() {
+                    dealerKey = key;
+                  });
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => dealerlistScreen(companies: companies),
+                    ),
+                  );
+                }
+              });
+            });
+
+
+          },
+          padding: EdgeInsets.all(12),
+          color: kPrimaryColor,
+          child: Text('Log In', style: GoogleFonts.lato(textStyle:TextStyle(color: Colors.white)),
+          ),)
     );
 
     final forgotLabel = FlatButton(
