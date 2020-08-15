@@ -10,17 +10,14 @@ class DealerLogin extends StatefulWidget {
 }
 
 class _DealerLoginState extends State<DealerLogin> {
+  // ignore: non_constant_identifier_names
   String CompanyKey = '', dealerKey = '';
 
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
   String holder = '';
   String dropdownvalue = 'Amazon';
-  List<String> users = [
-    'Amazon',
-    'TVS',
-    'Dell'
-  ];
+  List<String> users = ['Amazon', 'TVS', 'Dell'];
   void getDropDownItem() {
     setState(() {
       CompanyKey = dropdownvalue;
@@ -30,9 +27,7 @@ class _DealerLoginState extends State<DealerLogin> {
 
   @override
   Widget build(BuildContext context) {
-
-    double pHeight=MediaQuery.of(context).size.height;
-    double pWidth=MediaQuery.of(context).size.width;
+    double pHeight = MediaQuery.of(context).size.height;
     final email = TextFormField(
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
@@ -87,9 +82,7 @@ class _DealerLoginState extends State<DealerLogin> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(
-                      CompanyKey,dealerKey
-                      ),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey),
                     ),
                   );
                 }
@@ -119,9 +112,7 @@ class _DealerLoginState extends State<DealerLogin> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(
-                        CompanyKey,dealerKey
-                      ),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey),
                     ),
                   );
                 }
@@ -151,9 +142,7 @@ class _DealerLoginState extends State<DealerLogin> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(
-                        CompanyKey,dealerKey
-                      ),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey),
                     ),
                   );
                 }
@@ -182,7 +171,8 @@ class _DealerLoginState extends State<DealerLogin> {
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
-            Image(image:AssetImage('images/dealer.png'),height:0.20*pHeight),
+            Image(
+                image: AssetImage('images/dealer.png'), height: 0.20 * pHeight),
             Container(
                 padding: EdgeInsets.all(12.0),
                 child: DropdownButtonHideUnderline(
@@ -202,7 +192,6 @@ class _DealerLoginState extends State<DealerLogin> {
                     }).toList(),
                   ),
                 )),
-
             email,
             SizedBox(height: 8.0),
             password,

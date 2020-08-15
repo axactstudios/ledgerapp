@@ -1,12 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Screens/dealerlogin.dart';
-import 'DealerScreen.dart';
-import 'DealersList.dart';
-import 'Distributor.dart';
 import 'DivisionHeadDisplay.dart';
-import 'DivisionHeadScreen.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
   String type;
@@ -22,10 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   String divKey = '';
   @override
   Widget build(BuildContext context) {
-
-
-    double pHeight=MediaQuery.of(context).size.height;
-    double pWidth=MediaQuery.of(context).size.width;
+    double pHeight = MediaQuery.of(context).size.height;
     final email = TextFormField(
       controller: emailC,
       keyboardType: TextInputType.emailAddress,
@@ -86,13 +80,13 @@ class _LoginPageState extends State<LoginPage> {
                 if (email == emailC.text && password == pw.text) {
                   print('Match Found');
                   setState(() {
-                    divKey=key;
+                    divKey = key;
                   });
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                     // builder: (context) => dealerlistScreen(divKey),
-                    ),
+                        // builder: (context) => dealerlistScreen(divKey),
+                        ),
                   );
                 }
               });
@@ -122,26 +116,29 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body:
-          Center(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.only(left: 24.0, right: 24.0),
-              children: <Widget>[
-                (widget.type=='admin')?Image(image:AssetImage('images/admin.png'),height:pHeight*0.20):Image(image:AssetImage('images/divhead.png'),height:pHeight*0.20),
-                //SizedBox(height: 48.0),
-SizedBox(height:20),
-                email,
-                SizedBox(height: 8.0),
-                password,
-                SizedBox(height: 24.0),
-                loginButton,
-                forgotLabel
-              ],
-            ),
-          ),
-
-
+      body: Center(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+          children: <Widget>[
+            (widget.type == 'admin')
+                ? Image(
+                    image: AssetImage('images/admin.png'),
+                    height: pHeight * 0.20)
+                : Image(
+                    image: AssetImage('images/divhead.png'),
+                    height: pHeight * 0.20),
+            //SizedBox(height: 48.0),
+            SizedBox(height: 20),
+            email,
+            SizedBox(height: 8.0),
+            password,
+            SizedBox(height: 24.0),
+            loginButton,
+            forgotLabel
+          ],
+        ),
+      ),
     );
   }
 }

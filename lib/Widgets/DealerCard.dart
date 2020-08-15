@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
-import 'package:ledgerapp/Screens/DealersDisplay.dart';
-import 'package:ledgerapp/Screens/DealersList.dart';
 
 class DealerCard extends StatefulWidget {
   final String divKey;
-  const DealerCard({
-    Key key,
-    @required this.item,this.divKey
-  }) : super(key: key);
+  const DealerCard({Key key, @required this.item, this.divKey})
+      : super(key: key);
 
   final Dealer item;
 
@@ -38,29 +34,26 @@ class _DealerCardState extends State<DealerCard> {
                   widget.item.name,
                   style: TextStyle(fontSize: pHeight * 0.03),
                 ),
-              onTap: (){
+                onTap: () {
                   print(widget.divKey);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => dealerScreen(
-                       widget.divKey,
-                       widget.item.name,
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => dealerScreen(
+                        widget.divKey,
+                        widget.item.name,
+                      ),
                     ),
-                  ),
-                );
-
-
-              },),
+                  );
+                },
+              ),
               SizedBox(
                 height: pHeight * 0.02,
               ),
-
-
             ],
           ),
         ),
-       ),
+      ),
     );
   }
 }

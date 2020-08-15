@@ -5,17 +5,19 @@ import 'package:ledgerapp/Widgets/DivisionHeadCard.dart';
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+// ignore: must_be_immutable, camel_case_types
 class divisionheadlistScreen extends StatefulWidget {
   static String tag = 'divisionheadlist-page';
+  // ignore: non_constant_identifier_names
   String CompanyKey;
   String dealerKey;
 
   @override
   _divisionheadlistState createState() => _divisionheadlistState();
 }
+
+// ignore: camel_case_types
 class _divisionheadlistState extends State<divisionheadlistScreen> {
-
-
   List<DivisionHead> divisionhead = [];
   void getData() {
     divisionhead.clear();
@@ -23,7 +25,6 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
         .reference()
         .child('Admin')
         .child('Division Heads');
-
 
     db.once().then((DataSnapshot snap) async {
       Map<dynamic, dynamic> values = await snap.value;
@@ -36,17 +37,15 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
       });
       setState(() {
         print(divisionhead.length);
-
       });
     });
   }
 
-
   @override
+  // ignore: must_call_super
   void initState() {
     getData();
     print(widget.CompanyKey);
-
   }
 
   @override
@@ -67,23 +66,20 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
       backgroundColor: Colors.white,
       body: divisionhead.length == 0
           ? Center(
-        child: Text(
-          "No division heads to show",
-          style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-        ),
-      )
+              child: Text(
+                "No division heads to show",
+                style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+              ),
+            )
           : ListView.builder(
-          itemCount: divisionhead.length,
-          itemBuilder: (context, index) {
-            var item = divisionhead[index];
-            return DivisionHeadCard(item: item,
-              CompanyKey: widget.CompanyKey,
-            );
-          }),
+              itemCount: divisionhead.length,
+              itemBuilder: (context, index) {
+                var item = divisionhead[index];
+                return DivisionHeadCard(
+                  item: item,
+                  CompanyKey: widget.CompanyKey,
+                );
+              }),
     );
   }
 }
-
-
-
-

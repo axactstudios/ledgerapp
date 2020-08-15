@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../Classes/Constants.dart';
 
+// ignore: camel_case_types
 class distributorScreen extends StatefulWidget {
   static String tag = 'admin-page';
   @override
   _distributorState createState() => _distributorState();
 }
 
+// ignore: camel_case_types
 class _distributorState extends State<distributorScreen> {
   @override
   Widget build(BuildContext context) {
