@@ -38,6 +38,7 @@ class _DealerCardState extends State<DealerCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           elevation: 15,
+
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -47,7 +48,7 @@ class _DealerCardState extends State<DealerCard> {
                 Text(
                   widget.item.name,
                   style:GoogleFonts.lato(textStyle:TextStyle(fontSize: pHeight * 0.025)
-                  ),),
+                  ),textAlign:  TextAlign.center,),
                 SizedBox(
                   height: pHeight * 0.02,
                 ),
