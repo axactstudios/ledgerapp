@@ -60,8 +60,12 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Welcome',
-            style: GoogleFonts.lato(textStyle:TextStyle(color: kPrimaryColor)),
-            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'Jost',
+                color: kPrimaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 24),
+            textAlign: TextAlign.left,
           ),
           backgroundColor: Color.fromARGB(255, 255, 255, 255),
           centerTitle: true,
