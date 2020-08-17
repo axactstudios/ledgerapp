@@ -61,6 +61,7 @@ class _dealerlistState extends State<dealerlistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: kPrimaryColor,
         appBar: AppBar(
           iconTheme: IconThemeData(color: kPrimaryColor),
           backgroundColor: Colors.white,
@@ -73,7 +74,6 @@ class _dealerlistState extends State<dealerlistScreen> {
                 fontSize: 24),
             ),)
         ),
-        backgroundColor: Colors.white,
         body: dealers.length == 0
             ? Center(
                 child: Text(
@@ -88,7 +88,7 @@ class _dealerlistState extends State<dealerlistScreen> {
                     SizedBox(height: 20,),
                     Text(
                       widget.companies[index],
-                      style: GoogleFonts.raleway(textStyle:TextStyle( fontSize: 24), color: kPrimaryColor,
+                      style: GoogleFonts.raleway(textStyle:TextStyle( fontSize: 32), color: Colors.white,fontWeight: FontWeight.bold,
                       ),),
                     ListView.builder(
                         shrinkWrap: true,

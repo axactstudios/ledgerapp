@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
 
@@ -42,12 +43,12 @@ class _DealerCardState extends State<DealerCard> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 SizedBox(height: 10,),
                 Text(
                   widget.item.name,
-                  style:GoogleFonts.lato(textStyle:TextStyle(fontSize: pHeight * 0.025)
+                  style:GoogleFonts.lato(textStyle:TextStyle(fontSize: pHeight * 0.025), color: kPrimaryColor, fontWeight: FontWeight.bold
                   ),textAlign:  TextAlign.center,),
                 SizedBox(
                   height: pHeight * 0.02,

@@ -63,7 +63,7 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
               fontSize: 24),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: kPrimaryColor,
       body: companies.length == 0
           ? Center(
               child: Text(

@@ -49,7 +49,7 @@ columnSpacing: width/8,
           tooltip: 'Debitted amount',
         ),
         DataColumn(
-          label: Text('Credit'),
+          label: Text('Credit', ),
           numeric: false,
           onSort: (i, b) {},
           tooltip: 'Amount creditted',
@@ -307,7 +307,7 @@ columnSpacing: width/8,
                     style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                   ),
                 )
-              : Container(height:pHeight,width:pWidth,child: bodyData(pWidth))),
+              : Container(height:pHeight,width:pWidth,child: bodyData(pWidth*0.8))),
     );
 //        floatingActionButton: new FloatingActionButton(
 //          onPressed: showalertdialog,
