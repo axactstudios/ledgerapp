@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Division.dart';
 import 'package:ledgerapp/Widgets/DivisionHeadCard.dart';
+import 'package:ledgerapp/Widgets/DivisionHeadCardAdmin.dart';
 
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -75,7 +76,7 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
               itemCount: companies.length,
               itemBuilder: (context, index) {
                 var item = companies[index];
-                return DivisionHeadCard(
+                return DivisionHeadAdminCard(
                   item: item,
                   CompanyKey: widget.CompanyKey,
                 );
