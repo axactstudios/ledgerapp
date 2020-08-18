@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DealerLogin extends StatefulWidget {
   static String tag = 'dealerlogin-page';
@@ -24,6 +25,46 @@ class _DealerLoginState extends State<DealerLogin> {
       CompanyKey = dropdownvalue;
       holder = dropdownvalue;
     });
+  }
+  _onAlertWithStylePressed(context) {
+    // Reusable alert style
+    var alertStyle = AlertStyle(
+        animationType: AnimationType.fromTop,
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+        descStyle: TextStyle(fontWeight: FontWeight.bold),
+        animationDuration: Duration(milliseconds: 100),
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+          side: BorderSide(
+            color: Colors.grey,
+          ),
+        ),
+        titleStyle: TextStyle(
+          color: Colors.red,
+        ),
+        constraints: BoxConstraints.expand(width: 500)
+    );
+
+    // Alert dialog using custom alert style
+    Alert(
+      context: context,
+      style: alertStyle,
+      type: AlertType.info,
+      title: "TRY AGAIN",
+      desc: "Email and Password do not match.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: kPrimaryColor,
+          radius: BorderRadius.circular(10.0),
+        ),
+      ],
+    ).show();
   }
 @override
   void initState() {
@@ -105,6 +146,10 @@ class _DealerLoginState extends State<DealerLogin> {
                     ),
                   );
                 }
+                else
+                  {
+                    _onAlertWithStylePressed(context);
+                  }
               });
             });
           }
@@ -135,6 +180,10 @@ class _DealerLoginState extends State<DealerLogin> {
                     ),
                   );
                 }
+                else
+                {
+                  _onAlertWithStylePressed(context);
+                }
               });
             });
           }
@@ -164,6 +213,10 @@ class _DealerLoginState extends State<DealerLogin> {
                       builder: (context) => dealerScreen(CompanyKey, dealerKey),
                     ),
                   );
+                }
+                else
+                {
+                  _onAlertWithStylePressed(context);
                 }
               });
             });

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'DealersList.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DivHeadLogin extends StatefulWidget {
   static String tag = 'divheadlogin-page';
@@ -21,6 +22,48 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
   TextEditingController pw = new TextEditingController(text: '');
   bool _passwordObscured;
   List<String> companies = [];
+
+  _onAlertWithStylePressed(context) {
+    // Reusable alert style
+    var alertStyle = AlertStyle(
+        animationType: AnimationType.fromTop,
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+        descStyle: TextStyle(fontWeight: FontWeight.bold),
+        animationDuration: Duration(milliseconds: 100),
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+          side: BorderSide(
+            color: Colors.grey,
+          ),
+        ),
+        titleStyle: TextStyle(
+          color: Colors.red,
+        ),
+        constraints: BoxConstraints.expand(width: 500)
+    );
+
+    // Alert dialog using custom alert style
+    Alert(
+      context: context,
+      style: alertStyle,
+      type: AlertType.info,
+      title: "TRY AGAIN",
+      desc: "Email and Password do not match.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: kPrimaryColor,
+          radius: BorderRadius.circular(10.0),
+        ),
+      ],
+    ).show();
+  }
+
   @override
   void initState() {
     _passwordObscured=true;
@@ -105,6 +148,10 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
                       builder: (context) => dealerlistScreen( companies),
                     ),
                   );
+                }
+                else
+                {
+                  _onAlertWithStylePressed(context);
                 }
               });
             });
