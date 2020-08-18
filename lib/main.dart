@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Screens/dealerlogin.dart';
+import 'package:ledgerapp/Screens/splashscreen.dart';
 import 'Screens/Distributor.dart';
 import 'Screens/home_page.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
         fontFamily: 'Nunito',
       ),
-      home: HomePage(),
+      home: SplashScreen(),
       routes: routes,
     );
   }
