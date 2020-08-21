@@ -42,18 +42,18 @@ class _DivisionHeadCardState extends State<DivisionHeadCard> {
 
 
             onTap: () {
-              companies.clear();
-              companies.add(widget.item.name);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      dealerlistScreen(
-
-                          companies
-                      ),
-                ),
-              );
+//              companies.clear();
+//              companies.add(widget.item.name);
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(
+//                  builder: (context) =>
+//                      dealerlistScreen(
+//
+//                          companies
+//                      ),
+//                ),
+//              );
 
             },
 
