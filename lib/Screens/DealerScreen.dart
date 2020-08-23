@@ -27,8 +27,7 @@ class _dealerState extends State<dealerScreen> {
   String errtext = "";
   String entryedited = "";
   Widget bodyData(width) => DataTable(
-columnSpacing: width/8,
-
+      columnSpacing: width / 8,
       columns: <DataColumn>[
         DataColumn(
           label: Text('Date'),
@@ -49,7 +48,9 @@ columnSpacing: width/8,
           tooltip: 'Debitted amount',
         ),
         DataColumn(
-          label: Text('Credit', ),
+          label: Text(
+            'Credit',
+          ),
           numeric: false,
           onSort: (i, b) {},
           tooltip: 'Amount creditted',
@@ -81,9 +82,13 @@ columnSpacing: width/8,
         newRecord.debit = await value['Debit'];
         newRecord.date = await value['Date'];
         newRecord.credit = await value['Credit'];
-        print(newRecord.name);
-        print(newRecord.credit);
-        records.add(newRecord);
+//        print(newRecord.name);
+//        print(newRecord.credit);
+//        print(newRecord.date);
+        print('-------------------##${newRecord.date.compareTo('15-08-2020')}');
+        if (newRecord.date.compareTo('15-08-2020') < 0) {
+          records.add(newRecord);
+        }
 
         setState(() {
           print(records.length);
@@ -278,14 +283,14 @@ columnSpacing: width/8,
 //          });
 //        });
 //  }
-
+  TextEditingController tc = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     double pWidth = MediaQuery.of(context).size.width;
     double pHeight = MediaQuery.of(context).size.height;
     return Container(
-      width:pWidth,
-      height:pHeight,
+      width: pWidth,
+      height: pHeight,
       child: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(color: kPrimaryColor),
@@ -307,7 +312,70 @@ columnSpacing: width/8,
                     style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                   ),
                 )
-              : Container(height:pHeight,width:pWidth,child: bodyData(pWidth*0.8))),
+              : Column(
+                  children: <Widget>[
+                    Container(width: pWidth, child: bodyData(pWidth * 0.8)),
+                    Container(
+                      height: 30,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              controller: tc,
+                            ),
+                          ),
+                          FlatButton(
+//                            onPressed: () {
+//                              setState(() {
+//                                records.clear();
+//                                final db = FirebaseDatabase.instance
+//                                    .reference()
+//                                    .child('Admin')
+//                                    .child('Companies')
+//                                    .child(widget.CompanyKey)
+//                                    .child('Dealers')
+//                                    .child(widget.dealerkey)
+//                                    .child('Records');
+//                                db.once().then((DataSnapshot snap) async {
+//                                  Map<dynamic, dynamic> values =
+//                                      await snap.value;
+//                                  values.forEach((key, value) async {
+//                                    Record newRecord = Record();
+//                                    newRecord.name = await key;
+//                                    newRecord.particular =
+//                                        await value['Particular'];
+//                                    newRecord.debit = await value['Debit'];
+//                                    newRecord.date = await value['Date'];
+//                                    newRecord.credit = await value['Credit'];
+//                                    print(newRecord.name);
+//                                    print(newRecord.credit);
+//                                    print(newRecord.date);
+//                                    if (newRecord.date
+//                                            .compareTo(tc.text.toString()) ==
+//                                        -1) {
+//                                      records.add(newRecord);
+//                                    }
+//
+//                                    setState(() {
+//                                      print(records.length);
+//                                      _rowList.add(DataRow(cells: <DataCell>[
+//                                        DataCell(Text(newRecord.date)),
+//                                        DataCell(Text(newRecord.particular)),
+//                                        DataCell(Text(newRecord.debit)),
+//                                        DataCell(Text(newRecord.credit))
+//                                      ]));
+//                                    });
+//                                  });
+//                                });
+//                              });
+//                            },
+                            child: Text('Apply Filter'),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                )),
     );
 //        floatingActionButton: new FloatingActionButton(
 //          onPressed: showalertdialog,
