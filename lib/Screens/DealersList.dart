@@ -18,12 +18,11 @@ class dealerlistScreen extends StatefulWidget {
 // ignore: camel_case_types
 class _dealerlistState extends State<dealerlistScreen> {
   List<Dealer> dealers = [];
-  List<Dealer> newDealers=List();
-  List<Dealer> filteredDealers=List();
+  List<Dealer> newDealers = List();
+  List<Dealer> filteredDealers = List();
 
 
   void getData() {
-
     dealers.clear();
     final db = FirebaseDatabase.instance
         .reference()
@@ -44,23 +43,21 @@ class _dealerlistState extends State<dealerlistScreen> {
       setState(() {
         print(dealers.length);
         dealers.clear();
-        newDealers=dealers;
-        filteredDealers=dealers;
+        newDealers = dealers;
+        filteredDealers = dealers;
       });
     });
   }
 
   String key = '';
+
   @override
   // ignore: must_call_super
   void initState() {
     print(widget.company);
 
 
-      getData();
-
-
-
+    getData();
   }
 
   @override
@@ -68,56 +65,58 @@ class _dealerlistState extends State<dealerlistScreen> {
     return Scaffold(
         backgroundColor: kPrimaryColor,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: kPrimaryColor),
-          backgroundColor: Colors.white,
-          title: Text(
-            'DIVISION HEAD',
-            style: GoogleFonts.lato(textStyle:TextStyle(
+            iconTheme: IconThemeData(color: kPrimaryColor),
+            backgroundColor: Colors.white,
+            title: Text(
+              'DIVISION HEAD',
+              style: GoogleFonts.lato(textStyle: TextStyle(
 
-                color: kPrimaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 24),
-            ),)
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
+              ),)
         ),
         body: dealers.length == 0
             ? Center(
-                child: Text(
-                  "No dealers to show",
-                  style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-                ),
-              )
+          child: Text(
+            "No dealers to show",
+            style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+          ),
+        )
             : Column(
-              children: <Widget>[
-                TextField(
-    decoration:InputDecoration(
-    contentPadding:EdgeInsets.all(15.0),
-    prefixIcon: Icon(Icons.search,color: Colors.white
-    ,),
-    hintText:'Enter dealer name',
-    hintStyle: GoogleFonts.lato(textStyle:TextStyle(color:Colors.white))
-    ),
-    onChanged:(string){
-    setState(() {
-    filteredDealers=newDealers.where((d)=>d.name.toLowerCase().contains(string.toLowerCase())).toList();
-
-    });
-    }
+          children: <Widget>[
+            TextField(
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(15.0),
+                    prefixIcon: Icon(Icons.search, color: Colors.white
+                      ,),
+                    hintText: 'Enter dealer name',
+                    hintStyle: GoogleFonts.lato(
+                        textStyle: TextStyle(color: Colors.white))
                 ),
+                onChanged: (string) {
+                  setState(() {
+                    filteredDealers = newDealers.where((d) =>
+                        d.name.toLowerCase().contains(string.toLowerCase()))
+                        .toList();
+                  });
+                }
+            ),
 
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: filteredDealers.length,
-                            itemBuilder: (context, index2) {
-                              var item = filteredDealers[index2];
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: filteredDealers.length,
+                itemBuilder: (context, index2) {
+                  var item = filteredDealers[index2];
 
-                              return DealerCard(
-                                item: item,
-                                CompanyKey: widget.company,
-                              );
-                            }),
+                  return DealerCard(
+                    item: item,
+                    CompanyKey: widget.company,
+                  );
+                }),
 
 
-              ],
-            ));
+          ],
+        ));
   }
 }

@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Record.dart';
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:csv/csv.dart';
+import 'package:permissions_plugin/permissions_plugin.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
@@ -27,7 +33,8 @@ class _dealerState extends State<dealerScreen> {
   String errtext = "";
   String entryedited = "";
   Widget bodyData(width) => DataTable(
-      columnSpacing: width / 8,
+columnSpacing: width/8,
+
       columns: <DataColumn>[
         DataColumn(
           label: Text('Date'),
@@ -48,9 +55,7 @@ class _dealerState extends State<dealerScreen> {
           tooltip: 'Debitted amount',
         ),
         DataColumn(
-          label: Text(
-            'Credit',
-          ),
+          label: Text('Credit', ),
           numeric: false,
           onSort: (i, b) {},
           tooltip: 'Amount creditted',
@@ -82,13 +87,9 @@ class _dealerState extends State<dealerScreen> {
         newRecord.debit = await value['Debit'];
         newRecord.date = await value['Date'];
         newRecord.credit = await value['Credit'];
-//        print(newRecord.name);
-//        print(newRecord.credit);
-//        print(newRecord.date);
-        print('-------------------##${newRecord.date.compareTo('15-08-2020')}');
-        if (newRecord.date.compareTo('15-08-2020') < 0) {
-          records.add(newRecord);
-        }
+        print(newRecord.name);
+        print(newRecord.credit);
+        records.add(newRecord);
 
         setState(() {
           print(records.length);
@@ -111,186 +112,14 @@ class _dealerState extends State<dealerScreen> {
     print(widget.dealerkey);
   }
 
-//  void showalertdialog() {
-//    texteditingcontroller1.text = "";
-//    texteditingcontroller2.text = "";
-//    texteditingcontroller3.text = "";
-//    texteditingcontroller4.text = "";
-//    texteditingcontroller5.text = "";
-//
-//    showDialog(
-//        context: context,
-//        builder: (context) {
-//          return StatefulBuilder(builder: (context, setState) {
-//            return AlertDialog(
-//              shape: RoundedRectangleBorder(
-//                borderRadius: BorderRadius.circular(10.0),
-//              ),
-//              title: Text(
-//                "Add Entry Details",
-//              ),
-//              content: SingleChildScrollView(
-//                child: Column(
-//                  mainAxisSize: MainAxisSize.min,
-//                  children: <Widget>[
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller5,
-//                        decoration: InputDecoration(
-//                          labelText: "Name",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter your Name';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller1,
-//                        decoration: InputDecoration(
-//                          labelText: "Date",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Date';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller2,
-//                        decoration: InputDecoration(
-//                          labelText: "Particular",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Particular';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller3,
-//                        decoration: InputDecoration(
-//                          labelText: "Debit",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Debit';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller4,
-//                        decoration: InputDecoration(
-//                          labelText: "Credit",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Credit';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: EdgeInsets.only(
-//                        top: 10.0,
-//                      ),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.center,
-//                        children: <Widget>[
-//                          RaisedButton(
-//                            onPressed: () {
-//                              final key = randomAlphaNumeric(15);
-//                              if (texteditingcontroller1.text.isEmpty) {
-//                                setState(() {
-//                                  errtext = "Can't Be Empty";
-//                                  validated = false;
-//                                });
-//                              } else {
-//                                FirebaseDatabase.instance
-//                                    .reference()
-//                                    .child("Admin")
-//                                    .child('Division Heads')
-//                                    .child(widget.divKey)
-//                                    .child("Dealers")
-//                                    .child(widget.dealerKey)
-//                                    .child('Records')
-//                                    .child(key)
-//                                    .set({
-//                                  'Name': texteditingcontroller5.text,
-//                                  'Date': texteditingcontroller1.text,
-//                                  'Particular': texteditingcontroller2.text,
-//                                  'Debit': texteditingcontroller3.text,
-//                                  'Credit': texteditingcontroller4.text
-//                                });
-//
-//                                addentry();
-//                          }
-//                              getData();
-//                              Navigator.pop(context);
-//                            },
-//                            color: new Color(0xFFE57373),
-//                            child: Text("ADD",
-//                                style: TextStyle(
-//                                  fontSize: 18.0,
-//                                  fontFamily: "Raleway",
-//                                )),
-//                          )
-//                        ],
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              ),
-//            );
-//          });
-//        });
-//  }
-  TextEditingController tc = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double pWidth = MediaQuery.of(context).size.width;
     double pHeight = MediaQuery.of(context).size.height;
     return Container(
-      width: pWidth,
-      height: pHeight,
+      width:pWidth,
+      height:pHeight,
       child: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(color: kPrimaryColor),
@@ -303,6 +132,26 @@ class _dealerState extends State<dealerScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 24),
             ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.import_export,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () {
+                  getCsv();
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.mail_outline,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () {
+                  sendEmail();
+                },
+              )
+            ],
           ),
           backgroundColor: Colors.white,
           body: records.length == 0
@@ -312,70 +161,7 @@ class _dealerState extends State<dealerScreen> {
                     style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
                   ),
                 )
-              : Column(
-                  children: <Widget>[
-                    Container(width: pWidth, child: bodyData(pWidth * 0.8)),
-                    Container(
-                      height: 30,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              controller: tc,
-                            ),
-                          ),
-                          FlatButton(
-//                            onPressed: () {
-//                              setState(() {
-//                                records.clear();
-//                                final db = FirebaseDatabase.instance
-//                                    .reference()
-//                                    .child('Admin')
-//                                    .child('Companies')
-//                                    .child(widget.CompanyKey)
-//                                    .child('Dealers')
-//                                    .child(widget.dealerkey)
-//                                    .child('Records');
-//                                db.once().then((DataSnapshot snap) async {
-//                                  Map<dynamic, dynamic> values =
-//                                      await snap.value;
-//                                  values.forEach((key, value) async {
-//                                    Record newRecord = Record();
-//                                    newRecord.name = await key;
-//                                    newRecord.particular =
-//                                        await value['Particular'];
-//                                    newRecord.debit = await value['Debit'];
-//                                    newRecord.date = await value['Date'];
-//                                    newRecord.credit = await value['Credit'];
-//                                    print(newRecord.name);
-//                                    print(newRecord.credit);
-//                                    print(newRecord.date);
-//                                    if (newRecord.date
-//                                            .compareTo(tc.text.toString()) ==
-//                                        -1) {
-//                                      records.add(newRecord);
-//                                    }
-//
-//                                    setState(() {
-//                                      print(records.length);
-//                                      _rowList.add(DataRow(cells: <DataCell>[
-//                                        DataCell(Text(newRecord.date)),
-//                                        DataCell(Text(newRecord.particular)),
-//                                        DataCell(Text(newRecord.debit)),
-//                                        DataCell(Text(newRecord.credit))
-//                                      ]));
-//                                    });
-//                                  });
-//                                });
-//                              });
-//                            },
-                            child: Text('Apply Filter'),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                )),
+              : Container(height:pHeight,width:pWidth,child: bodyData(pWidth*0.8))),
     );
 //        floatingActionButton: new FloatingActionButton(
 //          onPressed: showalertdialog,
@@ -384,4 +170,132 @@ class _dealerState extends State<dealerScreen> {
 //          backgroundColor: new Color(0xFFE57373),
 //        ));
   }
+
+  sendEmail() async {
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    List<dynamic> row = List();
+    row.add('Date');
+    row.add('Particulars');
+    row.add('Debit');
+    row.add('Credit');
+    rows.add(row);
+    for (int i = 0; i <records.length; i++) {
+//row refer to each column of a row in csv file and rows refer to each row in a file
+      List<dynamic> row = List();
+      row.add(records[i].date);
+      row.add(records[i].particular);
+      row.add(records[i].debit);
+      row.add(records[i].credit);
+      rows.add(row);
+    }
+
+    String dirt;
+
+    new Directory('/storage/emulated/0/Ledger Exports')
+        .create(recursive: true)
+        .then((Directory dir) {
+      print("My directory path ${dir.path}");
+      dirt = dir.path;
+      setState(() {
+        print('----------------${dir.path} is the destination---------------');
+      });
+    });
+
+    Map<Permission, PermissionState> permission =
+    await PermissionsPlugin.requestPermissions([
+      Permission.WRITE_EXTERNAL_STORAGE,
+      Permission.READ_EXTERNAL_STORAGE
+    ]);
+
+//store file in documents folder
+
+    String filename =
+        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+
+    String dir =
+        (await getExternalStorageDirectory()).absolute.path + "/documents";
+    File f = new File('/storage/emulated/0/Ledger Exports/$filename.csv');
+
+// convert rows to String and write as csv file
+
+    String csv = const ListToCsvConverter().convert(rows);
+    await f.writeAsString(csv);
+    Fluttertoast.showToast(
+        msg: 'File exported : ${f.path}',
+        textColor: Colors.black,
+        backgroundColor: Colors.white);
+    print('CSV Saved');
+
+    final MailOptions mailOptions = MailOptions(
+      body: 'Here is your ledger, $widget.dealerKey',
+      subject: 'Ledger',
+      recipients: ['work.chitransh@gmail.com'],
+      isHTML: true,
+      attachments: [
+        f.path,
+      ],
+    );
+
+    await FlutterMailer.send(mailOptions);
+  }
+
+  getCsv() async {
+    //create an element rows of type list of list. All the above data set are stored in associate list
+//Let associate be a model class with attributes name,gender and age and associateList be a list of associate model class.
+
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    List<dynamic> row = List();
+    row.add('Date');
+    row.add('Particulars');
+    row.add('Debit');
+    row.add('Credit');
+    rows.add(row);
+    for (int i = 0; i < records.length; i++) {
+//row refer to each column of a row in csv file and rows refer to each row in a file
+      List<dynamic> row = List();
+      row.add(records[i].date);
+      row.add(records[i].particular);
+      row.add(records[i].debit);
+      row.add(records[i].credit);
+      rows.add(row);
+    }
+
+    String dirt;
+
+    new Directory('/storage/emulated/0/Ledger Exports')
+        .create(recursive: true)
+        .then((Directory dir) {
+      print("My directory path ${dir.path}");
+      dirt = dir.path;
+      setState(() {
+        print('----------------${dir.path} is the destination---------------');
+      });
+    });
+
+    Map<Permission, PermissionState> permission =
+    await PermissionsPlugin.requestPermissions([
+      Permission.WRITE_EXTERNAL_STORAGE,
+      Permission.READ_EXTERNAL_STORAGE
+    ]);
+
+//store file in documents folder
+
+    String filename =
+        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+
+    String dir =
+        (await getExternalStorageDirectory()).absolute.path + "/documents";
+    File f = new File('/storage/emulated/0/Ledger Exports/$filename.csv');
+
+// convert rows to String and write as csv file
+
+    String csv = const ListToCsvConverter().convert(rows);
+    f.writeAsString(csv);
+    Fluttertoast.showToast(
+        msg: 'File exported : ${f.path}',
+        textColor: Colors.black,
+        backgroundColor: Colors.white);
+    print('CSV Saved');
+  }
+
 }
