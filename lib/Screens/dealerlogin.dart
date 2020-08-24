@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
+import 'package:ledgerapp/Classes/Company.dart';
+import 'package:ledgerapp/Classes/Division.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -21,12 +23,82 @@ class _DealerLoginState extends State<DealerLogin> {
   String holder = '';
   String dropdownvalue = 'Amazon';
   List<String> users = ['Amazon', 'TVS', 'Dell'];
+  List<Company> companies = [];
+
+
   void getDropDownItem() {
     setState(() {
-      CompanyKey = dropdownvalue;
+    //  CompanyKey = dropdownvalue;
       holder = dropdownvalue;
     });
   }
+
+  void getCompanies() {
+    companies.clear();
+    final db = FirebaseDatabase.instance
+        .reference()
+        .child('Admin')
+        .child('Companies');
+    db.once().then((DataSnapshot snap) async {
+      Map<dynamic, dynamic> values = await snap.value;
+      values.forEach((key, value) async {
+        Company newCompany = Company();
+        newCompany.name = await value[key];
+        print(key);
+        print(newCompany.name);
+        print("sgsfxbxhddhxfbd");
+        companies.add(newCompany);
+        CompanyKey = newCompany.name;
+        print(CompanyKey);
+
+      });
+      setState(() {
+        print(companies.length);
+      });
+    });
+  }
+  void verifyDealer(){
+    getCompanies();
+    for(int i = 0 ; i < companies.length ; i++)
+      {
+
+          final db = FirebaseDatabase.instance
+              .reference()
+              .child("Admin")
+              .child("Companies")
+              .child(companies[i].name)
+              .child("Dealers");
+          db.once().then((DataSnapshot snap) {
+            Map<dynamic, dynamic> values = snap.value;
+            values.forEach((key, value) async {
+              String email = value['Email'];
+              print(email);
+              print(emailC.text);
+              String password = value['Password'].toString();
+              print(password);
+              print(pw.text);
+              if (email == emailC.text && password == pw.text) {
+                setState(() {
+                  dealerKey = key;
+                  dealerEmail=emailC.text;
+                });
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => dealerScreen(CompanyKey, dealerKey,dealerEmail),
+                  ),
+                );
+              }
+              else
+              {
+                _onAlertWithStylePressed(context);
+              }
+            });
+          });
+
+      }
+  }
+
   _onAlertWithStylePressed(context) {
     // Reusable alert style
     var alertStyle = AlertStyle(
@@ -70,8 +142,10 @@ class _DealerLoginState extends State<DealerLogin> {
 @override
   void initState() {
     _passwordObscured=true;
+    getCompanies();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     double pHeight = MediaQuery.of(context).size.height;
@@ -117,10 +191,11 @@ class _DealerLoginState extends State<DealerLogin> {
         ),
         onPressed: () {
           print(emailC.text);
-          getDropDownItem();
+         // getDropDownItem();
           print('$holder');
+          verifyDealer();
 
-          if ('$holder' == 'Amazon') {
+       /*   if ('$holder' == 'Amazon') {
             final db = FirebaseDatabase.instance
                 .reference()
                 .child("Admin")
@@ -224,7 +299,7 @@ class _DealerLoginState extends State<DealerLogin> {
                 }
               });
             });
-          }
+          }*/
         },
         padding: EdgeInsets.all(12),
         color: kPrimaryColor,
