@@ -24,7 +24,7 @@ class _DealerLoginState extends State<DealerLogin> {
   String dropdownvalue = 'Amazon';
   List<String> users = ['Amazon', 'TVS', 'Dell'];
   List<Company> companies = [];
-  String email,password;
+
 
   void getDropDownItem() {
     setState(() {
@@ -59,25 +59,30 @@ class _DealerLoginState extends State<DealerLogin> {
   }
   void verifyDealer() {
     for (int i = 0; i < companies.length; i++) {
+
       final db = FirebaseDatabase.instance
           .reference()
           .child("Admin")
           .child("Companies")
           .child(companies[i].name)
           .child("Dealers");
-      db.once().then((DataSnapshot snap) {
-        Map<dynamic, dynamic> values = snap.value;
+      db.once().then((DataSnapshot snap)async {
+        Map<dynamic, dynamic> values = await snap.value;
         values.forEach((key, value) async {
-           email = value['Email'];
+           String email = await value['Email'];
           print(email);
           print(emailC.text);
-           password = value['Password'].toString();
+           String password = await value['Password'].toString();
           print(password);
+
           print(pw.text);
+          String name= await value['Name'];
+          print(name);
           if (email == emailC.text && password == pw.text) {
             setState(() {
-              dealerKey = key;
+              dealerKey = name;
               dealerEmail = emailC.text;
+              CompanyKey=companies[i].name;
             });
             Navigator.pushReplacement(
               context,
@@ -86,6 +91,7 @@ class _DealerLoginState extends State<DealerLogin> {
                     dealerScreen(CompanyKey, dealerKey, dealerEmail),
               ),
             );
+
           }
           else{
             print("Not found");
@@ -93,9 +99,10 @@ class _DealerLoginState extends State<DealerLogin> {
         });
       });
     }
-if(emailC.text!=email||password!=password){
+
+  print('alert');
   _onAlertWithStylePressed(context);
-}
+
 
 
   }
