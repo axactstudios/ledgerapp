@@ -43,22 +43,22 @@ class _DealerLoginState extends State<DealerLogin> {
       Map<dynamic, dynamic> values = await snap.value;
       values.forEach((key, value) async {
         Company newCompany = Company();
-        newCompany.name = await value[key];
+        newCompany.name = await key;
         print(key);
         print(newCompany.name);
         print("sgsfxbxhddhxfbd");
         companies.add(newCompany);
         CompanyKey = newCompany.name;
         print(CompanyKey);
+        setState(() {
+          print(companies.length);
+        });
+      });
 
-      });
-      setState(() {
-        print(companies.length);
-      });
     });
   }
   void verifyDealer(){
-    getCompanies();
+
     for(int i = 0 ; i < companies.length ; i++)
       {
 
@@ -142,6 +142,7 @@ class _DealerLoginState extends State<DealerLogin> {
 @override
   void initState() {
     _passwordObscured=true;
+
     getCompanies();
     super.initState();
   }
@@ -191,8 +192,9 @@ class _DealerLoginState extends State<DealerLogin> {
         ),
         onPressed: () {
           print(emailC.text);
+          print(pw.text);
          // getDropDownItem();
-          print('$holder');
+//          print('$holder');
           verifyDealer();
 
        /*   if ('$holder' == 'Amazon') {
@@ -325,8 +327,8 @@ class _DealerLoginState extends State<DealerLogin> {
             Image(
                 image: AssetImage('images/dealer.png'), height: 0.20 * pHeight),
             SizedBox(height:30),
-            Text('Choose your company here:',style:TextStyle(color:Colors.grey)),
-            SizedBox(height:10),
+//            Text('Choose your company here:',style:TextStyle(color:Colors.grey)),
+//            SizedBox(height:10),
             /*Container(
                 padding: EdgeInsets.all(12.0),
                 child: DropdownButtonHideUnderline(
