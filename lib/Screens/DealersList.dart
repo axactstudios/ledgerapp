@@ -60,7 +60,7 @@ String dealerEmail;
   // ignore: must_call_super
   void initState() {
     print(widget.company);
-
+print(dealerEmail);
 
     getData();
   }
@@ -113,11 +113,12 @@ String dealerEmail;
                 itemCount: filteredDealers.length,
                 itemBuilder: (context, index2) {
                   var item = filteredDealers[index2];
+                  var email=filteredDealers[index2];
 
                   return DealerCard(
                     item: item,
                     CompanyKey: widget.company,
-                    email: dealerEmail,
+                    email: email,
                   );
                 }),
 
