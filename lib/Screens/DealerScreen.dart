@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Record.dart';
+import 'package:ledgerapp/Screens/FilterRecords.dart';
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
@@ -8,6 +9,7 @@ import 'package:permissions_plugin/permissions_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:date_format/date_format.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
@@ -33,8 +35,87 @@ class _dealerState extends State<dealerScreen> {
   bool validated = true;
   String errtext = "";
   String entryedited = "";
+  var startdate;
+  var enddate;
+
+  void convertDateFromString(String strDate) {
+    DateTime todayDate = DateTime.parse(strDate);
+    print(todayDate);
+    formatDate(todayDate, [yyyy, '/', mm, '/', dd]);
+  }
+
+  void startDatePicker() async {
+    var order1 = await getDate();
+    String date;
+    setState(() {
+      if (order1.month < 10) {
+        if (order1.day < 10) {
+          date = '0${order1.day}-0${order1.month}-${order1.year}';
+        } else {
+          date = '${order1.day}-0${order1.month}-${order1.year}';
+        }
+      } else {
+        if (order1.day < 10) {
+          date = '0${order1.day}-0${order1.month}-${order1.year}';
+        } else {
+          date = '${order1.day}-0${order1.month}-${order1.year}';
+        }
+      }
+      startdate = date;
+
+      print("----------------------------------$order1");
+      Navigator.pop(context);
+      showalertdialog();
+    });
+  }
+
+  void endDatePicker() async {
+    var order2 = await getDate();
+    String date;
+    setState(() {
+      print("----------------------------------$order2");
+      if (order2.month < 10) {
+        if (order2.day < 10) {
+          date = '0${order2.day}-0${order2.month}-${order2.year}';
+        } else {
+          date = '${order2.day}-0${order2.month}-${order2.year}';
+        }
+      } else {
+        if (order2.day < 10) {
+          date = '0${order2.day}-0${order2.month}-${order2.year}';
+        } else {
+          date = '${order2.day}-0${order2.month}-${order2.year}';
+        }
+      }
+      print(date);
+      enddate = date;
+      print(date.compareTo('25-08-2020'));
+      Navigator.pop(context);
+      showalertdialog();
+    });
+  }
+
+  Future<DateTime> getDate() {
+    // Imagine that this function is
+    // more complex and slow.
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2018),
+      lastDate: DateTime(2030),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
+    );
+  }
+
+
+
   Widget bodyData(width) => DataTable(
-columnSpacing: width/8,
+      columnSpacing: width/8,
 
       columns: <DataColumn>[
         DataColumn(
@@ -114,6 +195,122 @@ columnSpacing: width/8,
     print(widget.dealerEmail);
   }
 
+  void showalertdialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              title: Text(
+                "Sort the records",
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                              startDatePicker();
+                            },
+                            color: kPrimaryColor,
+                            child: startdate == null
+                                ? Text("Select Start Date",
+                                textScaleFactor: 1.0,
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontFamily: "Raleway",
+                                  color: Colors.white,
+                                ))
+                                : Text(
+                              "$startdate",
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontFamily: "Raleway",
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                              endDatePicker();
+                            },
+                            color: kPrimaryColor,
+                            child: enddate == null
+                                ? Text("Select End Date",
+                                textScaleFactor: 1.0,
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontFamily: "Raleway",
+                                  color: Colors.white,
+                                ))
+                                : Text(
+                              "$enddate",
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontFamily: "Raleway",
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => filterRecord(
+                                        startdate, enddate, records, widget.dealerEmail)),
+                              );
+                            },
+                            color: kPrimaryColor,
+                            child: Text("SORT",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontFamily: "Raleway",
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -158,19 +355,30 @@ columnSpacing: width/8,
           backgroundColor: Colors.white,
           body: records.length == 0
               ? Center(
-                  child: Text(
-                    "No records to show",
-                    style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-                  ),
-                )
-              : Container(height:pHeight,width:pWidth,child: bodyData(pWidth*0.8))),
+            child: Text(
+              "No records to show",
+              style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+            ),
+          )
+              : SingleChildScrollView(
+                child: Column(
+            children: <Widget>[
+                Container(height:pHeight*0.8,width:pWidth,child: bodyData(pWidth*0.8)),
+
+                FloatingActionButton.extended(
+                  onPressed: () {
+                    showalertdialog();
+                  },
+                  icon: Icon(Icons.sort),
+                  label: Text("Sort"),
+                  backgroundColor: kPrimaryColor,
+                  foregroundColor: Colors.white,
+                ),
+            ],
+          ),
+              )),
     );
-//        floatingActionButton: new FloatingActionButton(
-//          onPressed: showalertdialog,
-//          elevation: 0.0,
-//          child: new Icon(Icons.add),
-//          backgroundColor: new Color(0xFFE57373),
-//        ));
+
   }
 
   sendEmail() async {

@@ -21,6 +21,7 @@ class _dealerlistadminState extends State<dealerlistadminScreen> {
   List<Dealer> dealers = [];
   List<Dealer> newDealers=List();
   List<Dealer> filteredDealers=List();
+  String dealerEmail;
   void getData(key) {
     print(key);
     dealers.clear();
@@ -36,7 +37,12 @@ class _dealerlistadminState extends State<dealerlistadminScreen> {
       values.forEach((key, value) async {
         Dealer newDealer = Dealer();
         newDealer.name = await key;
+        newDealer.email=await value['Email'];
         print(newDealer.name);
+        print(newDealer.email);
+        setState(() {
+          dealerEmail = newDealer.email;
+        });
 
         dealers.add(newDealer);
       });
@@ -115,10 +121,12 @@ class _dealerlistadminState extends State<dealerlistadminScreen> {
                         itemCount: filteredDealers.length,
                         itemBuilder: (context, index2) {
                           var item = filteredDealers[index2];
+                          var email=filteredDealers[index2];
 
                           return DealerCard(
                             item: item,
                             CompanyKey: widget.companies[index],
+                              email: email,
                           );
                         }),
                   ]);

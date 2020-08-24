@@ -40,7 +40,7 @@ String dealerEmail;
         print(newDealer.name);
         print(newDealer.email);
          setState(() {
-           dealerEmail=newDealer.email;
+           dealerEmail = newDealer.email;
          });
         dealers.add(newDealer);
       });
