@@ -205,7 +205,8 @@ class _DealerLoginState extends State<DealerLogin> {
                 String password = value['Password'].toString();
                 print(password);
                 print(pw.text);
-                if (email == emailC.text && password == pw.text) {
+                if (email == emailC.text && password == pw.text)
+                {
                   setState(() {
                     dealerKey = key;
                     dealerEmail=emailC.text;
@@ -213,7 +214,7 @@ class _DealerLoginState extends State<DealerLogin> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(CompanyKey, dealerKey,dealerEmail),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey, dealerEmail),
                     ),
                   );
                 }
@@ -251,7 +252,7 @@ class _DealerLoginState extends State<DealerLogin> {
             SizedBox(height:30),
             Text('Choose your company here:',style:TextStyle(color:Colors.grey)),
             SizedBox(height:10),
-            Container(
+            /*Container(
                 padding: EdgeInsets.all(12.0),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
@@ -269,7 +270,8 @@ class _DealerLoginState extends State<DealerLogin> {
                           value: value, child: Text(value));
                     }).toList(),
                   ),
-                )),
+                )
+            ),*/
             email,
             SizedBox(height: 8.0),
             password,

@@ -28,6 +28,7 @@ dependencies:
   path_provider: ^1.6.14
   permissions_plugin: ^1.1.4
   fluttertoast: ^7.0.2
+  date_format: ^1.0.8
 dev_dependencies:
   flutter_test:
     sdk: flutter
