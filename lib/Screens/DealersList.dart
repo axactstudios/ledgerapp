@@ -20,7 +20,7 @@ class _dealerlistState extends State<dealerlistScreen> {
   List<Dealer> dealers = [];
   List<Dealer> newDealers = List();
   List<Dealer> filteredDealers = List();
-
+String dealerEmail;
 
   void getData() {
     dealers.clear();
@@ -36,13 +36,18 @@ class _dealerlistState extends State<dealerlistScreen> {
       values.forEach((key, value) async {
         Dealer newDealer = Dealer();
         newDealer.name = await key;
+        newDealer.email=await value['Email'];
         print(newDealer.name);
-
+        print(newDealer.email);
+         setState(() {
+           dealerEmail=newDealer.email;
+         });
         dealers.add(newDealer);
       });
       setState(() {
         print(dealers.length);
         dealers.clear();
+
         newDealers = dealers;
         filteredDealers = dealers;
       });
@@ -112,6 +117,7 @@ class _dealerlistState extends State<dealerlistScreen> {
                   return DealerCard(
                     item: item,
                     CompanyKey: widget.company,
+                    email: dealerEmail,
                   );
                 }),
 

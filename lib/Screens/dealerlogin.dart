@@ -15,6 +15,7 @@ class _DealerLoginState extends State<DealerLogin> {
   // ignore: non_constant_identifier_names
   String CompanyKey = '', dealerKey = '';
   bool _passwordObscured;
+  String dealerEmail;
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
   String holder = '';
@@ -138,11 +139,12 @@ class _DealerLoginState extends State<DealerLogin> {
                 if (email == emailC.text && password == pw.text) {
                   setState(() {
                     dealerKey = key;
+                    dealerEmail=emailC.text;
                   });
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(CompanyKey, dealerKey),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey,dealerEmail),
                     ),
                   );
                 }
@@ -172,11 +174,11 @@ class _DealerLoginState extends State<DealerLogin> {
                 if (email == emailC.text && password == pw.text) {
                   setState(() {
                     dealerKey = key;
-                  });
+                    dealerEmail=emailC.text;});
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(CompanyKey, dealerKey),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey,dealerEmail),
                     ),
                   );
                 }
@@ -206,11 +208,12 @@ class _DealerLoginState extends State<DealerLogin> {
                 if (email == emailC.text && password == pw.text) {
                   setState(() {
                     dealerKey = key;
+                    dealerEmail=emailC.text;
                   });
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerScreen(CompanyKey, dealerKey),
+                      builder: (context) => dealerScreen(CompanyKey, dealerKey,dealerEmail),
                     ),
                   );
                 }
