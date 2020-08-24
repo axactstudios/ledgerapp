@@ -111,6 +111,7 @@ columnSpacing: width/8,
     getData();
     print(widget.CompanyKey);
     print(widget.dealerkey);
+    print(widget.dealerEmail);
   }
 
 
