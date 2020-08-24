@@ -24,7 +24,7 @@ class _DealerLoginState extends State<DealerLogin> {
   String dropdownvalue = 'Amazon';
   List<String> users = ['Amazon', 'TVS', 'Dell'];
   List<Company> companies = [];
-
+  String email,password;
 
   void getDropDownItem() {
     setState(() {
@@ -57,48 +57,48 @@ class _DealerLoginState extends State<DealerLogin> {
 
     });
   }
-  void verifyDealer(){
-
-    for(int i = 0 ; i < companies.length ; i++)
-      {
-
-          final db = FirebaseDatabase.instance
-              .reference()
-              .child("Admin")
-              .child("Companies")
-              .child(companies[i].name)
-              .child("Dealers");
-          db.once().then((DataSnapshot snap) {
-            Map<dynamic, dynamic> values = snap.value;
-            values.forEach((key, value) async {
-              String email = value['Email'];
-              print(email);
-              print(emailC.text);
-              String password = value['Password'].toString();
-              print(password);
-              print(pw.text);
-              if (email == emailC.text && password == pw.text) {
-                setState(() {
-                  dealerKey = key;
-                  dealerEmail=emailC.text;
-                });
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => dealerScreen(CompanyKey, dealerKey,dealerEmail),
-                  ),
-                );
-              }
-              else
-              {
-                _onAlertWithStylePressed(context);
-              }
+  void verifyDealer() {
+    for (int i = 0; i < companies.length; i++) {
+      final db = FirebaseDatabase.instance
+          .reference()
+          .child("Admin")
+          .child("Companies")
+          .child(companies[i].name)
+          .child("Dealers");
+      db.once().then((DataSnapshot snap) {
+        Map<dynamic, dynamic> values = snap.value;
+        values.forEach((key, value) async {
+           email = value['Email'];
+          print(email);
+          print(emailC.text);
+           password = value['Password'].toString();
+          print(password);
+          print(pw.text);
+          if (email == emailC.text && password == pw.text) {
+            setState(() {
+              dealerKey = key;
+              dealerEmail = emailC.text;
             });
-          });
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    dealerScreen(CompanyKey, dealerKey, dealerEmail),
+              ),
+            );
+          }
+          else{
+            print("Not found");
+          }
+        });
+      });
+    }
+if(emailC.text!=email||password!=password){
+  _onAlertWithStylePressed(context);
+}
 
-      }
+
   }
-
   _onAlertWithStylePressed(context) {
     // Reusable alert style
     var alertStyle = AlertStyle(
