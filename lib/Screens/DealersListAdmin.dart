@@ -10,6 +10,7 @@ class dealerlistadminScreen extends StatefulWidget {
   static String tag = 'dealerlist-page';
   // ignore: non_constant_identifier_names
   List<String> companies = [];
+
   dealerlistadminScreen( this.companies);
   @override
   _dealerlistadminState createState() => _dealerlistadminState();
@@ -18,7 +19,8 @@ class dealerlistadminScreen extends StatefulWidget {
 // ignore: camel_case_types
 class _dealerlistadminState extends State<dealerlistadminScreen> {
   List<Dealer> dealers = [];
-
+  List<Dealer> newDealers=List();
+  List<Dealer> filteredDealers=List();
   void getData(key) {
     print(key);
     dealers.clear();
@@ -41,6 +43,8 @@ class _dealerlistadminState extends State<dealerlistadminScreen> {
       setState(() {
         print(dealers.length);
         dealers.clear();
+        newDealers=dealers;
+        filteredDealers=dealers;
       });
     });
   }
@@ -81,27 +85,45 @@ class _dealerlistadminState extends State<dealerlistadminScreen> {
             style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
           ),
         )
-            : ListView.builder(
-            itemCount: widget.companies.length,
-            itemBuilder: (context, index) {
-              return Column(children: <Widget>[
-                SizedBox(height: 20,),
-                Text(
-                  widget.companies[index],
-                  style: GoogleFonts.raleway(textStyle:TextStyle( fontSize: 32), color: Colors.white,fontWeight: FontWeight.bold,
-                  ),),
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: dealers.length,
-                    itemBuilder: (context, index2) {
-                      var item = dealers[index2];
+            : Column(
+              children: <Widget>[
+                TextField(
+                    decoration:InputDecoration(
+                        contentPadding:EdgeInsets.all(15.0),
+                        prefixIcon: Icon(Icons.search,color: Colors.white
+                          ,),
+                        hintText:'Enter dealer name',
+                        hintStyle: GoogleFonts.lato(textStyle:TextStyle(color:Colors.white))
+                    ),
+                    onChanged:(string){
+                      setState(() {
+                        filteredDealers=newDealers.where((d)=>d.name.toLowerCase().contains(string.toLowerCase())).toList();
 
-                      return DealerCard(
-                        item: item,
-                        divKey: widget.companies[index],
-                      );
-                    }),
-              ]);
-            }));
+                      });
+                    }
+                ),
+
+                ListView.builder(
+                itemCount: widget.companies.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(children: <Widget>[
+                    SizedBox(height: 20,),
+
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: filteredDealers.length,
+                        itemBuilder: (context, index2) {
+                          var item = filteredDealers[index2];
+
+                          return DealerCard(
+                            item: item,
+                            CompanyKey: widget.companies[index],
+                          );
+                        }),
+                  ]);
+                }),
+              ],
+            ));
   }
 }

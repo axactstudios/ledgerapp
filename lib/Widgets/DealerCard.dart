@@ -5,8 +5,8 @@ import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
 
 class DealerCard extends StatefulWidget {
-  final String divKey;
-  const DealerCard({Key key, @required this.item, this.divKey})
+  final String CompanyKey;
+  const DealerCard({Key key, @required this.item, this.CompanyKey})
       : super(key: key);
 
   final Dealer item;
@@ -23,12 +23,12 @@ class _DealerCardState extends State<DealerCard> {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
-          print(widget.divKey);
+
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => dealerScreen(
-                widget.divKey,
+                widget.CompanyKey,
                 widget.item.name,
               ),
             ),

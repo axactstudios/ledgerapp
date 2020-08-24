@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
+import 'package:ledgerapp/Screens/companies.dart';
 import 'DealersList.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -14,10 +15,10 @@ class DivHeadLogin extends StatefulWidget {
 
 class _DivHeadLoginState extends State<DivHeadLogin> {
   // ignore: non_constant_identifier_names
-  String CompanyKey = '', dealerKey = '';
-  bool amazonVal = false;
-  bool dellVal = false;
-  bool tvsVal = false;
+  String CompanyKey = '', dealerKey = '';String divname='';
+//  bool amazonVal = false;
+//  bool dellVal = false;
+//  bool tvsVal = false;
   TextEditingController emailC = new TextEditingController(text: '');
   TextEditingController pw = new TextEditingController(text: '');
   bool _passwordObscured;
@@ -112,18 +113,18 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
             borderRadius: BorderRadius.circular(12),
           ),
           onPressed: () {
-            print(emailC.text);
-            if (amazonVal) {
-              companies.add('Amazon');
-            }
-            if (dellVal) {
-              companies.add('Dell');
-            }
-            if (tvsVal) {
-              companies.add('TVS');
-            }
-
-            print(companies);
+//            print(emailC.text);
+//            if (amazonVal) {
+//              companies.add('Amazon');
+//            }
+//            if (dellVal) {
+//              companies.add('Dell');
+//            }
+//            if (tvsVal) {
+//              companies.add('TVS');
+//            }
+//
+//            print(companies);
 
             final db = FirebaseDatabase.instance
                 .reference()
@@ -139,13 +140,15 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
                 print(password);
                 print(pw.text);
                 if (email == emailC.text && password == pw.text) {
+                  companies=List<String>.from(await value['Companies']);
                   setState(() {
                     dealerKey = key;
+                    divname=key;
                   });
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => dealerlistScreen( companies),
+                      builder: (context) => companiesList(companies),
                     ),
                   );
                 }
@@ -187,41 +190,41 @@ class _DivHeadLoginState extends State<DivHeadLogin> {
             SizedBox(height: 8),
             password,
             SizedBox(height: 50),
-            Text('Choose your Company here:',
-                style: TextStyle(color: Colors.grey, fontSize: 0.02 * pHeight)),
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Checkbox(
-                  value: amazonVal,
-                  onChanged: (bool value) {
-                    setState(() {
-                      amazonVal = value;
-                    });
-                  },
-                ),
-                Text("AMAZON"),
-                Checkbox(
-                  value: dellVal,
-                  onChanged: (bool value) {
-                    setState(() {
-                      dellVal = value;
-                    });
-                  },
-                ),
-                Text("DELL"),
-                Checkbox(
-                  value: tvsVal,
-                  onChanged: (bool value) {
-                    setState(() {
-                      tvsVal = value;
-                    });
-                  },
-                ),
-                Text("TVS"),
-              ],
-            ),
+//            Text('Choose your Company here:',
+//                style: TextStyle(color: Colors.grey, fontSize: 0.02 * pHeight)),
+//            SizedBox(height: 8),
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceAround,
+//              children: <Widget>[
+//                Checkbox(
+//                  value: amazonVal,
+//                  onChanged: (bool value) {
+//                    setState(() {
+//                      amazonVal = value;
+//                    });
+//                  },
+//                ),
+//                Text("AMAZON"),
+//                Checkbox(
+//                  value: dellVal,
+//                  onChanged: (bool value) {
+//                    setState(() {
+//                      dellVal = value;
+//                    });
+//                  },
+//                ),
+//                Text("DELL"),
+//                Checkbox(
+//                  value: tvsVal,
+//                  onChanged: (bool value) {
+//                    setState(() {
+//                      tvsVal = value;
+//                    });
+//                  },
+//                ),
+//                Text("TVS"),
+//              ],
+//            ),
             SizedBox(height: 8.0),
             loginButton,
             forgotLabel

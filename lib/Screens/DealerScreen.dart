@@ -111,7 +111,7 @@ columnSpacing: width/8,
     print(widget.CompanyKey);
     print(widget.dealerkey);
   }
-  
+
 
   @override
   Widget build(BuildContext context) {
