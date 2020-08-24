@@ -15,8 +15,9 @@ class dealerScreen extends StatefulWidget {
   // ignore: non_constant_identifier_names
   String CompanyKey;
   String dealerkey;
+  String dealerEmail;
 
-  dealerScreen(this.CompanyKey, this.dealerkey);
+  dealerScreen(this.CompanyKey, this.dealerkey,this.dealerEmail);
   @override
   _dealerState createState() => _dealerState();
 }
@@ -229,7 +230,7 @@ columnSpacing: width/8,
     final MailOptions mailOptions = MailOptions(
       body: 'Here is your ledger, $widget.dealerKey',
       subject: 'Ledger',
-      recipients: ['work.chitransh@gmail.com'],
+      recipients: [widget.dealerEmail],
       isHTML: true,
       attachments: [
         f.path,

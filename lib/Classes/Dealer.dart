@@ -1,5 +1,5 @@
 class Dealer {
-  String name;
+  String name;String email;
 
-  Dealer({this.name});
+  Dealer({this.name,this.email});
 }

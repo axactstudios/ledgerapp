@@ -5,8 +5,8 @@ import 'package:ledgerapp/Classes/Dealer.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
 
 class DealerCard extends StatefulWidget {
-  final String CompanyKey;
-  const DealerCard({Key key, @required this.item, this.CompanyKey})
+  final String CompanyKey;final String email;
+  const DealerCard({Key key, @required this.item, this.CompanyKey,this.email})
       : super(key: key);
 
   final Dealer item;
@@ -30,6 +30,7 @@ class _DealerCardState extends State<DealerCard> {
               builder: (context) => dealerScreen(
                 widget.CompanyKey,
                 widget.item.name,
+                widget.email,
               ),
             ),
           );
