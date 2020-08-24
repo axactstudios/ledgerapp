@@ -437,7 +437,7 @@ class _dealerState extends State<dealerScreen> {
     print('CSV Saved');
 
     final MailOptions mailOptions = MailOptions(
-      body: 'Here is your ledger, $widget.dealerKey',
+      body: 'Here is your ledger',
       subject: 'Ledger',
       recipients: [widget.dealerEmail],
       isHTML: true,
@@ -472,7 +472,7 @@ class _dealerState extends State<dealerScreen> {
 
     String dirt;
 
-    new Directory('/storage/emulated/0/Ledger Exports')
+    new Directory('/storage/emulated/0/LedgerApp Exports')
         .create(recursive: true)
         .then((Directory dir) {
       print("My directory path ${dir.path}");
@@ -495,7 +495,7 @@ class _dealerState extends State<dealerScreen> {
 
     String dir =
         (await getExternalStorageDirectory()).absolute.path + "/documents";
-    File f = new File('/storage/emulated/0/Ledger Exports/$filename.csv');
+    File f = new File('/storage/emulated/0/LedgerApp Exports/$filename.csv');
 
 // convert rows to String and write as csv file
 
