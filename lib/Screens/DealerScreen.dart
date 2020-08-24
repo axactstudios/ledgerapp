@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Record.dart';
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:csv/csv.dart';
+import 'package:permissions_plugin/permissions_plugin.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
@@ -105,179 +111,7 @@ columnSpacing: width/8,
     print(widget.CompanyKey);
     print(widget.dealerkey);
   }
-
-//  void showalertdialog() {
-//    texteditingcontroller1.text = "";
-//    texteditingcontroller2.text = "";
-//    texteditingcontroller3.text = "";
-//    texteditingcontroller4.text = "";
-//    texteditingcontroller5.text = "";
-//
-//    showDialog(
-//        context: context,
-//        builder: (context) {
-//          return StatefulBuilder(builder: (context, setState) {
-//            return AlertDialog(
-//              shape: RoundedRectangleBorder(
-//                borderRadius: BorderRadius.circular(10.0),
-//              ),
-//              title: Text(
-//                "Add Entry Details",
-//              ),
-//              content: SingleChildScrollView(
-//                child: Column(
-//                  mainAxisSize: MainAxisSize.min,
-//                  children: <Widget>[
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller5,
-//                        decoration: InputDecoration(
-//                          labelText: "Name",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter your Name';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller1,
-//                        decoration: InputDecoration(
-//                          labelText: "Date",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Date';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller2,
-//                        decoration: InputDecoration(
-//                          labelText: "Particular",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Particular';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller3,
-//                        decoration: InputDecoration(
-//                          labelText: "Debit",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Debit';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.all(8.0),
-//                      child: TextFormField(
-//                        controller: texteditingcontroller4,
-//                        decoration: InputDecoration(
-//                          labelText: "Credit",
-//                          enabledBorder: OutlineInputBorder(
-//                              borderRadius: BorderRadius.circular(10.0),
-//                              borderSide: BorderSide(color: kPrimaryColor)),
-//                        ),
-//                        // The validator receives the text that the user has entered.
-//                        validator: (value) {
-//                          if (value.isEmpty) {
-//                            return 'Enter Credit';
-//                          }
-//                          return null;
-//                        },
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: EdgeInsets.only(
-//                        top: 10.0,
-//                      ),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.center,
-//                        children: <Widget>[
-//                          RaisedButton(
-//                            onPressed: () {
-//                              final key = randomAlphaNumeric(15);
-//                              if (texteditingcontroller1.text.isEmpty) {
-//                                setState(() {
-//                                  errtext = "Can't Be Empty";
-//                                  validated = false;
-//                                });
-//                              } else {
-//                                FirebaseDatabase.instance
-//                                    .reference()
-//                                    .child("Admin")
-//                                    .child('Division Heads')
-//                                    .child(widget.divKey)
-//                                    .child("Dealers")
-//                                    .child(widget.dealerKey)
-//                                    .child('Records')
-//                                    .child(key)
-//                                    .set({
-//                                  'Name': texteditingcontroller5.text,
-//                                  'Date': texteditingcontroller1.text,
-//                                  'Particular': texteditingcontroller2.text,
-//                                  'Debit': texteditingcontroller3.text,
-//                                  'Credit': texteditingcontroller4.text
-//                                });
-//
-//                                addentry();
-//                          }
-//                              getData();
-//                              Navigator.pop(context);
-//                            },
-//                            color: new Color(0xFFE57373),
-//                            child: Text("ADD",
-//                                style: TextStyle(
-//                                  fontSize: 18.0,
-//                                  fontFamily: "Raleway",
-//                                )),
-//                          )
-//                        ],
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              ),
-//            );
-//          });
-//        });
-//  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -298,6 +132,26 @@ columnSpacing: width/8,
                   fontWeight: FontWeight.bold,
                   fontSize: 24),
             ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.import_export,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () {
+                  getCsv();
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.mail_outline,
+                  color: kPrimaryColor,
+                ),
+                onPressed: () {
+                  sendEmail();
+                },
+              )
+            ],
           ),
           backgroundColor: Colors.white,
           body: records.length == 0
@@ -316,4 +170,132 @@ columnSpacing: width/8,
 //          backgroundColor: new Color(0xFFE57373),
 //        ));
   }
+
+  sendEmail() async {
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    List<dynamic> row = List();
+    row.add('Date');
+    row.add('Particulars');
+    row.add('Debit');
+    row.add('Credit');
+    rows.add(row);
+    for (int i = 0; i <records.length; i++) {
+//row refer to each column of a row in csv file and rows refer to each row in a file
+      List<dynamic> row = List();
+      row.add(records[i].date);
+      row.add(records[i].particular);
+      row.add(records[i].debit);
+      row.add(records[i].credit);
+      rows.add(row);
+    }
+
+    String dirt;
+
+    new Directory('/storage/emulated/0/Ledger Exports')
+        .create(recursive: true)
+        .then((Directory dir) {
+      print("My directory path ${dir.path}");
+      dirt = dir.path;
+      setState(() {
+        print('----------------${dir.path} is the destination---------------');
+      });
+    });
+
+    Map<Permission, PermissionState> permission =
+    await PermissionsPlugin.requestPermissions([
+      Permission.WRITE_EXTERNAL_STORAGE,
+      Permission.READ_EXTERNAL_STORAGE
+    ]);
+
+//store file in documents folder
+
+    String filename =
+        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+
+    String dir =
+        (await getExternalStorageDirectory()).absolute.path + "/documents";
+    File f = new File('/storage/emulated/0/Ledger Exports/$filename.csv');
+
+// convert rows to String and write as csv file
+
+    String csv = const ListToCsvConverter().convert(rows);
+    await f.writeAsString(csv);
+    Fluttertoast.showToast(
+        msg: 'File exported : ${f.path}',
+        textColor: Colors.black,
+        backgroundColor: Colors.white);
+    print('CSV Saved');
+
+    final MailOptions mailOptions = MailOptions(
+      body: 'Here is your ledger, $widget.dealerKey',
+      subject: 'Ledger',
+      recipients: ['work.chitransh@gmail.com'],
+      isHTML: true,
+      attachments: [
+        f.path,
+      ],
+    );
+
+    await FlutterMailer.send(mailOptions);
+  }
+
+  getCsv() async {
+    //create an element rows of type list of list. All the above data set are stored in associate list
+//Let associate be a model class with attributes name,gender and age and associateList be a list of associate model class.
+
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    List<dynamic> row = List();
+    row.add('Date');
+    row.add('Particulars');
+    row.add('Debit');
+    row.add('Credit');
+    rows.add(row);
+    for (int i = 0; i < records.length; i++) {
+//row refer to each column of a row in csv file and rows refer to each row in a file
+      List<dynamic> row = List();
+      row.add(records[i].date);
+      row.add(records[i].particular);
+      row.add(records[i].debit);
+      row.add(records[i].credit);
+      rows.add(row);
+    }
+
+    String dirt;
+
+    new Directory('/storage/emulated/0/Ledger Exports')
+        .create(recursive: true)
+        .then((Directory dir) {
+      print("My directory path ${dir.path}");
+      dirt = dir.path;
+      setState(() {
+        print('----------------${dir.path} is the destination---------------');
+      });
+    });
+
+    Map<Permission, PermissionState> permission =
+    await PermissionsPlugin.requestPermissions([
+      Permission.WRITE_EXTERNAL_STORAGE,
+      Permission.READ_EXTERNAL_STORAGE
+    ]);
+
+//store file in documents folder
+
+    String filename =
+        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+
+    String dir =
+        (await getExternalStorageDirectory()).absolute.path + "/documents";
+    File f = new File('/storage/emulated/0/Ledger Exports/$filename.csv');
+
+// convert rows to String and write as csv file
+
+    String csv = const ListToCsvConverter().convert(rows);
+    f.writeAsString(csv);
+    Fluttertoast.showToast(
+        msg: 'File exported : ${f.path}',
+        textColor: Colors.black,
+        backgroundColor: Colors.white);
+    print('CSV Saved');
+  }
+
 }

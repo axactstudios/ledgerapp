@@ -95,7 +95,6 @@ class _dealerlistState extends State<dealerlistScreen> {
                         itemCount: dealers.length,
                         itemBuilder: (context, index2) {
                           var item = dealers[index2];
-
                           return DealerCard(
                             item: item,
                             divKey: widget.companies[index],

@@ -23,6 +23,11 @@ dependencies:
   google_fonts: ^1.1.0
   rflutter_alert: ^1.0.3
   getflutter: ^1.1.3
+  csv: ^4.0.3
+  flutter_mailer: ^0.5.1
+  path_provider: ^1.6.14
+  permissions_plugin: ^1.1.4
+  fluttertoast: ^7.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
