@@ -96,11 +96,10 @@ class _DealerLoginState extends State<DealerLogin> {
             );
 
           }
-          else if (email != emailC.text && password != pw.text)
-          {
+          else if (email != emailC.text && password != pw.text) {
             print("Not found");
             print('alert');
-            _onAlertWithStylePressed(context);
+
           }
         });
       });
@@ -108,7 +107,7 @@ class _DealerLoginState extends State<DealerLogin> {
 
 
 
-
+    _onAlertWithStylePressed(context);
 
   }
   _onAlertWithStylePressed(context) {
