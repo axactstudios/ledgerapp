@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Classes/Company.dart';
 import 'package:ledgerapp/Classes/Division.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
+import 'package:ledgerapp/Screens/home_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DealerLogin extends StatefulWidget {
@@ -93,15 +96,17 @@ class _DealerLoginState extends State<DealerLogin> {
             );
 
           }
-          else{
+          else if (email != emailC.text && password != pw.text)
+          {
             print("Not found");
+            print('alert');
+            _onAlertWithStylePressed(context);
           }
         });
       });
     }
 
-  print('alert');
-  _onAlertWithStylePressed(context);
+
 
 
 
@@ -139,7 +144,16 @@ class _DealerLoginState extends State<DealerLogin> {
             "OK",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () //=> Navigator.pop(context),
+          {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    HomePage(),
+              ),
+            );
+          },
           color: kPrimaryColor,
           radius: BorderRadius.circular(10.0),
         ),
