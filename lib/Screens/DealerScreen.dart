@@ -37,6 +37,9 @@ class _dealerState extends State<dealerScreen> {
   String entryedited = "";
   var startdate;
   var enddate;
+  double debit = 0;
+  double credit = 0;
+  double net = 0;
 
   void convertDateFromString(String strDate) {
     DateTime todayDate = DateTime.parse(strDate);
@@ -172,8 +175,18 @@ class _dealerState extends State<dealerScreen> {
         print(newRecord.name);
         print(newRecord.credit);
         records.add(newRecord);
+        var myDebit = double.parse(newRecord.debit);
+        assert(myDebit is double);
+        print(myDebit);
+        var myCredit = double.parse(newRecord.credit);
+        assert(myCredit is double);
+        print(myCredit);
 
         setState(() {
+          print(records.length);
+          debit = debit + myDebit;
+          credit = credit + myCredit;
+          net = credit-debit;
           print(records.length);
           _rowList.add(DataRow(cells: <DataCell>[
             DataCell(Text(newRecord.date)),
@@ -363,6 +376,27 @@ class _dealerState extends State<dealerScreen> {
               : SingleChildScrollView(
                 child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: <Widget>[
+                    Text("Total :",
+                        style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24)),
+                    SizedBox(
+                      height: 2,
+                      width: 15,
+                    ),
+                    Text(net.toString(),
+                        style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24)),
+                  ],
+                ),
+              ),
                 Container(height:pHeight*0.8,width:pWidth,child: bodyData(pWidth*0.8)),
 
                 FloatingActionButton.extended(
