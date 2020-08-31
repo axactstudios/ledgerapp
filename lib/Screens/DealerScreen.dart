@@ -10,6 +10,9 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:date_format/date_format.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pdfLib;
+import 'package:printing/printing.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
@@ -351,7 +354,7 @@ class _dealerState extends State<dealerScreen> {
                   color: kPrimaryColor,
                 ),
                 onPressed: () {
-                  getCsv();
+                  _generatePdfAndView(context);
                 },
               ),
               IconButton(
@@ -540,6 +543,150 @@ class _dealerState extends State<dealerScreen> {
         textColor: Colors.black,
         backgroundColor: Colors.white);
     print('CSV Saved');
+  }
+
+  _generatePdfAndView(context) async {
+    final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
+    pdf.addPage(pdfLib.MultiPage(
+        build: (context) => [
+          pdfLib.Column(
+              mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
+              children: [
+                pdfLib.Padding(
+                  padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: pdfLib.Row(children: [
+                    pdfLib.Text(
+                      'Transactions Record',
+                      style: pdfLib.TextStyle(
+                        fontSize: 35,
+                        color: PdfColors.black,
+                      ),
+                    ),
+                  ]),
+                ),
+                pdfLib.SizedBox(
+                  height: 15,
+                ),
+                pdfLib.Padding(
+                  padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: pdfLib.Row(
+                      mainAxisAlignment:
+                      pdfLib.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pdfLib.Text(
+                          'Date',
+                          style: pdfLib.TextStyle(
+                            fontSize: 25,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                        pdfLib.Text(
+                          'Particular',
+                          style: pdfLib.TextStyle(
+                            fontSize: 25,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                        pdfLib.Text(
+                          'Debit',
+                          style: pdfLib.TextStyle(
+                            fontSize: 25,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                        pdfLib.Text(
+                          'Credit',
+                          style: pdfLib.TextStyle(
+                            fontSize: 20,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                      ]),
+                ),
+                pdfLib.SizedBox(
+                  height: 10,
+                  child: pdfLib.Divider(color: PdfColors.black),
+                ),
+                pdfLib.ListView.builder(
+                    itemCount: records.length,
+                    itemBuilder: (context, index) {
+                      var item = records[index];
+                      return pdfLib.Padding(
+                        padding:
+                        pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
+                        child: pdfLib.Row(
+                            mainAxisAlignment:
+                            pdfLib.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pdfLib.Text(
+                                item.date,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                              pdfLib.Text(
+                                item.particular,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                              pdfLib.Text(
+                                item.debit,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                              pdfLib.Text(
+                                item.credit,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                            ]),
+                      );
+                    }),
+                pdfLib.SizedBox(
+                  height: 10,
+                  child: pdfLib.Divider(color: PdfColors.black),
+                ),
+              ])
+        ]));
+
+    String dirt;
+
+    new Directory('/storage/emulated/0/Ledger Exports')
+        .create(recursive: true)
+        .then((Directory dir) {
+      print("My directory path ${dir.path}");
+      dirt = dir.path;
+      setState(() {
+        print('----------------${dir.path} is the destination---------------');
+      });
+    });
+
+    Map<Permission, PermissionState> permission =
+    await PermissionsPlugin.requestPermissions([
+      Permission.WRITE_EXTERNAL_STORAGE,
+      Permission.READ_EXTERNAL_STORAGE
+    ]);
+
+//store file in documents folder
+
+    String filename =
+        '${widget.dealerEmail} ${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+
+    String dir =
+        (await getExternalStorageDirectory()).absolute.path + "/documents";
+    File f = new File('/storage/emulated/0/Ledger Exports/$filename.pdf');
+
+    await f.writeAsBytes(pdf.save());
+    //Navigator.of(context).push(MaterialPageRoute(
+    //builder: (_) => PdfViewerPage(path: path),
+    //));
   }
 
 }
