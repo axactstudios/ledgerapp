@@ -5,17 +5,18 @@ import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Classes/Record.dart';
-import'DealerScreen.dart';
+import 'DealerScreen.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permissions_plugin/permissions_plugin.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class filterRecord extends StatefulWidget {
-  String startdate, enddate;String dealerEmail;
+  String startdate, enddate;
+  String dealerEmail;
   List<Record> records = [];
 
-  filterRecord(this.startdate, this.enddate, this.records,this.dealerEmail);
+  filterRecord(this.startdate, this.enddate, this.records, this.dealerEmail);
 
   @override
   _filterRecordState createState() => _filterRecordState();
@@ -57,20 +58,28 @@ class _filterRecordState extends State<filterRecord> {
       rows: _rowList);
 
   void filterrecords() {
+    print('${widget.startdate}    ${widget.enddate}');
+    DateTime startDate = new DateFormat("dd-MM-yyyy").parse(widget.startdate);
+    DateTime endDate = new DateFormat("dd-MM-yyyy").parse(widget.enddate);
+
     for (i = 0; i < widget.records.length; i++) {
-      if ((widget.startdate.compareTo(widget.records[i].date) == -1) &&
-          (widget.enddate.compareTo(widget.records[i].date) == 1)) {
-        print(
-            '${widget.startdate} < ${widget.records[i].date} > ${widget.enddate}');
+      DateTime date =
+          new DateFormat("dd-MM-yyyy").parse(widget.records[i].date);
+      if ((date == startDate || date == endDate) ||
+          ((date.isAfter(startDate)) && (date.isBefore(endDate)))) {
         filtered.add(widget.records[i]);
-        _rowList.add(DataRow(cells: <DataCell>[
-          DataCell(Text(widget.records[i].date)),
-          DataCell(Text(widget.records[i].particular)),
-          DataCell(Text(widget.records[i].debit)),
-          DataCell(Text(widget.records[i].credit))
-        ]));
       }
     }
+
+    for (int i = 0; i < filtered.length; i++) {
+      _rowList.add(DataRow(cells: <DataCell>[
+        DataCell(Text(filtered[i].date)),
+        DataCell(Text(filtered[i].particular)),
+        DataCell(Text(filtered[i].debit)),
+        DataCell(Text(filtered[i].credit))
+      ]));
+    }
+
     setState(() {
       print(filtered.length);
     });
@@ -118,19 +127,19 @@ class _filterRecordState extends State<filterRecord> {
         ),
         body: filtered.length == 0
             ? Center(
-            child: Text("No records to show",
-                style:
-                GoogleFonts.lato(textStyle: TextStyle(fontSize: 24))))
+                child: Text("No records to show",
+                    style:
+                        GoogleFonts.lato(textStyle: TextStyle(fontSize: 24))))
             : SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                  height: pHeight * 0.7,
-                  width: pWidth,
-                  child: bodyData(pWidth)),
-            ],
-          ),
-        ));
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        height: pHeight * 0.7,
+                        width: pWidth,
+                        child: bodyData(pWidth)),
+                  ],
+                ),
+              ));
   }
 
   getCsv() async {
@@ -167,7 +176,7 @@ class _filterRecordState extends State<filterRecord> {
     });
 
     Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
+        await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);
@@ -223,7 +232,7 @@ class _filterRecordState extends State<filterRecord> {
     });
 
     Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
+        await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);

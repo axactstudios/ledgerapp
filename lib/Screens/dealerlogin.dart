@@ -60,6 +60,7 @@ class _DealerLoginState extends State<DealerLogin> {
 
     });
   }
+
   void verifyDealer() {
     for (int i = 0; i < companies.length; i++) {
 
@@ -77,7 +78,6 @@ class _DealerLoginState extends State<DealerLogin> {
           print(emailC.text);
            String password = await value['Password'].toString();
           print(password);
-
           print(pw.text);
           String name= await value['Name'];
           print(name);
@@ -97,9 +97,9 @@ class _DealerLoginState extends State<DealerLogin> {
 
           }
           else if (email != emailC.text && password != pw.text) {
+            _onAlertWithStylePressed(context);
             print("Not found");
             print('alert');
-
           }
         });
       });
@@ -107,7 +107,6 @@ class _DealerLoginState extends State<DealerLogin> {
 
 
 
-    _onAlertWithStylePressed(context);
 
   }
   _onAlertWithStylePressed(context) {

@@ -14,12 +14,14 @@ import 'package:date_format/date_format.dart';
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
   static String tag = 'dealer-page';
+
   // ignore: non_constant_identifier_names
   String CompanyKey;
   String dealerkey;
   String dealerEmail;
 
-  dealerScreen(this.CompanyKey, this.dealerkey,this.dealerEmail);
+  dealerScreen(this.CompanyKey, this.dealerkey, this.dealerEmail);
+
   @override
   _dealerState createState() => _dealerState();
 }
@@ -115,11 +117,8 @@ class _dealerState extends State<dealerScreen> {
     );
   }
 
-
-
   Widget bodyData(width) => DataTable(
-      columnSpacing: width/8,
-
+      columnSpacing: width / 8,
       columns: <DataColumn>[
         DataColumn(
           label: Text('Date'),
@@ -140,7 +139,9 @@ class _dealerState extends State<dealerScreen> {
           tooltip: 'Debitted amount',
         ),
         DataColumn(
-          label: Text('Credit', ),
+          label: Text(
+            'Credit',
+          ),
           numeric: false,
           onSort: (i, b) {},
           tooltip: 'Amount creditted',
@@ -167,14 +168,15 @@ class _dealerState extends State<dealerScreen> {
       Map<dynamic, dynamic> values = await snap.value;
       values.forEach((key, value) async {
         Record newRecord = Record();
-        newRecord.name = await key;
-        newRecord.particular = await value['Particular'];
-        newRecord.debit = await value['Debit'];
-        newRecord.date = await value['Date'];
-        newRecord.credit = await value['Credit'];
+        newRecord.name = key;
+        newRecord.particular = value['Particular'];
+        newRecord.debit = value['Debit'];
+        newRecord.date = value['Date'];
+        newRecord.credit = value['Credit'];
         print(newRecord.name);
         print(newRecord.credit);
         records.add(newRecord);
+
         var myDebit = double.parse(newRecord.debit);
         assert(myDebit is double);
         print(myDebit);
@@ -182,20 +184,25 @@ class _dealerState extends State<dealerScreen> {
         assert(myCredit is double);
         print(myCredit);
 
+        print(records.length);
+        debit = debit + myDebit;
+        credit = credit + myCredit;
+        net = credit - debit;
+        print(records.length);
+      });
+
+      records.sort((a, b) => a.date.compareTo(b.date));
+      for (int i = 0; i < records.length; i++) {
+
         setState(() {
-          print(records.length);
-          debit = debit + myDebit;
-          credit = credit + myCredit;
-          net = credit-debit;
-          print(records.length);
           _rowList.add(DataRow(cells: <DataCell>[
-            DataCell(Text(newRecord.date)),
-            DataCell(Text(newRecord.particular)),
-            DataCell(Text(newRecord.debit)),
-            DataCell(Text(newRecord.credit))
+            DataCell(Text(records[i].date)),
+            DataCell(Text(records[i].particular)),
+            DataCell(Text(records[i].debit)),
+            DataCell(Text(records[i].credit))
           ]));
         });
-      });
+      }
     });
   }
 
@@ -238,21 +245,21 @@ class _dealerState extends State<dealerScreen> {
                             color: kPrimaryColor,
                             child: startdate == null
                                 ? Text("Select Start Date",
-                                textScaleFactor: 1.0,
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontFamily: "Raleway",
-                                  color: Colors.white,
-                                ))
+                                    textScaleFactor: 1.0,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: "Raleway",
+                                      color: Colors.white,
+                                    ))
                                 : Text(
-                              "$startdate",
-                              textScaleFactor: 1.0,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontFamily: "Raleway",
-                                color: Colors.white,
-                              ),
-                            ),
+                                    "$startdate",
+                                    textScaleFactor: 1.0,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: "Raleway",
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           )
                         ],
                       ),
@@ -271,21 +278,21 @@ class _dealerState extends State<dealerScreen> {
                             color: kPrimaryColor,
                             child: enddate == null
                                 ? Text("Select End Date",
-                                textScaleFactor: 1.0,
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontFamily: "Raleway",
-                                  color: Colors.white,
-                                ))
+                                    textScaleFactor: 1.0,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: "Raleway",
+                                      color: Colors.white,
+                                    ))
                                 : Text(
-                              "$enddate",
-                              textScaleFactor: 1.0,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontFamily: "Raleway",
-                                color: Colors.white,
-                              ),
-                            ),
+                                    "$enddate",
+                                    textScaleFactor: 1.0,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: "Raleway",
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           )
                         ],
                       ),
@@ -303,7 +310,10 @@ class _dealerState extends State<dealerScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => filterRecord(
-                                        startdate, enddate, records, widget.dealerEmail)),
+                                        startdate,
+                                        enddate,
+                                        records,
+                                        widget.dealerEmail)),
                               );
                             },
                             color: kPrimaryColor,
@@ -324,14 +334,13 @@ class _dealerState extends State<dealerScreen> {
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
     double pWidth = MediaQuery.of(context).size.width;
     double pHeight = MediaQuery.of(context).size.height;
     return Container(
-      width:pWidth,
-      height:pHeight,
+      width: pWidth,
+      height: pHeight,
       child: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(color: kPrimaryColor),
@@ -368,51 +377,52 @@ class _dealerState extends State<dealerScreen> {
           backgroundColor: Colors.white,
           body: records.length == 0
               ? Center(
-            child: Text(
-              "No records to show",
-              style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
-            ),
-          )
+                  child: Text(
+                    "No records to show",
+                    style: TextStyle(fontFamily: 'Nunito', fontSize: 24),
+                  ),
+                )
               : SingleChildScrollView(
-                child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: <Widget>[
-                    Text("Total :",
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24)),
-                    SizedBox(
-                      height: 2,
-                      width: 15,
-                    ),
-                    Text(net.toString(),
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24)),
-                  ],
-                ),
-              ),
-                Container(height:pHeight*0.8,width:pWidth,child: bodyData(pWidth*0.8)),
-
-                FloatingActionButton.extended(
-                  onPressed: () {
-                    showalertdialog();
-                  },
-                  icon: Icon(Icons.sort),
-                  label: Text("Sort"),
-                  backgroundColor: kPrimaryColor,
-                  foregroundColor: Colors.white,
-                ),
-            ],
-          ),
-              )),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          children: <Widget>[
+                            Text("Total :",
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24)),
+                            SizedBox(
+                              height: 2,
+                              width: 15,
+                            ),
+                            Text(net.toString(),
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24)),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          height: pHeight * 0.8,
+                          width: pWidth,
+                          child: bodyData(pWidth * 0.8)),
+                      FloatingActionButton.extended(
+                        onPressed: () {
+                          showalertdialog();
+                        },
+                        icon: Icon(Icons.sort),
+                        label: Text("Sort"),
+                        backgroundColor: kPrimaryColor,
+                        foregroundColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                )),
     );
-
   }
 
   sendEmail() async {
@@ -423,7 +433,7 @@ class _dealerState extends State<dealerScreen> {
     row.add('Debit');
     row.add('Credit');
     rows.add(row);
-    for (int i = 0; i <records.length; i++) {
+    for (int i = 0; i < records.length; i++) {
 //row refer to each column of a row in csv file and rows refer to each row in a file
       List<dynamic> row = List();
       row.add(records[i].date);
@@ -446,7 +456,7 @@ class _dealerState extends State<dealerScreen> {
     });
 
     Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
+        await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);
@@ -517,7 +527,7 @@ class _dealerState extends State<dealerScreen> {
     });
 
     Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
+        await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);
@@ -541,5 +551,4 @@ class _dealerState extends State<dealerScreen> {
         backgroundColor: Colors.white);
     print('CSV Saved');
   }
-
 }
