@@ -3,6 +3,7 @@ import 'package:getflutter/getflutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Screens/DealerScreen.dart';
+import 'package:ledgerapp/Screens/companies.dart';
 import 'package:ledgerapp/Screens/home_page.dart';
 import 'package:ledgerapp/Screens/login.dart';
 
@@ -58,12 +59,13 @@ class _SplashScreenState extends State<SplashScreen> {
             break;
 
           case "DivisionHead":
-            prefs.getText("DivKey").then((divKey) => Navigator.pushReplacement(
+            prefs.getList("Companies").then((companyNames) => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => dealerlistScreen(divKey),
+                builder: (context) => companiesList(companyNames),
               ),
             ));
+
             break;
 
           case "":

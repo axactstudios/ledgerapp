@@ -10,6 +10,8 @@ import 'DealerScreen.dart';
 import 'DivisionHeadDisplay.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'companies.dart';
+
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -20,7 +22,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   TextEditingController emailController = new TextEditingController(text: '');
   TextEditingController passwordController =
       new TextEditingController(text: '');
@@ -28,8 +29,12 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordObscured;
   String CompanyKey = '', dealerKey = '';
   List<Company> companies = [];
+  List<String> companyNames = [];
+
+  String divname = '';
+
   MySharedPreferences prefs = MySharedPreferences();
-  String userType="userType";
+  String userType = "userType";
 
   void getCompanies() {
     final db =
@@ -133,10 +138,8 @@ class _LoginPageState extends State<LoginPage> {
             if (dealerEmail == emailController.text &&
                 dealerPassword == passwordController.text) {
               print('dealer with similar creds found');
-
               divKey = key;
               loginSuccess = true;
-
               print('divKey : $divKey');
               print('name : $name');
               dealerKey = name;
@@ -144,7 +147,8 @@ class _LoginPageState extends State<LoginPage> {
               CompanyKey = companies[i].name;
 
               prefs.saveText(userType, "Dealer");
-              prefs.setList("DealerDetails",[CompanyKey,dealerKey,dealerEmail]);
+              prefs.setList(
+                  "DealerDetails", [CompanyKey, dealerKey, dealerEmail]);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -168,19 +172,22 @@ class _LoginPageState extends State<LoginPage> {
 
           if (divHeadEmail == emailController.text &&
               divHeadPassword == passwordController.text) {
+            companyNames = List<String>.from(value['Companies']);
+
             print('Division Head with similar creds found');
-            divKey = key;
+
+            dealerKey = key;
+            divname=key;
             loginSuccess = true;
 
             print('divKey : $divKey');
-
             prefs.saveText(userType, "DivisionHead");
-            prefs.saveText(divKey, "DivKey");
+            prefs.setList("Companies", companyNames);
 
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => dealerlistScreen(divKey),
+                builder: (context) => companiesList(companyNames),
               ),
             );
           }
