@@ -27,8 +27,14 @@ dependencies:
   path_provider: ^1.6.14
   permissions_plugin: ^1.1.4
   fluttertoast: ^7.0.2
+
+  pdf: ^1.8.0
+  flutter_full_pdf_viewer: ^1.0.6
+  printing: ^3.4.0
+
   shared_preferences: ^0.5.8
   intl: ^0.16.1
+
 
 
 dev_dependencies:
