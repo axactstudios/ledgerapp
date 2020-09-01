@@ -33,7 +33,6 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
         Company newCompany = Company();
         newCompany.name = await key;
         print(newCompany.name);
-
         companies.add(newCompany);
       });
       setState(() {
