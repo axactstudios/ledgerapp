@@ -8,9 +8,10 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
+    SplashScreen.tag: (context) => SplashScreen(),
     HomePage.tag: (context) => HomePage(),
     distributorScreen.tag: (context) => distributorScreen(),
-    DealerLogin.tag: (context) => DealerLogin()
+    DealerLogin.tag: (context) => DealerLogin(),
   };
 
   @override
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
         fontFamily: 'Nunito',
       ),
-      home: SplashScreen(),
+      initialRoute: SplashScreen.tag,
       routes: routes,
     );
   }

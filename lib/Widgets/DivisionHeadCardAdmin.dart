@@ -50,7 +50,6 @@ class _DivisionHeadAdminCardState extends State<DivisionHeadAdminCard> {
             MaterialPageRoute(
               builder: (context) =>
                   dealerlistadminScreen(
-
                       companies
                   ),
             ),

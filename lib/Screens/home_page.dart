@@ -4,7 +4,8 @@ import 'package:ledgerapp/Screens/divheadlogin.dart';
 
 import '../Classes/Constants.dart';
 import 'login.dart';
-import'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 class HomePage extends StatelessWidget {
   static String tag = 'home-page';
 
@@ -80,7 +81,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => LoginPage('admin')));
+                            builder: (context) => LoginPage()));
                   },
                   child: Container(
                     height: 0.25 * pHeight,
@@ -99,11 +100,14 @@ class HomePage extends StatelessWidget {
                                   image: AssetImage('images/admin.png'),
                                   height: 0.14 * pHeight),
                               SizedBox(height: 8),
-                              Text('Admin',
-                                  style:GoogleFonts.lato(textStyle:TextStyle(
-                                    color: kPrimaryColor,
-                                    fontSize: 0.03 * pHeight,
-                                  ) ),)
+                              Text(
+                                'Admin',
+                                style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 0.03 * pHeight,
+                                )),
+                              )
                             ],
                           ),
                         )),
@@ -133,11 +137,14 @@ class HomePage extends StatelessWidget {
                                   image: AssetImage('images/divhead.png'),
                                   height: 0.14 * pHeight),
                               SizedBox(height: 8),
-                              Text('Division Head',
-                                  style: GoogleFonts.lato(textStyle:TextStyle(
-                                      color: kPrimaryColor,
-                                      fontSize: 0.03 * pHeight,
-                                      fontFamily: 'Nunito')),)
+                              Text(
+                                'Division Head',
+                                style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 0.03 * pHeight,
+                                        fontFamily: 'Nunito')),
+                              )
                             ],
                           ),
                         )),
@@ -164,11 +171,14 @@ class HomePage extends StatelessWidget {
                                   image: AssetImage('images/dealer.png'),
                                   height: 0.14 * pHeight),
                               SizedBox(height: 8),
-                              Text('Dealer',
-                                  style: GoogleFonts.lato(textStyle:TextStyle(
-                                      color: kPrimaryColor,
-                                      fontSize: 0.03 * pHeight,
-                                      fontFamily: 'Nunito')),)
+                              Text(
+                                'Dealer',
+                                style: GoogleFonts.lato(
+                                    textStyle: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 0.03 * pHeight,
+                                        fontFamily: 'Nunito')),
+                              )
                             ],
                           ),
                         )),
