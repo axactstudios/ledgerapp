@@ -6,6 +6,10 @@ import 'package:ledgerapp/Classes/Company.dart';
 import 'package:ledgerapp/Classes/Constants.dart';
 import 'package:ledgerapp/Widgets/CompanyCard.dart';
 
+import '../my_shared_preferences.dart';
+import '../my_shared_preferences.dart';
+import 'login.dart';
+
 class companiesList extends StatefulWidget {
   List<String> Companies = [];
 
@@ -23,6 +27,18 @@ class _companiesListState extends State<companiesList> {
         appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
+            leading: Container(),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  MySharedPreferences sharedPrefs = new MySharedPreferences();
+                  await sharedPrefs.clear();
+                  await Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                icon: Icon(Icons.exit_to_app),
+              ),
+            ],
             title: Text('Companies',
                 style: GoogleFonts.lato(
                     textStyle: TextStyle(
