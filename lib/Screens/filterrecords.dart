@@ -17,9 +17,12 @@ import 'package:printing/printing.dart';
 class filterRecord extends StatefulWidget {
   String startdate, enddate;
   String dealerEmail;
+  double net;
+
   List<Record> records = [];
 
-  filterRecord(this.startdate, this.enddate, this.records, this.dealerEmail);
+  filterRecord(
+      this.startdate, this.enddate, this.records, this.net, this.dealerEmail);
 
   @override
   _filterRecordState createState() => _filterRecordState();
@@ -59,8 +62,8 @@ class _filterRecordState extends State<filterRecord> {
         ),
       ],
       rows: _rowList);
-
-  void filterrecords() {
+  double opening = 0;
+  void filterrecords() async {
     print('${widget.startdate}    ${widget.enddate}');
     DateTime startDate = new DateFormat("dd-MM-yyyy").parse(widget.startdate);
     DateTime endDate = new DateFormat("dd-MM-yyyy").parse(widget.enddate);
@@ -70,10 +73,12 @@ class _filterRecordState extends State<filterRecord> {
           new DateFormat("dd-MM-yyyy").parse(widget.records[i].date);
       if ((date == startDate || date == endDate) ||
           ((date.isAfter(startDate)) && (date.isBefore(endDate)))) {
-        filtered.add(widget.records[i]);
+        await filtered.add(widget.records[i]);
+        opening = await opening - double.parse(widget.records[i].debit);
+        opening = await opening + double.parse(widget.records[i].credit);
       }
     }
-
+    opening = await widget.net - opening;
     for (int i = 0; i < filtered.length; i++) {
       _rowList.add(DataRow(cells: <DataCell>[
         DataCell(Text(filtered[i].date)),
@@ -100,6 +105,7 @@ class _filterRecordState extends State<filterRecord> {
     double pHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(color: kPrimaryColor),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
@@ -136,10 +142,54 @@ class _filterRecordState extends State<filterRecord> {
             : SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 5),
+                      child: Row(
+                        children: <Widget>[
+                          Text("Opening balance :",
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24)),
+                          SizedBox(
+                            height: 2,
+                            width: 15,
+                          ),
+                          Text(opening.toString(),
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 5),
+                      child: Row(
+                        children: <Widget>[
+                          Text("Outstanding amount :",
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24)),
+                          SizedBox(
+                            height: 2,
+                            width: 15,
+                          ),
+                          Text(widget.net.toString(),
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24)),
+                        ],
+                      ),
+                    ),
                     Container(
                         height: pHeight * 0.7,
                         width: pWidth,
-                        child: bodyData(pWidth)),
+                        child: bodyData(pWidth * 0.8)),
                   ],
                 ),
               ));
@@ -271,116 +321,117 @@ class _filterRecordState extends State<filterRecord> {
 
     await FlutterMailer.send(mailOptions);
   }
+
   _generatePdfAndView(context) async {
     final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
     pdf.addPage(pdfLib.MultiPage(
         build: (context) => [
-          pdfLib.Column(
-              mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
-              children: [
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: pdfLib.Row(children: [
-                    pdfLib.Text(
-                      'Transactions Record',
-                      style: pdfLib.TextStyle(
-                        fontSize: 35,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 15,
-                ),
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: pdfLib.Row(
-                      mainAxisAlignment:
-                      pdfLib.MainAxisAlignment.spaceBetween,
-                      children: [
+              pdfLib.Column(
+                  mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pdfLib.Padding(
+                      padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: pdfLib.Row(children: [
                         pdfLib.Text(
-                          'Date',
+                          'Transactions Record',
                           style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Particular',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Debit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Credit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 20,
+                            fontSize: 35,
                             color: PdfColors.black,
                           ),
                         ),
                       ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-                pdfLib.ListView.builder(
-                    itemCount: filtered.length,
-                    itemBuilder: (context, index) {
-                      var item = filtered[index];
-                      return pdfLib.Padding(
-                        padding:
-                        pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
-                        child: pdfLib.Row(
-                            mainAxisAlignment:
-                            pdfLib.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pdfLib.Text(
-                                item.date,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                    ),
+                    pdfLib.SizedBox(
+                      height: 15,
+                    ),
+                    pdfLib.Padding(
+                      padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
+                      child: pdfLib.Row(
+                          mainAxisAlignment:
+                              pdfLib.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pdfLib.Text(
+                              'Date',
+                              style: pdfLib.TextStyle(
+                                fontSize: 25,
+                                color: PdfColors.black,
                               ),
-                              pdfLib.Text(
-                                item.particular,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                            ),
+                            pdfLib.Text(
+                              'Particular',
+                              style: pdfLib.TextStyle(
+                                fontSize: 25,
+                                color: PdfColors.black,
                               ),
-                              pdfLib.Text(
-                                item.debit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                            ),
+                            pdfLib.Text(
+                              'Debit',
+                              style: pdfLib.TextStyle(
+                                fontSize: 25,
+                                color: PdfColors.black,
                               ),
-                              pdfLib.Text(
-                                item.credit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                            ),
+                            pdfLib.Text(
+                              'Credit',
+                              style: pdfLib.TextStyle(
+                                fontSize: 20,
+                                color: PdfColors.black,
                               ),
-                            ]),
-                      );
-                    }),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-              ])
-        ]));
+                            ),
+                          ]),
+                    ),
+                    pdfLib.SizedBox(
+                      height: 10,
+                      child: pdfLib.Divider(color: PdfColors.black),
+                    ),
+                    pdfLib.ListView.builder(
+                        itemCount: filtered.length,
+                        itemBuilder: (context, index) {
+                          var item = filtered[index];
+                          return pdfLib.Padding(
+                            padding:
+                                pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
+                            child: pdfLib.Row(
+                                mainAxisAlignment:
+                                    pdfLib.MainAxisAlignment.spaceBetween,
+                                children: [
+                                  pdfLib.Text(
+                                    item.date,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                  pdfLib.Text(
+                                    item.particular,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                  pdfLib.Text(
+                                    item.debit,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                  pdfLib.Text(
+                                    item.credit,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                ]),
+                          );
+                        }),
+                    pdfLib.SizedBox(
+                      height: 10,
+                      child: pdfLib.Divider(color: PdfColors.black),
+                    ),
+                  ])
+            ]));
 
     String dirt;
 
@@ -395,7 +446,7 @@ class _filterRecordState extends State<filterRecord> {
     });
 
     Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
+        await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);

@@ -17,14 +17,12 @@ import 'package:printing/printing.dart';
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
   static String tag = 'dealer-page';
-
   // ignore: non_constant_identifier_names
   String CompanyKey;
   String dealerkey;
   String dealerEmail;
 
   dealerScreen(this.CompanyKey, this.dealerkey, this.dealerEmail);
-
   @override
   _dealerState createState() => _dealerState();
 }
@@ -171,15 +169,14 @@ class _dealerState extends State<dealerScreen> {
       Map<dynamic, dynamic> values = await snap.value;
       values.forEach((key, value) async {
         Record newRecord = Record();
-        newRecord.name = key;
-        newRecord.particular = value['Particular'];
-        newRecord.debit = value['Debit'];
-        newRecord.date = value['Date'];
-        newRecord.credit = value['Credit'];
+        newRecord.name = await key;
+        newRecord.particular = await value['Particular'];
+        newRecord.debit = await value['Debit'];
+        newRecord.date = await value['Date'];
+        newRecord.credit = await value['Credit'];
         print(newRecord.name);
         print(newRecord.credit);
         records.add(newRecord);
-
         var myDebit = double.parse(newRecord.debit);
         assert(myDebit is double);
         print(myDebit);
@@ -187,25 +184,20 @@ class _dealerState extends State<dealerScreen> {
         assert(myCredit is double);
         print(myCredit);
 
-        print(records.length);
-        debit = debit + myDebit;
-        credit = credit + myCredit;
-        net = credit - debit;
-        print(records.length);
-      });
-
-      records.sort((a, b) => a.date.compareTo(b.date));
-      for (int i = 0; i < records.length; i++) {
-
         setState(() {
+          print(records.length);
+          debit = debit + myDebit;
+          credit = credit + myCredit;
+          net = credit - debit;
+          print(records.length);
           _rowList.add(DataRow(cells: <DataCell>[
-            DataCell(Text(records[i].date)),
-            DataCell(Text(records[i].particular)),
-            DataCell(Text(records[i].debit)),
-            DataCell(Text(records[i].credit))
+            DataCell(Text(newRecord.date)),
+            DataCell(Text(newRecord.particular)),
+            DataCell(Text(newRecord.debit)),
+            DataCell(Text(newRecord.credit))
           ]));
         });
-      }
+      });
     });
   }
 
@@ -228,7 +220,7 @@ class _dealerState extends State<dealerScreen> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               title: Text(
-                "Sort the records",
+                "Set Range",
               ),
               content: SingleChildScrollView(
                 child: Column(
@@ -316,6 +308,7 @@ class _dealerState extends State<dealerScreen> {
                                         startdate,
                                         enddate,
                                         records,
+                                        net,
                                         widget.dealerEmail)),
                               );
                             },
@@ -555,117 +548,116 @@ class _dealerState extends State<dealerScreen> {
     print('CSV Saved');
   }
 
-
   _generatePdfAndView(context) async {
     final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
     pdf.addPage(pdfLib.MultiPage(
         build: (context) => [
-          pdfLib.Column(
-              mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
-              children: [
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: pdfLib.Row(children: [
-                    pdfLib.Text(
-                      'Transactions Record',
-                      style: pdfLib.TextStyle(
-                        fontSize: 35,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 15,
-                ),
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: pdfLib.Row(
-                      mainAxisAlignment:
-                      pdfLib.MainAxisAlignment.spaceBetween,
-                      children: [
+              pdfLib.Column(
+                  mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pdfLib.Padding(
+                      padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: pdfLib.Row(children: [
                         pdfLib.Text(
-                          'Date',
+                          'Transactions Record',
                           style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Particular',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Debit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Credit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 20,
+                            fontSize: 35,
                             color: PdfColors.black,
                           ),
                         ),
                       ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-                pdfLib.ListView.builder(
-                    itemCount: records.length,
-                    itemBuilder: (context, index) {
-                      var item = records[index];
-                      return pdfLib.Padding(
-                        padding:
-                        pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
-                        child: pdfLib.Row(
-                            mainAxisAlignment:
-                            pdfLib.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pdfLib.Text(
-                                item.date,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                    ),
+                    pdfLib.SizedBox(
+                      height: 15,
+                    ),
+                    pdfLib.Padding(
+                      padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
+                      child: pdfLib.Row(
+                          mainAxisAlignment:
+                              pdfLib.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pdfLib.Text(
+                              'Date',
+                              style: pdfLib.TextStyle(
+                                fontSize: 25,
+                                color: PdfColors.black,
                               ),
-                              pdfLib.Text(
-                                item.particular,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                            ),
+                            pdfLib.Text(
+                              'Particular',
+                              style: pdfLib.TextStyle(
+                                fontSize: 25,
+                                color: PdfColors.black,
                               ),
-                              pdfLib.Text(
-                                item.debit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                            ),
+                            pdfLib.Text(
+                              'Debit',
+                              style: pdfLib.TextStyle(
+                                fontSize: 25,
+                                color: PdfColors.black,
                               ),
-                              pdfLib.Text(
-                                item.credit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
+                            ),
+                            pdfLib.Text(
+                              'Credit',
+                              style: pdfLib.TextStyle(
+                                fontSize: 20,
+                                color: PdfColors.black,
                               ),
-                            ]),
-                      );
-                    }),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-              ])
-        ]));
+                            ),
+                          ]),
+                    ),
+                    pdfLib.SizedBox(
+                      height: 10,
+                      child: pdfLib.Divider(color: PdfColors.black),
+                    ),
+                    pdfLib.ListView.builder(
+                        itemCount: records.length,
+                        itemBuilder: (context, index) {
+                          var item = records[index];
+                          return pdfLib.Padding(
+                            padding:
+                                pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
+                            child: pdfLib.Row(
+                                mainAxisAlignment:
+                                    pdfLib.MainAxisAlignment.spaceBetween,
+                                children: [
+                                  pdfLib.Text(
+                                    item.date,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                  pdfLib.Text(
+                                    item.particular,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                  pdfLib.Text(
+                                    item.debit,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                  pdfLib.Text(
+                                    item.credit,
+                                    style: pdfLib.TextStyle(
+                                      fontSize: 15,
+                                      color: PdfColors.black,
+                                    ),
+                                  ),
+                                ]),
+                          );
+                        }),
+                    pdfLib.SizedBox(
+                      height: 10,
+                      child: pdfLib.Divider(color: PdfColors.black),
+                    ),
+                  ])
+            ]));
 
     String dirt;
 
@@ -680,7 +672,7 @@ class _dealerState extends State<dealerScreen> {
     });
 
     Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
+        await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);
@@ -699,5 +691,4 @@ class _dealerState extends State<dealerScreen> {
     //builder: (_) => PdfViewerPage(path: path),
     //));
   }
-
 }
