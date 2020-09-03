@@ -422,22 +422,115 @@ class _dealerState extends State<dealerScreen> {
   }
 
   sendEmail() async {
-    List<List<dynamic>> rows = List<List<dynamic>>();
-    List<dynamic> row = List();
-    row.add('Date');
-    row.add('Particulars');
-    row.add('Debit');
-    row.add('Credit');
-    rows.add(row);
-    for (int i = 0; i < records.length; i++) {
-//row refer to each column of a row in csv file and rows refer to each row in a file
-      List<dynamic> row = List();
-      row.add(records[i].date);
-      row.add(records[i].particular);
-      row.add(records[i].debit);
-      row.add(records[i].credit);
-      rows.add(row);
-    }
+    final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
+    pdf.addPage(pdfLib.MultiPage(
+        build: (context) => [
+          pdfLib.Column(
+              mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
+              children: [
+                pdfLib.Padding(
+                  padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: pdfLib.Row(children: [
+                    pdfLib.Text(
+                      'Transactions Record',
+                      style: pdfLib.TextStyle(
+                        fontSize: 35,
+                        color: PdfColors.black,
+                      ),
+                    ),
+                  ]),
+                ),
+                pdfLib.SizedBox(
+                  height: 15,
+                ),
+                pdfLib.Padding(
+                  padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: pdfLib.Row(
+                      mainAxisAlignment:
+                      pdfLib.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pdfLib.Text(
+                          'Date',
+                          style: pdfLib.TextStyle(
+                            fontSize: 25,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                        pdfLib.Text(
+                          'Particular',
+                          style: pdfLib.TextStyle(
+                            fontSize: 25,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                        pdfLib.Text(
+                          'Debit',
+                          style: pdfLib.TextStyle(
+                            fontSize: 25,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                        pdfLib.Text(
+                          'Credit',
+                          style: pdfLib.TextStyle(
+                            fontSize: 20,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                      ]),
+                ),
+                pdfLib.SizedBox(
+                  height: 10,
+                  child: pdfLib.Divider(color: PdfColors.black),
+                ),
+                pdfLib.ListView.builder(
+                    itemCount: records.length,
+                    itemBuilder: (context, index) {
+                      var item = records[index];
+                      return pdfLib.Padding(
+                        padding:
+                        pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
+                        child: pdfLib.Row(
+                            mainAxisAlignment:
+                            pdfLib.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pdfLib.Text(
+                                item.date,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                              pdfLib.Text(
+                                item.particular,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                              pdfLib.Text(
+                                item.debit,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                              pdfLib.Text(
+                                item.credit,
+                                style: pdfLib.TextStyle(
+                                  fontSize: 15,
+                                  color: PdfColors.black,
+                                ),
+                              ),
+                            ]),
+                      );
+                    }),
+                pdfLib.SizedBox(
+                  height: 10,
+                  child: pdfLib.Divider(color: PdfColors.black),
+                ),
+              ])
+        ]));
 
     String dirt;
 
@@ -452,7 +545,7 @@ class _dealerState extends State<dealerScreen> {
     });
 
     Map<Permission, PermissionState> permission =
-        await PermissionsPlugin.requestPermissions([
+    await PermissionsPlugin.requestPermissions([
       Permission.WRITE_EXTERNAL_STORAGE,
       Permission.READ_EXTERNAL_STORAGE
     ]);
@@ -460,21 +553,13 @@ class _dealerState extends State<dealerScreen> {
 //store file in documents folder
 
     String filename =
-        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+        '${widget.dealerEmail} ${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
 
     String dir =
         (await getExternalStorageDirectory()).absolute.path + "/documents";
-    File f = new File('/storage/emulated/0/Ledger Exports/$filename.csv');
+    File f = new File('/storage/emulated/0/Ledger Exports/$filename.pdf');
 
-// convert rows to String and write as csv file
-
-    String csv = const ListToCsvConverter().convert(rows);
-    await f.writeAsString(csv);
-    Fluttertoast.showToast(
-        msg: 'File exported : ${f.path}',
-        textColor: Colors.black,
-        backgroundColor: Colors.white);
-    print('CSV Saved');
+    await f.writeAsBytes(pdf.save());
 
     final MailOptions mailOptions = MailOptions(
       body: 'Here is your ledger',
@@ -487,65 +572,6 @@ class _dealerState extends State<dealerScreen> {
     );
 
     await FlutterMailer.send(mailOptions);
-  }
-
-  getCsv() async {
-    //create an element rows of type list of list. All the above data set are stored in associate list
-//Let associate be a model class with attributes name,gender and age and associateList be a list of associate model class.
-
-    List<List<dynamic>> rows = List<List<dynamic>>();
-    List<dynamic> row = List();
-    row.add('Date');
-    row.add('Particulars');
-    row.add('Debit');
-    row.add('Credit');
-    rows.add(row);
-    for (int i = 0; i < records.length; i++) {
-//row refer to each column of a row in csv file and rows refer to each row in a file
-      List<dynamic> row = List();
-      row.add(records[i].date);
-      row.add(records[i].particular);
-      row.add(records[i].debit);
-      row.add(records[i].credit);
-      rows.add(row);
-    }
-
-    String dirt;
-
-    new Directory('/storage/emulated/0/LedgerApp Exports')
-        .create(recursive: true)
-        .then((Directory dir) {
-      print("My directory path ${dir.path}");
-      dirt = dir.path;
-      setState(() {
-        print('----------------${dir.path} is the destination---------------');
-      });
-    });
-
-    Map<Permission, PermissionState> permission =
-        await PermissionsPlugin.requestPermissions([
-      Permission.WRITE_EXTERNAL_STORAGE,
-      Permission.READ_EXTERNAL_STORAGE
-    ]);
-
-//store file in documents folder
-
-    String filename =
-        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
-
-    String dir =
-        (await getExternalStorageDirectory()).absolute.path + "/documents";
-    File f = new File('/storage/emulated/0/LedgerApp Exports/$filename.csv');
-
-// convert rows to String and write as csv file
-
-    String csv = const ListToCsvConverter().convert(rows);
-    f.writeAsString(csv);
-    Fluttertoast.showToast(
-        msg: 'File exported : ${f.path}',
-        textColor: Colors.black,
-        backgroundColor: Colors.white);
-    print('CSV Saved');
   }
 
   _generatePdfAndView(context) async {
