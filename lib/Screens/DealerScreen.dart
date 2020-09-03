@@ -572,6 +572,15 @@ class _dealerState extends State<dealerScreen> {
     );
 
     await FlutterMailer.send(mailOptions);
+    Fluttertoast.showToast(
+        msg: "Email Sent",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 
   _generatePdfAndView(context) async {
@@ -713,6 +722,15 @@ class _dealerState extends State<dealerScreen> {
     File f = new File('/storage/emulated/0/Ledger Exports/$filename.pdf');
 
     await f.writeAsBytes(pdf.save());
+    Fluttertoast.showToast(
+        msg: "PDF Sent",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
     //Navigator.of(context).push(MaterialPageRoute(
     //builder: (_) => PdfViewerPage(path: path),
     //));
