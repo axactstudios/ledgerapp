@@ -5,6 +5,8 @@ import 'package:ledgerapp/Widgets/DivisionHeadCardAdmin.dart';
 
 import '../Classes/Constants.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../my_shared_preferences.dart';
+import 'login.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class divisionheadlistScreen extends StatefulWidget {
@@ -54,6 +56,17 @@ class _divisionheadlistState extends State<divisionheadlistScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: kPrimaryColor),
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              MySharedPreferences sharedPrefs = new MySharedPreferences();
+              await sharedPrefs.clear();
+              await Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+            },
+            icon: Icon(Icons.exit_to_app , color: Colors.black,),
+          ),
+        ],
         title: Text(
           'ADMIN',
           style: TextStyle(

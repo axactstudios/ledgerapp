@@ -14,6 +14,11 @@ import 'package:date_format/date_format.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdfLib;
 import 'package:printing/printing.dart';
+import '../my_shared_preferences.dart';
+import 'login.dart';
+
+import '../Classes/Constants.dart';
+import '../Classes/Constants.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class dealerScreen extends StatefulWidget {
@@ -369,6 +374,16 @@ class _dealerState extends State<dealerScreen> {
                   fontSize: 24),
             ),
             actions: <Widget>[
+                IconButton(
+                  onPressed: () async {
+                    MySharedPreferences sharedPrefs = new MySharedPreferences();
+                    await sharedPrefs.clear();
+                    await Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                  icon: Icon(Icons.exit_to_app , color: Colors.black,),
+                ),
+
               IconButton(
                 icon: Icon(
                   Icons.import_export,
@@ -404,7 +419,7 @@ class _dealerState extends State<dealerScreen> {
                         padding: const EdgeInsets.all(20.0),
                         child: Row(
                           children: <Widget>[
-                            Text("Total :",
+                            Text("Outstanding :",
                                 style: TextStyle(
                                     color: kPrimaryColor,
                                     fontWeight: FontWeight.bold,
@@ -596,7 +611,7 @@ class _dealerState extends State<dealerScreen> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: kPrimaryColor,
         textColor: Colors.white,
         fontSize: 16.0);
   }
@@ -741,11 +756,11 @@ class _dealerState extends State<dealerScreen> {
 
     await f.writeAsBytes(pdf.save());
     Fluttertoast.showToast(
-        msg: "PDF Sent",
+        msg: "PDF Saved",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: kPrimaryColor,
         textColor: Colors.white,
         fontSize: 16.0);
     //Navigator.of(context).push(MaterialPageRoute(
