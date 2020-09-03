@@ -3,27 +3,19 @@ import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ledgerapp/Classes/Constants.dart';
-import 'package:ledgerapp/Classes/Record.dart';
-import '../Classes/Constants.dart';
-import 'DealerScreen.dart';
 import 'package:intl/intl.dart';
+import 'package:ledgerapp/Classes/Record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permissions_plugin/permissions_plugin.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pdfLib;
-import 'package:printing/printing.dart';
+import 'package:ledgerapp/Classes/Constants.dart';
 
 class filterRecord extends StatefulWidget {
-  String startdate, enddate;
-  String dealerEmail;
-  double net;
-
+  String startdate, enddate;String dealerEmail;
   List<Record> records = [];
+  double net;
+  filterRecord(this.startdate, this.enddate, this.records,this.net,this.dealerEmail);
 
-  filterRecord(
-      this.startdate, this.enddate, this.records, this.net, this.dealerEmail);
 
   @override
   _filterRecordState createState() => _filterRecordState();
@@ -33,6 +25,8 @@ class _filterRecordState extends State<filterRecord> {
   List<Record> filtered = [];
   int i;
   List<DataRow> _rowList = [];
+  double opening=0;
+
 
   Widget bodyData(width) => DataTable(
       columnSpacing: width / 8,
@@ -63,7 +57,7 @@ class _filterRecordState extends State<filterRecord> {
         ),
       ],
       rows: _rowList);
-  double opening = 0;
+
   void filterrecords() async {
     print('${widget.startdate}    ${widget.enddate}');
     DateTime startDate = new DateFormat("dd-MM-yyyy").parse(widget.startdate);
@@ -74,12 +68,21 @@ class _filterRecordState extends State<filterRecord> {
       new DateFormat("dd-MM-yyyy").parse(widget.records[i].date);
       if ((date == startDate || date == endDate) ||
           ((date.isAfter(startDate)) && (date.isBefore(endDate)))) {
-        await filtered.add(widget.records[i]);
-        opening = await opening - double.parse(widget.records[i].debit);
-        opening = await opening + double.parse(widget.records[i].credit);
+        filtered.add(widget.records[i]);
+
+      try{
+        opening =  opening - double.parse(widget.records[i].debit);
+        opening =  opening + double.parse(widget.records[i].credit);
+      }catch(e){print(e);};
+
       }
     }
-    opening = await widget.net - opening;
+    print(widget.net);
+
+    try{
+      opening =  widget.net - opening;
+    }catch(e){print(e);}
+
     for (int i = 0; i < filtered.length; i++) {
       _rowList.add(DataRow(cells: <DataCell>[
         DataCell(Text(filtered[i].date)),
@@ -94,6 +97,7 @@ class _filterRecordState extends State<filterRecord> {
     });
   }
 
+
   @override
   void initState() {
     filterrecords();
@@ -106,7 +110,6 @@ class _filterRecordState extends State<filterRecord> {
     double pHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: kPrimaryColor),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
@@ -121,7 +124,7 @@ class _filterRecordState extends State<filterRecord> {
                 color: kPrimaryColor,
               ),
               onPressed: () {
-                _generatePdfAndView(context);
+                getCsv();
               },
             ),
             IconButton(
@@ -190,126 +193,36 @@ class _filterRecordState extends State<filterRecord> {
               Container(
                   height: pHeight * 0.7,
                   width: pWidth,
-                  child: bodyData(pWidth * 0.8)),
+                  child: bodyData(pWidth)),
             ],
           ),
         ));
   }
 
-  sendEmail() async {
-    final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
-    pdf.addPage(pdfLib.MultiPage(
-        build: (context) => [
-          pdfLib.Column(
-              mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
-              children: [
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: pdfLib.Row(children: [
-                    pdfLib.Text(
-                      'Transactions Record',
-                      style: pdfLib.TextStyle(
-                        fontSize: 35,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 15,
-                ),
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: pdfLib.Row(
-                      mainAxisAlignment:
-                      pdfLib.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pdfLib.Text(
-                          'Date',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Particular',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Debit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Credit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 20,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                      ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-                pdfLib.ListView.builder(
-                    itemCount: filtered.length,
-                    itemBuilder: (context, index) {
-                      var item = filtered[index];
-                      return pdfLib.Padding(
-                        padding:
-                        pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
-                        child: pdfLib.Row(
-                            mainAxisAlignment:
-                            pdfLib.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pdfLib.Text(
-                                item.date,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                              pdfLib.Text(
-                                item.particular,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                              pdfLib.Text(
-                                item.debit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                              pdfLib.Text(
-                                item.credit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                            ]),
-                      );
-                    }),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-              ])
-        ]));
+  getCsv() async {
+    //create an element rows of type list of list. All the above data set are stored in associate list
+//Let associate be a model class with attributes name,gender and age and associateList be a list of associate model class.
+
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    List<dynamic> row = List();
+    row.add('Date');
+    row.add('Particulars');
+    row.add('Debit');
+    row.add('Credit');
+    rows.add(row);
+    for (int i = 0; i < filtered.length; i++) {
+//row refer to each column of a row in csv file and rows refer to each row in a file
+      List<dynamic> row = List();
+      row.add(filtered[i].date);
+      row.add(filtered[i].particular);
+      row.add(filtered[i].debit);
+      row.add(filtered[i].credit);
+      rows.add(row);
+    }
 
     String dirt;
 
-    new Directory('/storage/emulated/0/Ledger Exports')
+    new Directory('/storage/emulated/0/LedgerApp Exports')
         .create(recursive: true)
         .then((Directory dir) {
       print("My directory path ${dir.path}");
@@ -328,13 +241,77 @@ class _filterRecordState extends State<filterRecord> {
 //store file in documents folder
 
     String filename =
-        '${widget.dealerEmail} ${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
 
     String dir =
         (await getExternalStorageDirectory()).absolute.path + "/documents";
-    File f = new File('/storage/emulated/0/Ledger Exports/$filename.pdf');
+    File f = new File('/storage/emulated/0/LedgerApp Exports/$filename.csv');
 
-    await f.writeAsBytes(pdf.save());
+// convert rows to String and write as csv file
+
+    String csv = const ListToCsvConverter().convert(rows);
+    f.writeAsString(csv);
+    Fluttertoast.showToast(
+        msg: 'File exported : ${f.path}',
+        textColor: Colors.black,
+        backgroundColor: Colors.white);
+    print('CSV Saved');
+  }
+
+  sendEmail() async {
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    List<dynamic> row = List();
+    row.add('Date');
+    row.add('Particulars');
+    row.add('Debit');
+    row.add('Credit');
+    rows.add(row);
+    for (int i = 0; i < filtered.length; i++) {
+//row refer to each column of a row in csv file and rows refer to each row in a file
+      List<dynamic> row = List();
+      row.add(filtered[i].date);
+      row.add(filtered[i].particular);
+      row.add(filtered[i].debit);
+      row.add(filtered[i].credit);
+      rows.add(row);
+    }
+
+    String dirt;
+
+    new Directory('/storage/emulated/0/LedgerApp Exports')
+        .create(recursive: true)
+        .then((Directory dir) {
+      print("My directory path ${dir.path}");
+      dirt = dir.path;
+      setState(() {
+        print('----------------${dir.path} is the destination---------------');
+      });
+    });
+
+    Map<Permission, PermissionState> permission =
+    await PermissionsPlugin.requestPermissions([
+      Permission.WRITE_EXTERNAL_STORAGE,
+      Permission.READ_EXTERNAL_STORAGE
+    ]);
+
+//store file in documents folder
+
+    String filename =
+        '${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
+
+    String dir =
+        (await getExternalStorageDirectory()).absolute.path + "/documents";
+    File f = new File('/storage/emulated/0/LedgerApp Exports/$filename.csv');
+
+// convert rows to String and write as csv file
+
+    String csv = const ListToCsvConverter().convert(rows);
+    await f.writeAsString(csv);
+    Fluttertoast.showToast(
+        msg: 'File exported : ${f.path}',
+        textColor: Colors.black,
+        backgroundColor: Colors.white);
+    print('CSV Saved');
 
     final MailOptions mailOptions = MailOptions(
       body: 'Here is your ledger',
@@ -347,168 +324,5 @@ class _filterRecordState extends State<filterRecord> {
     );
 
     await FlutterMailer.send(mailOptions);
-    Fluttertoast.showToast(
-        msg: "Email Sent",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-  }
-
-  _generatePdfAndView(context) async {
-    final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
-    pdf.addPage(pdfLib.MultiPage(
-        build: (context) => [
-          pdfLib.Column(
-              mainAxisAlignment: pdfLib.MainAxisAlignment.spaceBetween,
-              children: [
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: pdfLib.Row(children: [
-                    pdfLib.Text(
-                      'Transactions Record',
-                      style: pdfLib.TextStyle(
-                        fontSize: 35,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 15,
-                ),
-                pdfLib.Padding(
-                  padding: pdfLib.EdgeInsets.only(top: 5.0, bottom: 5.0),
-                  child: pdfLib.Row(
-                      mainAxisAlignment:
-                      pdfLib.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pdfLib.Text(
-                          'Date',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Particular',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Debit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 25,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                        pdfLib.Text(
-                          'Credit',
-                          style: pdfLib.TextStyle(
-                            fontSize: 20,
-                            color: PdfColors.black,
-                          ),
-                        ),
-                      ]),
-                ),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-                pdfLib.ListView.builder(
-                    itemCount: filtered.length,
-                    itemBuilder: (context, index) {
-                      var item = filtered[index];
-                      return pdfLib.Padding(
-                        padding:
-                        pdfLib.EdgeInsets.only(top: 2.0, bottom: 2.0),
-                        child: pdfLib.Row(
-                            mainAxisAlignment:
-                            pdfLib.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pdfLib.Text(
-                                item.date,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                              pdfLib.Text(
-                                item.particular,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                              pdfLib.Text(
-                                item.debit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                              pdfLib.Text(
-                                item.credit,
-                                style: pdfLib.TextStyle(
-                                  fontSize: 15,
-                                  color: PdfColors.black,
-                                ),
-                              ),
-                            ]),
-                      );
-                    }),
-                pdfLib.SizedBox(
-                  height: 10,
-                  child: pdfLib.Divider(color: PdfColors.black),
-                ),
-              ])
-        ]));
-
-    String dirt;
-
-    new Directory('/storage/emulated/0/Ledger Exports')
-        .create(recursive: true)
-        .then((Directory dir) {
-      print("My directory path ${dir.path}");
-      dirt = dir.path;
-      setState(() {
-        print('----------------${dir.path} is the destination---------------');
-      });
-    });
-
-    Map<Permission, PermissionState> permission =
-    await PermissionsPlugin.requestPermissions([
-      Permission.WRITE_EXTERNAL_STORAGE,
-      Permission.READ_EXTERNAL_STORAGE
-    ]);
-
-//store file in documents folder
-
-    String filename =
-        '${widget.dealerEmail} ${DateTime.now().day.toString()}-${DateTime.now().month.toString()}-${DateTime.now().year.toString()} -- ${DateTime.now().hour.toString()}-${DateTime.now().minute.toString()} ';
-
-    String dir =
-        (await getExternalStorageDirectory()).absolute.path + "/documents";
-    File f = new File('/storage/emulated/0/Ledger Exports/$filename.pdf');
-
-    await f.writeAsBytes(pdf.save());
-
-    Fluttertoast.showToast(
-        msg: "PDF Saved",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: kPrimaryColor,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-    //Navigator.of(context).push(MaterialPageRoute(
-    //builder: (_) => PdfViewerPage(path: path),
-    //));
   }
 }
