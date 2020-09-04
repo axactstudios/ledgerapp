@@ -36,7 +36,7 @@ class _companiesListState extends State<companiesList> {
                   await Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
-                icon: Icon(Icons.exit_to_app),
+                icon: Icon(Icons.exit_to_app , color: Colors.black,),
               ),
             ],
             title: Text('Companies',
